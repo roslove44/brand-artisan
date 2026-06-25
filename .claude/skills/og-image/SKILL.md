@@ -71,21 +71,21 @@ const INK = "#......";
 // const markSvg = await readFile(asset("<projet>/favicon/icon.svg"));
 
 function render(): ReactNode {
-	return (
-		<div
-			style={{
-				width: "100%",
-				height: "100%",
-				display: "flex",
-				flexDirection: "column",
-				justifyContent: "center",
-				padding: 80, // zone de securite
-				backgroundColor: INK, // fond opaque
-			}}
-		>
-			{/* logo + titre gros + tagline courte, fort contraste */}
-		</div>
-	);
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        padding: 80, // zone de securite
+        backgroundColor: INK, // fond opaque
+      }}
+    >
+      {/* logo + titre gros + tagline courte, fort contraste */}
+    </div>
+  );
 }
 
 export default { size: SIZE, title: "<Titre humain>", render } satisfies Template;
@@ -104,22 +104,4 @@ seulement s'il est repete.
   reduisant mentalement a ~400 px.
 
 **Critere de succes** : PNG 1200×630, opaque, < 300 Ko, lisible en petit, et
-n'utilisant que des couleurs/typo de `brand.md`.
-
-## Annexe — referencer l'image (cote site consommateur)
-
-Hors perimetre du repo (OgArtisan ne sert pas de HTML), mais a transmettre a
-l'utilisateur pour brancher l'image sur sa page. Balises a poser la-bas :
-
-```html
-<meta property="og:image" content="https://domaine.tld/og.png" /> <!-- URL absolue -->
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:type" content="image/png" />
-<meta property="og:image:alt" content="<texte alternatif descriptif>" />
-<meta name="twitter:card" content="summary_large_image" />
-```
-
-L'`og:image` doit etre une **URL absolue**. Apres mise en ligne, vider le cache
-des aperçus via les debuggers : Facebook Sharing Debugger, LinkedIn Post
-Inspector, X Card Validator.
+n'utilisant que des couleurs/typo de `brand.md` sauf ou avec autres indications de l'utilisateur.
