@@ -1,14 +1,15 @@
 import { createServer } from "node:http";
 import { toPng } from "./render";
 import { resolve, list, load } from "./discover";
-import { esc, capitalize, last } from "./utils";
+import { resolveTitle } from "./template";
+import { esc, capitalize, last, slug } from "./utils";
 
 const PORT = 4000;
 const PROJECT_NAME = "OgArtisan";
 
-// Titre de page image : "Cover | OgArtisan · 1500×500".
-function buildTitle(name: string, width: number, height: number, separator = "|"): string {
-	return `${capitalize(name)} ${separator} ${PROJECT_NAME} · ${width}×${height}`;
+// Titre de page image : "Couverture sociale ComptaOpen | OgArtisan · 1500×500".
+function buildTitle(title: string, width: number, height: number, separator = "|"): string {
+	return `${title} ${separator} ${PROJECT_NAME} · ${width}×${height}`;
 }
 
 // Fil d'ariane : OgArtisan / comptaopen / cover (le dernier segment n'est pas un lien).
@@ -78,12 +79,12 @@ function listingPage(relPath: string, projects: string[], images: string[]): str
 	return shell(title, `\t\t${breadcrumb(relPath)}\n\t\t<h1>${esc(heading)}</h1>\n\t\t${listHtml}`);
 }
 
-// Page de preview d'une image : titre parlant + <img alt> (miroir d'une og:image).
-function previewPage(relPath: string, width: number, height: number, alt: string, imgSrc: string): string {
+// Page de preview d'une image : <title> parlant + <img alt> dérivé du titre.
+function previewPage(relPath: string, title: string, width: number, height: number, imgSrc: string): string {
 	const body = `\t\t${breadcrumb(relPath)}
-		<img src="${esc(imgSrc)}" alt="${esc(alt)}" width="${width}" height="${height}" />
-		<figcaption>${esc(capitalize(last(relPath)))} · ${width}×${height}</figcaption>`;
-	return shell(buildTitle(last(relPath), width, height), body);
+		<img src="${esc(imgSrc)}" alt="${esc(title)}" width="${width}" height="${height}" />
+		<figcaption>${esc(title)} · ${width}×${height}</figcaption>`;
+	return shell(buildTitle(title, width, height), body);
 }
 
 // Serveur de dev : l'arborescence de templates/ est navigable.
@@ -114,11 +115,16 @@ const server = createServer(async (req, res) => {
 		const tpl = await load(relPath, true);
 		const width = Number(url.searchParams.get("w")) || tpl.size.width;
 		const height = Number(url.searchParams.get("h")) || tpl.size.height;
+		const title = resolveTitle(tpl, last(relPath));
 
-		// ?raw -> PNG brut ; sinon -> page de preview qui pointe vers ?raw.
+		// ?raw -> PNG brut, nom de fichier = titre normalisé (pour "enregistrer sous").
 		if (url.searchParams.has("raw")) {
 			const png = await toPng(tpl.render(), { width, height });
-			res.writeHead(200, { "content-type": "image/png", "cache-control": "no-store" });
+			res.writeHead(200, {
+				"content-type": "image/png",
+				"content-disposition": `inline; filename="${slug(title)}.png"`,
+				"cache-control": "no-store",
+			});
 			res.end(png);
 			return;
 		}
@@ -126,7 +132,7 @@ const server = createServer(async (req, res) => {
 		url.searchParams.set("raw", "");
 		const imgSrc = `${url.pathname}?${url.searchParams.toString()}`;
 		res.writeHead(200, { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" });
-		res.end(previewPage(relPath, width, height, tpl.alt, imgSrc));
+		res.end(previewPage(relPath, title, width, height, imgSrc));
 	} catch (err) {
 		res.writeHead(500, { "content-type": "text/plain; charset=utf-8" });
 		res.end(String(err));

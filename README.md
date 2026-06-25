@@ -50,14 +50,15 @@ npm run typecheck  # vérification TypeScript (tsc)
 ```
 http://localhost:4000/                     → liste les projets
 http://localhost:4000/comptaopen           → liste images + sous-projets
-http://localhost:4000/comptaopen/cover     → page de preview (titre + alt)
+http://localhost:4000/comptaopen/cover     → page de preview (titre parlant)
 http://localhost:4000/comptaopen/cover?raw → PNG brut (utilisable comme src)
 http://localhost:4000/comptaopen/cover?w=1245&h=527 → override de la taille
 ```
 
-La page de preview est le miroir d'une page qui consomme une og:image : `<title>`
-parlant et `<img alt="...">` (l'`alt` vient du template, comme l'`og:image:alt`
-de next/og). Le PNG lui-même n'a pas d'alt, c'est une métadonnée de page.
+Le `<title>` de la page vient du `title` du template (libellé humain), ou à
+défaut du nom de fichier capitalisé. Ce même libellé sert d'`alt` à l'`<img>`, et
+sa version normalisée (slug) de nom de fichier quand tu télécharges le PNG (`?raw`),
+pour que « enregistrer sous » propose un nom propre.
 
 Modifie un template, sauvegarde, rafraîchis le navigateur : l'image est re-rendue
 (le serveur réimporte le template à chaque requête).
@@ -65,8 +66,9 @@ Modifie un template, sauvegarde, rafraîchis le navigateur : l'image est re-rend
 ### Mode build (export)
 
 `npm run build` parcourt l'arborescence de `templates/` et écrit les PNG finaux
-(à la taille exacte du template) dans `out/`, en reflétant le chemin
-(`out/comptaopen/cover.png`), prêts à uploader.
+(à la taille exacte du template) dans `out/`, sous le dossier du projet et nommés
+d'après le titre normalisé (même règle que le téléchargement du serveur) :
+`out/comptaopen/couverture-sociale-comptaopen.png`. Prêts à uploader.
 
 ## Structure
 
@@ -74,11 +76,11 @@ Modifie un template, sauvegarde, rafraîchis le navigateur : l'image est re-rend
 |---|---|
 | `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. |
 | `src/discover.ts` | Auto-découverte : scanne `templates/` (dossier = projet, `.tsx` = image), résout une URL en noeud, charge un template. |
-| `src/template.ts` | Le type `Template` : ce que chaque `.tsx` exporte par défaut (`{ size, alt, render }`). |
-| `src/utils.ts` | Helpers purs partagés (échappement HTML, capitalize, manipulation de chemin). |
+| `src/template.ts` | Le type `Template` : ce que chaque `.tsx` exporte par défaut (`{ size, title?, render }`). |
+| `src/utils.ts` | Helpers purs partagés (échappement HTML, capitalize, slug, manipulation de chemin). |
 | `src/serve.ts` | Serveur de dev HTTP : routing récursif sur l'arbre, pages de listing + preview (`npm run dev`). |
-| `src/templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, alt, render }` par défaut et charge ses propres assets. |
-| `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/` en reflétant le chemin (`npm run build`). |
+| `src/templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, title?, render }` par défaut et charge ses propres assets. |
+| `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/<projet>/<slug-du-titre>.png` (`npm run build`). |
 | `assets/fonts/` | Polices fournies en dur (Satori n'accède à aucune police système). |
 | `out/` | PNG générés. Ignoré par git (rien à versionner ici). |
 
@@ -97,11 +99,11 @@ Modifie un template, sauvegarde, rafraîchis le navigateur : l'image est re-rend
      return ( /* ton JSX */ );
    }
 
-   export default { size: SIZE, alt: "Description du visuel", render } satisfies Template;
+   export default { size: SIZE, title: "Nom lisible du visuel", render } satisfies Template;
    ```
 3. C'est tout : `http://localhost:4000/comptaopen/og` en dev, et `npm run build`
-   le sort dans `out/comptaopen/og.png`. Aucun registre à éditer, la découverte
-   est automatique.
+   le sort dans `out/comptaopen/<slug-du-titre>.png`. Aucun registre à éditer, la
+   découverte est automatique.
 
 ## Formats de référence
 

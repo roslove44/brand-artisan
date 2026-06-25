@@ -115,4 +115,4 @@ function render(): ReactNode {
 	);
 }
 
-export default { size: SIZE, alt: "Couverture sociale ComptaOpen", render } satisfies Template;
+export default { size: SIZE, title: "Couverture sociale ComptaOpen", render } satisfies Template;

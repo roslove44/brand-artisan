@@ -12,3 +12,12 @@ export const clean = (relPath: string) => relPath.replace(/^\/+|\/+$/g, "");
 
 // Dernier segment d'un chemin : "comptaopen/cover" -> "cover".
 export const last = (relPath: string) => relPath.split("/").pop() ?? "";
+
+// "Couverture sociale ComptaOpen" -> "couverture-sociale-comptaopen" (nom de fichier).
+export const slug = (s: string) =>
+	s
+		.normalize("NFD")
+		.replace(/\p{Diacritic}/gu, "") // retire les accents
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-") // non-alphanum -> tiret
+		.replace(/^-+|-+$/g, ""); // trim des tirets
