@@ -78,14 +78,22 @@ deviendrait illisible à 16 px ; le bracket-O reste reconnaissable.
 
 | Fichier | Détail |
 |---|---|
-| `icon.svg` | Source vectorielle, tuile arrondie |
-| `icon-square.svg` | Variante à coins droits |
+| `icon.svg` | Source vectorielle, tuile bleue arrondie, bracket blanc |
+| `icon-square.svg` | Tuile bleue à coins droits, bracket blanc |
+| `icon-mark.svg` | Bracket-O seul, **bleu**, sur transparent (fonds clairs) |
+| `icon-white-mark.svg` | Bracket-O seul, **blanc**, sur transparent (fonds sombres) |
+| `icon-white.svg` | Bracket-O bleu sur fond blanc, coins arrondis |
+| `icon-white-square.svg` | Bracket-O bleu sur fond blanc, coins droits |
 | `icon-16/32/48/64/180/192/512.png` | Rasters par taille |
 | `apple-icon.png` | 180 px, carré (Apple arrondit lui-même) |
 | `favicon.ico` | Multi-résolution 16 / 32 / 48 |
 
 **Fichiers de production** : `favicon.ico`, `apple-icon.png`, `icon.svg`
 (présents dans `favicon/`).
+
+Le sous-dossier `favicon/oauth/` contient chaque variante d'icône rendue en
+**120 px** (taille recommandée par Google) pour les écrans de consentement OAuth,
+générées par `build_oauth.py`.
 
 ---
 
