@@ -32,10 +32,16 @@ uv sync     # crée .venv (Python 3.12) et installe les deps
 
 ## Lancer
 
+Toutes les commandes se lancent **depuis la racine du repo**.
+
 ```bash
-uv run python src/tools/comptaopen/build_logo.py
-uv run python src/tools/comptaopen/build_favicon.py
+uv sync                                                # une seule fois : env + deps
+
+uv run python src/tools/comptaopen/build_logo.py       # -> out/comptaopen/withtool/logo/    (logotype + variantes + PNG)
+uv run python src/tools/comptaopen/build_favicon.py    # -> out/comptaopen/withtool/favicon/ (favicon, apple-icon, .ico, oauth-120-*)
 ```
+
+`uv run` utilise le venv géré automatiquement (pas besoin de l'activer).
 
 ## Sortie et promotion
 

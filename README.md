@@ -70,6 +70,24 @@ Modifie un template, sauvegarde, rafraîchis le navigateur : l'image est re-rend
 d'après le titre normalisé (même règle que le téléchargement du serveur) :
 `out/comptaopen/couverture-sociale-comptaopen.png`. Prêts à uploader.
 
+## Toolchain de marque (Python)
+
+À côté du moteur TS (qui **compose** des visuels), une toolchain Python **génère
+les assets de marque** d'un projet (logo, favicon et leurs déclinaisons), dans
+`src/tools/`. Environnement géré par **uv** (Python épinglé à 3.12 pour
+`skia-python`). Commandes, depuis la racine :
+
+```bash
+uv sync                                                # une seule fois : env + deps
+
+uv run python src/tools/comptaopen/build_logo.py       # -> out/comptaopen/withtool/logo/
+uv run python src/tools/comptaopen/build_favicon.py    # -> out/comptaopen/withtool/favicon/
+```
+
+La sortie va dans `out/<projet>/withtool/` (éphémère) ; promouvoir les fichiers
+validés vers `assets/<projet>/`. Détails dans
+[`src/tools/README.md`](src/tools/README.md).
+
 ## Structure
 
 | Chemin | Rôle |
