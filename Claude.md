@@ -18,6 +18,14 @@ Guide Claude Code pour **OgArtisan** — mon outil perso de construction d'image
 
 **7. Never change code you haven't read.**
 
+## Charte par projet
+
+Chaque projet de visuels vit dans `src/templates/<projet>/`, et sa charte graphique est décrite dans `assets/<projet>/brand.md` (palette, logotype, typographie, do/don't).
+
+**Avant de créer ou modifier un visuel d'un projet, lire son `assets/<projet>/brand.md`.** C'est la référence de base : s'aligner sur la palette et la typographie, ne pas inventer de couleurs ni recomposer le logo à la main. Exemple actuel : `assets/comptaopen/brand.md` pour le projet `comptaopen`.
+
+**S'il n'existe pas, ne pas poursuivre : demander qu'il soit mis en place d'abord.** Pas de visuel produit sans charte de référence.
+
 ## Commands
 
 Te référer à package.json
