@@ -35,7 +35,10 @@ Demander à l'utilisateur :
 
 - **Dimensions** (px). Suggérer un défaut selon l'usage : OG ~1200×630,
   couverture sociale ~1500×500, bannière LinkedIn ~1584×396.
-- **Message / contenu** (titre, tagline, éléments).
+- **Message / contenu** (titre, tagline, éléments). Si
+  `assets/<projet>/project.md` existe, le lire pour caler le ton et les claims
+  (ne pas inventer de chiffres ni de promesses) ; sinon, demander le ton plutôt
+  que de deviner.
 - **Variante de logo** à utiliser (selon le fond, suivre les règles de la charte).
 
 Plusieurs interprétations possibles du brief -> les présenter, ne pas choisir en

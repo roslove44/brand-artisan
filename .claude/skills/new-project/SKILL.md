@@ -5,8 +5,10 @@ description: Initialise un nouveau projet de visuels OgArtisan en posant sa char
 
 # new-project — bootstrap d'un projet de visuels
 
-Objectif : poser la **charte de référence** d'un nouveau projet, parce qu'aucun
-visuel ne peut être produit sans `assets/<projet>/brand.md` (règle de CLAUDE.md).
+Objectif : poser les **deux références** d'un nouveau projet dans
+`assets/<projet>/` : `brand.md` (identité visuelle, **bloquant** — aucun visuel
+sans lui) et `project.md` (substance et voix, pour rédiger les textes). Règle de
+CLAUDE.md.
 
 ## 1. Déterminer le slug `<projet>`
 
@@ -29,6 +31,11 @@ c'est le cœur de la règle projet. Recueillir au minimum :
 - **Variantes de logo / favicon** disponibles et quand les utiliser.
 - **Règles d'usage** et **à ne pas faire** (do/don't).
 
+Recueillir aussi la **substance** (pour `project.md`) : pitch en une phrase,
+ce que fait le produit, public cible et langue, proposition de valeur, voix
+éditoriale (registre, tutoiement/vouvoiement), vocabulaire (nom exact, URL) et
+**claims interdits** (ne pas inventer de chiffres).
+
 Si l'utilisateur n'a pas encore tout, écrire ce qui est connu et marquer les
 trous par `_(à définir)_` plutôt que de combler au hasard.
 
@@ -46,6 +53,22 @@ Les fichiers logo/favicon vivent à côté, dans `assets/<projet>/logo/` et
 `assets/<projet>/favicon/`. Ne pas créer de faux assets — si l'utilisateur a des
 fichiers, lui dire où les déposer.
 
+## 3 bis. Écrire `assets/<projet>/project.md`
+
+Calquer la **structure** de `assets/comptaopen/project.md` (c'est la référence) :
+
+1. `# Projet — <Projet>` + intro courte (rôle du fichier).
+2. `## 1. En une phrase` (le pitch).
+3. `## 2. Le produit` (ce que ça fait, différenciateur).
+4. `## 3. Public cible` (personas, marché, langue).
+5. `## 4. Proposition de valeur` (bénéfices, par priorité).
+6. `## 5. Voix éditoriale` (registre, tutoiement/vouvoiement, format, do/don't).
+7. `## 6. Vocabulaire & claims` (nom exact, URL, accroches validées, **claims
+   interdits** : pas de chiffres inventés).
+
+Mêmes règles que pour `brand.md` : ne rien inventer, marquer les trous par
+`_(à définir)_` ou `_(à confirmer)_`.
+
 ## 4. Créer l'arbo des templates
 
 Créer le dossier `src/templates/<projet>/` (il accueillera les `.tsx`).
@@ -55,8 +78,9 @@ Créer le dossier `src/templates/<projet>/` (il accueillera les `.tsx`).
 Récapituler ce qui a été créé et ce qui reste `_(à définir)_` dans la charte.
 Pointer la suite : `/new-template <projet> <nom>` pour le premier visuel.
 
-**Critère de succès** : `assets/<projet>/brand.md` existe, suit la structure de
-référence, et ne contient aucune couleur/typo inventée.
+**Critère de succès** : `assets/<projet>/brand.md` **et**
+`assets/<projet>/project.md` existent, suivent la structure de référence, et ne
+contiennent ni couleur/typo ni claim inventés (trous marqués `_(à définir)_`).
 
 ## Police manquante (procédure)
 

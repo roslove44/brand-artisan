@@ -40,6 +40,9 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 - **Contenu de chaque carte** : message court + rôle (hook, développement, CTA).
 - Lire `assets/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
   faire**. S'il y a déjà un `.tsx` dans le projet, le lire comme référence.
+- Lire `assets/<projet>/project.md` s'il existe : caler le **ton** et les
+  **claims** des cartes (ne pas inventer de chiffres ni de promesses). Absent ->
+  demander le ton et le message plutôt que de deviner.
 
 ## 2. Contraintes LinkedIn (à respecter)
 

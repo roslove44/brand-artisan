@@ -36,6 +36,9 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
   Vérifier que le `.tsx` cible n'existe pas.
 - Lire `assets/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
   faire**.
+- Lire `assets/<projet>/project.md` s'il existe : caler le **ton** et les
+  **claims** (ne pas inventer de chiffres ni de promesses). Absent -> demander
+  le ton et le message plutôt que de deviner.
 - Demander le **message** : titre court + accroche (1 phrase). Pas de paragraphe.
 - S'il y a déjà un `.tsx` dans le projet, le lire comme référence de style.
 

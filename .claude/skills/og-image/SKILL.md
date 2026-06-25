@@ -31,6 +31,9 @@ commencer. Ne pas débuter tant que ce n'est pas le cas :
   Vérifier que `src/templates/<projet>/<nom>.tsx` n'existe pas.
 - Lire `assets/<projet>/brand.md` : palette (hex), typo, variante de logo à
   utiliser selon le fond, et les **à ne pas faire**.
+- Lire `assets/<projet>/project.md` s'il existe : caler le **ton** et les
+  **claims** (ne pas inventer de chiffres ni de promesses). Absent -> demander
+  le ton et le message plutôt que de deviner.
 - Demander le **message** : titre court + tagline (1 phrase). Pas de paragraphe.
 
 ## 2. Contraintes OG (à respecter dans le template)

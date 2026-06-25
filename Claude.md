@@ -22,11 +22,16 @@ Guide Claude Code pour **OgArtisan** — mon outil perso de construction d'image
 
 ## Charte par projet
 
-Chaque projet de visuels vit dans `src/templates/<projet>/`, et sa charte graphique est décrite dans `assets/<projet>/brand.md` (palette, logotype, typographie, do/don't).
+Chaque projet de visuels vit dans `src/templates/<projet>/` et s'appuie sur deux références, dans `assets/<projet>/` :
 
-**Avant de créer ou modifier un visuel d'un projet, lire son `assets/<projet>/brand.md`.** C'est la référence de base : s'aligner sur la palette et la typographie, ne pas inventer de couleurs ni recomposer le logo à la main. Exemple actuel : `assets/comptaopen/brand.md` pour le projet `comptaopen`.
+- **`brand.md` — identité visuelle (« à quoi ça ressemble »)** : palette, logotype, typographie, do/don't.
+- **`project.md` — substance et voix (« qu'est-ce que ça dit, pour qui, sur quel ton »)** : pitch, produit, public cible, proposition de valeur, voix éditoriale, vocabulaire et claims autorisés.
 
-**S'il n'existe pas, ne pas poursuivre : demander qu'il soit mis en place d'abord.** Pas de visuel produit sans charte de référence.
+**`brand.md` est bloquant.** Avant de créer ou modifier un visuel, lire son `assets/<projet>/brand.md` : s'aligner sur la palette et la typographie, ne pas inventer de couleurs ni recomposer le logo à la main. **S'il n'existe pas, ne pas poursuivre : demander qu'il soit mis en place d'abord.** Pas de visuel sans charte de référence.
+
+**`project.md` est lu s'il existe.** Avant de rédiger du texte sur un visuel (titre, accroche, message), lire `assets/<projet>/project.md` pour caler le ton et ne pas inventer de chiffres ni de promesses. **S'il manque, demander le ton et les claims plutôt que de deviner** — ne pas fabriquer de copy au jugé.
+
+Exemple actuel : `assets/comptaopen/brand.md` et `assets/comptaopen/project.md` pour le projet `comptaopen`.
 
 ## Skills
 
