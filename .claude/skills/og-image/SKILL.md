@@ -1,12 +1,12 @@
 ---
 name: og-image
-description: Crée une image Open Graph (aperçu de partage réseaux sociaux) optimisée pour OgArtisan. À utiliser quand l'utilisateur veut une "og image", une "image de partage", un aperçu "Open Graph / Twitter / LinkedIn / Discord" pour un projet. Produit un template .tsx en 1200x630 aligné sur la charte, rendu en PNG léger via le moteur Satori du projet. Nécessite un projet avec sa brand.md en place.
+description: Crée une image Open Graph (aperçu de partage réseaux sociaux) optimisée pour BrandArtisan. À utiliser quand l'utilisateur veut une "og image", une "image de partage", un aperçu "Open Graph / Twitter / LinkedIn / Discord" pour un projet. Produit un template .tsx en 1200x630 aligné sur la charte, rendu en PNG léger via le moteur Satori du projet. Nécessite un projet avec sa brand.md en place.
 ---
 
 # og-image — image Open Graph optimisée
 
 Objectif : produire l'**asset PNG** d'une image de partage (1200×630), via le
-pipeline du projet (Satori -> resvg), aligné sur la charte. OgArtisan ne génère
+pipeline du projet (Satori -> resvg), aligné sur la charte. BrandArtisan ne génère
 **que l'image** ; les balises `og:`/`twitter:` vivent sur le site qui l'héberge
 (voir annexe).
 

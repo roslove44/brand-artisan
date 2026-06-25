@@ -3,6 +3,23 @@ revision = 3
 requires-python = "==3.12.*"
 
 [[package]]
+name = "brand-artisan-tools"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "fonttools" },
+    { name = "pillow" },
+    { name = "skia-python" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fonttools" },
+    { name = "pillow" },
+    { name = "skia-python" },
+]
+
+[[package]]
 name = "fonttools"
 version = "4.63.0"
 source = { registry = "https://pypi.org/simple" }
@@ -36,23 +53,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/71/e2/f5d1676b1d7fb682eb5e9a1641e7ebd2414b3216c370661d1029778908b4/numpy-2.5.0-cp312-cp312-win32.whl", hash = "sha256:6206db0af545d73d068add6d992279145f158428d1da6cc49adc4b630c5d6ee5", size = 6056688, upload-time = "2026-06-21T20:56:34.657Z" },
     { url = "https://files.pythonhosted.org/packages/8f/7c/48f115d1c58a34032facebcd51fdf2d02df2c51d4a46a81dd1197bb2ea6b/numpy-2.5.0-cp312-cp312-win_amd64.whl", hash = "sha256:6f2d6873e2940c860a309d21e25b1e69af6aaffdd80aa056b04c16380db1c4f2", size = 12419237, upload-time = "2026-06-21T20:56:36.24Z" },
     { url = "https://files.pythonhosted.org/packages/86/26/2e0882f4044d1b1a1b63e875151fb2393389032022a8b7f5657a7996d3b2/numpy-2.5.0-cp312-cp312-win_arm64.whl", hash = "sha256:a55e1eb2bca2cfd17a16b213c99dfc8502d47b0d494224d2122277d0400935ca", size = 10339912, upload-time = "2026-06-21T20:56:38.733Z" },
-]
-
-[[package]]
-name = "og-artisan-tools"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "fonttools" },
-    { name = "pillow" },
-    { name = "skia-python" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "fonttools" },
-    { name = "pillow" },
-    { name = "skia-python" },
 ]
 
 [[package]]

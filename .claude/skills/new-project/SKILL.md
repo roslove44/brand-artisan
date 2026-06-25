@@ -1,6 +1,6 @@
 ---
 name: new-project
-description: Initialise un nouveau projet de visuels OgArtisan en posant sa charte de référence. À utiliser quand l'utilisateur veut créer/ajouter un nouveau projet, démarrer une nouvelle marque ou charte graphique ("nouveau projet", "ajoute le projet X", "initialise la marque Y"). Crée assets/<projet>/brand.md (obligatoire avant tout visuel) et le dossier src/templates/<projet>/.
+description: Initialise un nouveau projet de visuels BrandArtisan en posant sa charte de référence. À utiliser quand l'utilisateur veut créer/ajouter un nouveau projet, démarrer une nouvelle marque ou charte graphique ("nouveau projet", "ajoute le projet X", "initialise la marque Y"). Crée assets/<projet>/brand.md (obligatoire avant tout visuel) et le dossier src/templates/<projet>/.
 ---
 
 # new-project — bootstrap d'un projet de visuels

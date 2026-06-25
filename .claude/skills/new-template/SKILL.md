@@ -1,6 +1,6 @@
 ---
 name: new-template
-description: Scaffolde un nouveau visuel (.tsx) dans un projet OgArtisan existant, aligné sur sa charte brand.md. À utiliser quand l'utilisateur veut créer une nouvelle image/couverture/bannière/OG dans un projet ("nouveau visuel", "ajoute une couverture pour X", "crée l'OG de Y"). Lit obligatoirement assets/<projet>/brand.md et refuse si absente.
+description: Scaffolde un nouveau visuel (.tsx) dans un projet BrandArtisan existant, aligné sur sa charte brand.md. À utiliser quand l'utilisateur veut créer une nouvelle image/couverture/bannière/OG dans un projet ("nouveau visuel", "ajoute une couverture pour X", "crée l'OG de Y"). Lit obligatoirement assets/<projet>/brand.md et refuse si absente.
 ---
 
 # new-template — scaffold d'un visuel

@@ -179,7 +179,7 @@ respectée pour la couverture, et uniquement des couleurs/typo de `brand.md`.
 
 ## Annexe — poser les visuels sur la Page
 
-Hors périmètre du repo (OgArtisan ne fait que l'image). Côté Facebook :
+Hors périmètre du repo (BrandArtisan ne fait que l'image). Côté Facebook :
 - Photo de profil : Paramètres de la Page -> Photo de profil ; vérifier le rendu
   rond et le recadrage proposé.
 - Photo de couverture : ajouter la bannière ; Facebook propose de repositionner

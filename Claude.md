@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guide Claude Code pour **OgArtisan** — mon outil perso de construction d'image (NextJs og like)
+Guide Claude Code pour **BrandArtisan** — mon outil perso de construction d'image (NextJs og like)
 
 ## Principes
 

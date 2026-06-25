@@ -5,14 +5,14 @@ import { resolveTitle } from "./template";
 import { esc, capitalize, last, slug, clean } from "./utils";
 
 const PORT = 4000;
-const PROJECT_NAME = "OgArtisan";
+const PROJECT_NAME = "BrandArtisan";
 
-// Titre de page image : "Couverture sociale ComptaOpen | OgArtisan · 1500×500".
+// Titre de page image : "Couverture sociale ComptaOpen | BrandArtisan · 1500×500".
 function buildTitle(title: string, width: number, height: number, separator = "|"): string {
 	return `${title} ${separator} ${PROJECT_NAME} · ${width}×${height}`;
 }
 
-// Fil d'ariane : OgArtisan / comptaopen / cover (le dernier segment n'est pas un lien).
+// Fil d'ariane : BrandArtisan / comptaopen / cover (le dernier segment n'est pas un lien).
 function breadcrumb(relPath: string): string {
 	const segs = relPath ? relPath.split("/") : [];
 	const crumbs = [`<a href="/">${esc(PROJECT_NAME)}</a>`];

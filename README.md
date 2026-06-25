@@ -1,4 +1,4 @@
-# OgArtisan
+# BrandArtisan
 
 Atelier dédié à la **fabrication d'images à partir de code** : couvertures
 sociales, images Open Graph, bannières, visuels de partage. Tu écris une mise en
