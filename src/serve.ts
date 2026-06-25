@@ -25,43 +25,44 @@ function breadcrumb(relPath: string): string {
 }
 
 function shell(title: string, body: string): string {
-	return `<!doctype html>
-<html lang="fr">
-	<head>
-		<meta charset="utf-8" />
-		<title>${esc(title)}</title>
-		<style>
-			body {
-				margin: 0;
-				min-height: 100vh;
-				box-sizing: border-box;
-				padding: 48px;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				gap: 20px;
-				background: #0f172a;
-				color: #f8fafc;
-				font-family: system-ui, sans-serif;
-			}
-			a { color: #60a5fa; text-decoration: none; }
-			a:hover { text-decoration: underline; }
-			nav { font-size: 13px; color: #cbd5e1; }
-			h1 { margin: 0; font-size: 22px; font-weight: 700; }
-			ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 280px; }
-			li { background: #1e293b; border-radius: 8px; }
-			li a { display: flex; justify-content: space-between; padding: 12px 16px; }
-			.kind { color: #64748b; font-size: 12px; }
-			img { max-width: 92vw; height: auto; border-radius: 8px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
-			figcaption { color: #cbd5e1; font-size: 14px; }
-		</style>
-	</head>
-	<body>
-${body}
-	</body>
-</html>
-`;
+	return `
+		<!doctype html>
+		<html lang="fr">
+			<head>
+				<meta charset="utf-8" />
+				<title>${esc(title)}</title>
+				<style>
+					body {
+						margin: 0;
+						min-height: 100vh;
+						box-sizing: border-box;
+						padding: 48px;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						justify-content: center;
+						gap: 20px;
+						background: #0f172a;
+						color: #f8fafc;
+						font-family: system-ui, sans-serif;
+					}
+					a { color: #60a5fa; text-decoration: none; }
+					a:hover { text-decoration: underline; }
+					nav { font-size: 13px; color: #cbd5e1; }
+					h1 { margin: 0; font-size: 22px; font-weight: 700; }
+					ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 280px; }
+					li { background: #1e293b; border-radius: 8px; }
+					li a { display: flex; justify-content: space-between; padding: 12px 16px; }
+					.kind { color: #64748b; font-size: 12px; }
+					img { max-width: 92vw; height: auto; border-radius: 8px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+					figcaption { color: #cbd5e1; font-size: 14px; }
+				</style>
+			</head>
+			<body>
+				${body}
+			</body>
+		</html>
+	`;
 }
 
 // Page de listing : sous-projets puis images, en liens.
