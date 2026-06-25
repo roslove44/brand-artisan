@@ -26,6 +26,10 @@ Chaque projet de visuels vit dans `src/templates/<projet>/`, et sa charte graphi
 
 **S'il n'existe pas, ne pas poursuivre : demander qu'il soit mis en place d'abord.** Pas de visuel produit sans charte de référence.
 
+## Skills
+
+Les skills (`.claude/skills/`) décrivent *comment faire*, pas le code. Ils encodent des conventions du moteur (contrat `Template`, `asset()`, fonts chargées dans `render.ts`, structure de `brand.md`). **Faire évoluer le moteur → mettre les skills à jour en miroir** dans le même changement.
+
 ## Commands
 
 Te référer à package.json
