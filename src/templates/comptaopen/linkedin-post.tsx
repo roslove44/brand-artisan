@@ -62,9 +62,9 @@ function render(): ReactNode {
 			{/* Bloc central : titre + accroche */}
 			<div style={{ display: "flex", flexDirection: "column" }}>
 				<div style={{ display: "flex", flexDirection: "column", fontFamily: "Sora", fontWeight: 700, fontSize: 112, letterSpacing: -4, lineHeight: 1.04, color: PAPER }}>
-					<span style={{ display: "flex" }}>Pilotez votre</span>
-					<span style={{ display: "flex", color: BLUE_LIGHT }}>fiscalité.</span>
-					<span style={{ display: "flex" }}>Ne la subissez plus.</span>
+					<span style={{ display: "flex" }}>Votre expertise</span>
+					<span style={{ display: "flex", color: BLUE_LIGHT }}>mérite</span>
+					<span style={{ display: "flex" }}>d'être vue.</span>
 				</div>
 				<div
 					style={{
@@ -78,7 +78,7 @@ function render(): ReactNode {
 						maxWidth: 820,
 					}}
 				>
-					Factures, déclarations et échéances réunies dans un seul hub.
+					Publiez vos analyses et bâtissez votre notoriété sur ComptaOpen.
 				</div>
 			</div>
 

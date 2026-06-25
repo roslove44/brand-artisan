@@ -63,8 +63,8 @@ function render(): ReactNode {
 			{/* Bloc central : titre + accroche */}
 			<div style={{ display: "flex", flexDirection: "column" }}>
 				<div style={{ display: "flex", flexDirection: "column", fontFamily: "Sora", fontWeight: 700, fontSize: 150, letterSpacing: -5, lineHeight: 1.02, color: PAPER }}>
-					<span style={{ display: "flex" }}>Votre comptabilité,</span>
-					<span style={{ display: "flex", color: BLUE_LIGHT }}>enfin simple</span>
+					<span style={{ display: "flex" }}>La compta béninoise,</span>
+					<span style={{ display: "flex", color: BLUE_LIGHT }}>enfin claire</span>
 				</div>
 				<div
 					style={{
@@ -78,7 +78,7 @@ function render(): ReactNode {
 						maxWidth: 1040,
 					}}
 				>
-					Déclarations, factures et suivi fiscal, au même endroit.
+					Articles, outils gratuits et entraide, au même endroit.
 				</div>
 			</div>
 

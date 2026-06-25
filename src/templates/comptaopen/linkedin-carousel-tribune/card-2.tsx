@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import type { Template } from "../../../template";
-import { SIZE, frame, headerRow, wordmarkText, indexText, titleStyle, markSrc, PAPER, BLUE_LIGHT } from "./theme";
+import { SIZE, frame, headerRow, wordmarkText, indexText, titleStyle, subStyle, markSrc, PAPER, BLUE_LIGHT } from "./theme";
 
-// Carte 1 — hook. Seule visible avant le swipe : un seul message, ton pro.
+// Carte 2 — probleme. Le cout cache de la dispersion.
 function render(): ReactNode {
 	return (
 		<div style={frame}>
@@ -14,17 +14,21 @@ function render(): ReactNode {
 						<span style={{ color: BLUE_LIGHT }}>Open</span>
 					</div>
 				</div>
-				<div style={indexText}>01 / 04</div>
+				<div style={indexText}>02 / 04</div>
 			</div>
 
-			<div style={titleStyle}>
-				<span style={{ display: "flex" }}>Votre temps</span>
-				<span style={{ display: "flex" }}>part dans la</span>
-				<span style={{ display: "flex", color: BLUE_LIGHT }}>paperasse ?</span>
+			<div style={{ display: "flex", flexDirection: "column" }}>
+				<div style={titleStyle}>
+					<span style={{ display: "flex" }}>Le savoir fiscal</span>
+					<span style={{ display: "flex" }}>est éparpillé.</span>
+				</div>
+				<div style={subStyle}>
+					Une information fiable, locale et à jour reste difficile à trouver, et votre voix se perd dans la masse.
+				</div>
 			</div>
 
 			<div style={{ display: "flex", width: "100%", height: 8, borderRadius: 999, backgroundColor: "rgba(248,250,252,0.16)" }}>
-				<div style={{ display: "flex", width: "25%", borderRadius: 999, backgroundColor: BLUE_LIGHT }} />
+				<div style={{ display: "flex", width: "50%", borderRadius: 999, backgroundColor: BLUE_LIGHT }} />
 			</div>
 		</div>
 	);

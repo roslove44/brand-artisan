@@ -86,7 +86,7 @@ function render(): ReactNode {
 						maxWidth: 880,
 					}}
 				>
-					Le hub comptable et fiscal, au juste prix.
+					Gratuit pour tous, avancé pour les pros.
 				</div>
 			</div>
 		</div>

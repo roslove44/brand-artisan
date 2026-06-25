@@ -19,11 +19,11 @@ function render(): ReactNode {
 
 			<div style={{ display: "flex", flexDirection: "column" }}>
 				<div style={titleStyle}>
-					<span style={{ display: "flex" }}>Un seul hub,</span>
-					<span style={{ display: "flex", color: BLUE_LIGHT }}>tout au clair.</span>
+					<span style={{ display: "flex" }}>Prenez la</span>
+					<span style={{ display: "flex", color: BLUE_LIGHT }}>parole.</span>
 				</div>
 				<div style={subStyle}>
-					ComptaOpen réunit votre comptabilité et votre fiscalité au même endroit, à jour et accessibles.
+					ComptaOpen vous donne une tribune : publiez vos articles et documents, et bâtissez votre notoriété.
 				</div>
 			</div>
 

@@ -18,13 +18,13 @@ function render(): ReactNode {
 			</div>
 
 			<div style={titleStyle}>
-				<span style={{ display: "flex" }}>Reprenez</span>
-				<span style={{ display: "flex" }}>la main.</span>
+				<span style={{ display: "flex" }}>Faites-vous</span>
+				<span style={{ display: "flex" }}>connaître.</span>
 			</div>
 
 			<div style={{ display: "flex", flexDirection: "column" }}>
 				<div style={{ display: "flex", fontFamily: "Sora", fontWeight: 500, fontSize: 38, lineHeight: 1.3, color: MUTED, marginBottom: 26, maxWidth: 780 }}>
-					Le hub comptable et fiscal des pros, disponible sur
+					Rejoignez la communauté comptable béninoise sur
 				</div>
 				<div style={{ display: "flex", marginBottom: 40 }}>
 					<div
