@@ -37,8 +37,9 @@ Toutes les commandes se lancent **depuis la racine du repo**.
 ```bash
 uv sync                                                # une seule fois : env + deps
 
-uv run python src/tools/comptaopen/build_logo.py       # -> out/comptaopen/withtool/logo/    (logotype + variantes + PNG)
-uv run python src/tools/comptaopen/build_favicon.py    # -> out/comptaopen/withtool/favicon/ (favicon, apple-icon, .ico, oauth-120-*)
+uv run python src/tools/comptaopen/build_logo.py       # -> out/comptaopen/withtool/logo/        (logotype + variantes + PNG)
+uv run python src/tools/comptaopen/build_favicon.py    # -> out/comptaopen/withtool/favicon/     (icon*.svg, favicon, apple-icon, .ico)
+uv run python src/tools/comptaopen/build_oauth.py      # -> out/comptaopen/withtool/favicon/oauth/ (icones 120px Google OAuth ; apres build_favicon)
 ```
 
 `uv run` utilise le venv géré automatiquement (pas besoin de l'activer).

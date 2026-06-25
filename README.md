@@ -82,6 +82,7 @@ uv sync                                                # une seule fois : env + 
 
 uv run python src/tools/comptaopen/build_logo.py       # -> out/comptaopen/withtool/logo/
 uv run python src/tools/comptaopen/build_favicon.py    # -> out/comptaopen/withtool/favicon/
+uv run python src/tools/comptaopen/build_oauth.py      # -> out/comptaopen/withtool/favicon/oauth/ (120px Google OAuth)
 ```
 
 La sortie va dans `out/<projet>/withtool/` (éphémère) ; promouvoir les fichiers

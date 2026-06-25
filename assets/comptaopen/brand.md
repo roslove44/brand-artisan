@@ -83,9 +83,6 @@ deviendrait illisible à 16 px ; le bracket-O reste reconnaissable.
 | `icon-16/32/48/64/180/192/512.png` | Rasters par taille |
 | `apple-icon.png` | 180 px, carré (Apple arrondit lui-même) |
 | `favicon.ico` | Multi-résolution 16 / 32 / 48 |
-| `oauth-120-mark.png` | 120 px — bracket-O bleu sur transparent (écrans de consentement OAuth) |
-| `oauth-120-mark-white.png` | 120 px — bracket-O bleu sur fond blanc opaque |
-| `oauth-120-tile.png` | 120 px — bracket-O blanc sur tuile bleue arrondie |
 
 **Fichiers de production** : `favicon.ico`, `apple-icon.png`, `icon.svg`
 (présents dans `favicon/`).
@@ -124,15 +121,19 @@ hauteur du bracket-O**. Rien (texte, bord, autre logo) n'entre dans cette zone.
 
 ## 4. Régénération
 
-Les fichiers de `logo/` et `favicon/` sont générés par deux scripts Python de la
+Les fichiers de `logo/` et `favicon/` sont générés par les scripts Python de la
 toolchain `src/tools/comptaopen/`, qui s'appuient sur le socle partagé
 `src/tools/brandkit/`. Environnement géré par **uv** (voir `src/tools/README.md`).
 
 ```bash
 uv sync                                          # une fois : env Python + deps
 uv run python src/tools/comptaopen/build_logo.py     # -> out/comptaopen/withtool/logo/
-uv run python src/tools/comptaopen/build_favicon.py  # -> out/comptaopen/withtool/favicon/
+uv run python src/tools/comptaopen/build_favicon.py  # -> out/comptaopen/withtool/favicon/ (icon*.svg + rasters)
+uv run python src/tools/comptaopen/build_oauth.py    # -> out/comptaopen/withtool/favicon/oauth/ (icones 120px Google OAuth)
 ```
+
+`build_oauth.py` rend chaque `icon*.svg` en PNG 120 px (taille recommandée par
+Google) ; le lancer **après** `build_favicon.py`.
 
 La sortie va dans `out/comptaopen/withtool/` (artefacts éphémères, non commités).
 Après revue, **promouvoir** les fichiers validés vers `logo/` et `favicon/` ici.
