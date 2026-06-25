@@ -68,7 +68,7 @@ export function cover({ markSrc }: { markSrc: string }): ReactNode {
 			<div style={{ ...cornerBase, bottom: 36, right: 36, borderBottom: cornerStroke, borderRight: cornerStroke }} />
 
 			{/* Contenu centre */}
-			<div style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 10 }}>
+			<div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
 				<div
 					style={{
 						display: "flex",
