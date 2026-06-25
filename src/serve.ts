@@ -1,16 +1,10 @@
 import { createServer } from "node:http";
 import { toPng } from "./render";
 import { resolve, list, load } from "./discover";
+import { esc, capitalize, last } from "./utils";
 
 const PORT = 4000;
 const PROJECT_NAME = "OgArtisan";
-
-const esc = (s: string) =>
-	s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
-
-const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-
-const last = (relPath: string) => relPath.split("/").pop() ?? "";
 
 // Titre de page image : "Cover | OgArtisan · 1500×500".
 function buildTitle(name: string, width: number, height: number, separator = "|"): string {

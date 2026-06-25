@@ -1,5 +1,6 @@
 import { readdir, stat } from "node:fs/promises";
 import type { Template } from "./template";
+import { clean } from "./utils";
 
 // Auto-decouverte par le filesystem : un dossier = un projet/groupe, un .tsx = une image.
 // Pas de registre a maintenir : on depose un fichier, il apparait.
@@ -13,8 +14,6 @@ async function exists(url: URL): Promise<boolean> {
 		return false;
 	}
 }
-
-const clean = (relPath: string) => relPath.replace(/^\/+|\/+$/g, "");
 
 // "dir" si relPath est un dossier (projet), "image" si <relPath>.tsx existe, sinon null.
 export async function resolve(relPath: string): Promise<"dir" | "image" | null> {

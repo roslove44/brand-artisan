@@ -75,6 +75,7 @@ Modifie un template, sauvegarde, rafraîchis le navigateur : l'image est re-rend
 | `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. |
 | `src/discover.ts` | Auto-découverte : scanne `templates/` (dossier = projet, `.tsx` = image), résout une URL en noeud, charge un template. |
 | `src/template.ts` | Le type `Template` : ce que chaque `.tsx` exporte par défaut (`{ size, alt, render }`). |
+| `src/utils.ts` | Helpers purs partagés (échappement HTML, capitalize, manipulation de chemin). |
 | `src/serve.ts` | Serveur de dev HTTP : routing récursif sur l'arbre, pages de listing + preview (`npm run dev`). |
 | `src/templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, alt, render }` par défaut et charge ses propres assets. |
 | `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/` en reflétant le chemin (`npm run build`). |
