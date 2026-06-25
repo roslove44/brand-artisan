@@ -48,9 +48,14 @@ npm run typecheck  # vérification TypeScript (tsc)
 template à la volée, exactement comme une route Next :
 
 ```
-http://localhost:4000/cover              → taille par défaut du template
+http://localhost:4000/cover              → page de preview (titre parlant + alt)
+http://localhost:4000/cover?raw          → PNG brut (utilisable comme src)
 http://localhost:4000/cover?w=1245&h=527 → override de la taille en query
 ```
+
+La page de preview est le miroir d'une page qui consomme une og:image : `<title>`
+parlant et `<img alt="...">` (l'`alt` vient du registre, comme l'`og:image:alt`
+de next/og). Le PNG lui-même n'a pas d'alt, c'est une métadonnée de page.
 
 Modifie un template, sauvegarde (le serveur redémarre tout seul grâce au watch),
 rafraîchis le navigateur : l'image est re-rendue.
@@ -58,13 +63,13 @@ rafraîchis le navigateur : l'image est re-rendue.
 ### Mode build (export)
 
 `npm run build` parcourt tous les templates du registre et écrit les PNG finaux
-(suréchantillonnés x2) dans `out/`, prêts à uploader.
+(à la taille exacte du template) dans `out/`, prêts à uploader.
 
 ## Structure
 
 | Chemin | Rôle |
 |---|---|
-| `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Suréchantillonne x2 par défaut. |
+| `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. |
 | `src/serve.ts` | Serveur de dev HTTP : mappe `/<template>` au rendu à la volée (`npm run dev`). |
 | `src/templates/` | Un fichier par image. Chaque template exporte une fonction `(props) => ReactNode` et sa taille (`COVER_SIZE`, etc.). |
 | `src/templates/index.ts` | Registre des visuels (nom -> template + taille). Sert le serveur et l'export. |
@@ -80,8 +85,8 @@ rafraîchis le navigateur : l'image est re-rendue.
 2. L'enregistrer dans `src/templates/index.ts` :
    ```ts
    export const templates: Record<string, Template> = {
-     cover: { ...COVER_SIZE, node: () => cover({ markSrc }) },
-     "mon-visuel": { ...MON_VISUEL_SIZE, node: () => monVisuel(props) },
+     cover: { ...COVER_SIZE, alt: "...", node: () => cover({ markSrc }) },
+     "mon-visuel": { ...MON_VISUEL_SIZE, alt: "...", node: () => monVisuel(props) },
    };
    ```
 3. C'est tout : `http://localhost:4000/mon-visuel` en dev, et `npm run build`
@@ -112,12 +117,12 @@ Les plateformes recadrent différemment : garder le contenu important dans une
 
 ## Templates existants
 
-### `cover` — ComptaOpen
+### `cover` (ComptaOpen)
 
 Premier visuel de l'atelier : la couverture sociale de ComptaOpen (1500 x 500).
 Pour le projet ComptaOpen, la charte de marque (couleurs, logotype, police Sora,
 règles d'usage) fait référence à
-[`assets/comptaopen/brand.md`](assets/comptaopen/brand.md) — appliquée directement
+[`assets/comptaopen/brand.md`](assets/comptaopen/brand.md), appliquée directement
 dans `src/templates/cover.tsx`. Repère rapide :
 
 | Rôle | Hex | Usage |
