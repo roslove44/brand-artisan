@@ -12,8 +12,8 @@ const fonts = [
 
 type RenderSize = { width: number; height: number; scale?: number };
 
-// JSX -> SVG (satori) -> PNG (resvg). scale = surechantillonnage (2 = retina).
-export async function toPng(node: ReactNode, { width, height, scale = 2 }: RenderSize): Promise<Buffer> {
+// JSX -> SVG (satori) -> PNG (resvg). scale = surechantillonnage (1 = taille exacte, 2 = retina).
+export async function toPng(node: ReactNode, { width, height, scale = 1 }: RenderSize): Promise<Buffer> {
 	const svg = await satori(node, { width, height, fonts });
 	return new Resvg(svg, { fitTo: { mode: "width", value: Math.round(width * scale) } }).render().asPng();
 }
