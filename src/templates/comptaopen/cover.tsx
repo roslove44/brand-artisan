@@ -1,6 +1,8 @@
 import type { CSSProperties, ReactNode } from "react";
+import { readFile } from "node:fs/promises";
+import type { Template } from "../../template";
 
-export const COVER_SIZE = { width: 1500, height: 500 };
+const SIZE = { width: 1500, height: 500 };
 
 // Palette charte ComptaOpen.
 const INK = "#0f172a"; // slate-900
@@ -31,8 +33,12 @@ function gridLines(width: number, height: number): CSSProperties[] {
 const cornerBase: CSSProperties = { position: "absolute", width: 28, height: 28 };
 const cornerStroke = "1.5px solid rgba(248,250,252,0.28)";
 
-export function cover({ markSrc }: { markSrc: string }): ReactNode {
-	const { width, height } = COVER_SIZE;
+// Le bracket-O est passe en data-URI (chemin eprouve : c'est ce que fait next/og).
+const markSvg = await readFile("assets/comptaopen/favicon/icon.svg");
+const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
+
+function render(): ReactNode {
+	const { width, height } = SIZE;
 	return (
 		<div
 			style={{
@@ -108,3 +114,5 @@ export function cover({ markSrc }: { markSrc: string }): ReactNode {
 		</div>
 	);
 }
+
+export default { size: SIZE, alt: "Couverture sociale ComptaOpen", render } satisfies Template;

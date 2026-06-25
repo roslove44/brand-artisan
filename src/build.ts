@@ -1,8 +1,19 @@
 import { renderToFile } from "./render";
-import { templates } from "./templates";
+import { list, load } from "./discover";
 
-// Export fichier : rend tous les templates du registre dans out/.
-for (const [name, tpl] of Object.entries(templates)) {
-	const file = await renderToFile(tpl.node(), { width: tpl.width, height: tpl.height, out: name });
-	console.log(`✓ ${file}`);
+// Export fichier : parcourt l'arborescence de templates/ et ecrit chaque PNG dans
+// out/, en reflétant le chemin (out/comptaopen/cover.png).
+async function walk(relPath: string): Promise<void> {
+	const { projects, images } = await list(relPath);
+	for (const img of images) {
+		const path = [relPath, img].filter(Boolean).join("/");
+		const tpl = await load(path);
+		const file = await renderToFile(tpl.render(), { ...tpl.size, out: path });
+		console.log(`✓ ${file}`);
+	}
+	for (const proj of projects) {
+		await walk([relPath, proj].filter(Boolean).join("/"));
+	}
 }
+
+await walk("");

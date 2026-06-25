@@ -37,60 +37,70 @@ Si une version refuse de s'installer, repinner les libs de rendu au dernier
 ## Usage
 
 ```bash
-npm run dev        # serveur de rendu HTTP (URLs à la volée, comme Next)
-npm run build      # export fichier : rend tous les templates dans out/*.png
+npm run dev        # serveur de rendu HTTP (arborescence navigable, comme Next)
+npm run build      # export fichier : rend toute l'arborescence dans out/
 npm run typecheck  # vérification TypeScript (tsc)
 ```
 
 ### Mode dev (URLs, comme Next)
 
-`npm run dev` lance un serveur sur `http://localhost:4000` qui rend chaque
-template à la volée, exactement comme une route Next :
+`npm run dev` lance un serveur sur `http://localhost:4000`. L'arborescence de
+`src/templates/` est navigable, comme des routes Next imbriquées :
 
 ```
-http://localhost:4000/cover              → page de preview (titre parlant + alt)
-http://localhost:4000/cover?raw          → PNG brut (utilisable comme src)
-http://localhost:4000/cover?w=1245&h=527 → override de la taille en query
+http://localhost:4000/                     → liste les projets
+http://localhost:4000/comptaopen           → liste images + sous-projets
+http://localhost:4000/comptaopen/cover     → page de preview (titre + alt)
+http://localhost:4000/comptaopen/cover?raw → PNG brut (utilisable comme src)
+http://localhost:4000/comptaopen/cover?w=1245&h=527 → override de la taille
 ```
 
 La page de preview est le miroir d'une page qui consomme une og:image : `<title>`
-parlant et `<img alt="...">` (l'`alt` vient du registre, comme l'`og:image:alt`
+parlant et `<img alt="...">` (l'`alt` vient du template, comme l'`og:image:alt`
 de next/og). Le PNG lui-même n'a pas d'alt, c'est une métadonnée de page.
 
-Modifie un template, sauvegarde (le serveur redémarre tout seul grâce au watch),
-rafraîchis le navigateur : l'image est re-rendue.
+Modifie un template, sauvegarde, rafraîchis le navigateur : l'image est re-rendue
+(le serveur réimporte le template à chaque requête).
 
 ### Mode build (export)
 
-`npm run build` parcourt tous les templates du registre et écrit les PNG finaux
-(à la taille exacte du template) dans `out/`, prêts à uploader.
+`npm run build` parcourt l'arborescence de `templates/` et écrit les PNG finaux
+(à la taille exacte du template) dans `out/`, en reflétant le chemin
+(`out/comptaopen/cover.png`), prêts à uploader.
 
 ## Structure
 
 | Chemin | Rôle |
 |---|---|
 | `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. |
-| `src/serve.ts` | Serveur de dev HTTP : mappe `/<template>` au rendu à la volée (`npm run dev`). |
-| `src/templates/` | Un fichier par image. Chaque template exporte une fonction `(props) => ReactNode` et sa taille (`COVER_SIZE`, etc.). |
-| `src/templates/index.ts` | Registre des visuels (nom -> template + taille). Sert le serveur et l'export. |
-| `src/build.ts` | Export fichier : parcourt le registre, écrit chaque PNG dans `out/` (`npm run build`). |
+| `src/discover.ts` | Auto-découverte : scanne `templates/` (dossier = projet, `.tsx` = image), résout une URL en noeud, charge un template. |
+| `src/template.ts` | Le type `Template` : ce que chaque `.tsx` exporte par défaut (`{ size, alt, render }`). |
+| `src/serve.ts` | Serveur de dev HTTP : routing récursif sur l'arbre, pages de listing + preview (`npm run dev`). |
+| `src/templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, alt, render }` par défaut et charge ses propres assets. |
+| `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/` en reflétant le chemin (`npm run build`). |
 | `assets/fonts/` | Polices fournies en dur (Satori n'accède à aucune police système). |
 | `out/` | PNG générés. Ignoré par git (rien à versionner ici). |
 
 ## Ajouter un nouveau visuel
 
-1. Créer `src/templates/mon-visuel.tsx`, qui exporte :
-   - une fonction retournant du JSX (`export function monVisuel(props): ReactNode`),
-   - sa taille (`export const MON_VISUEL_SIZE = { width, height }`).
-2. L'enregistrer dans `src/templates/index.ts` :
-   ```ts
-   export const templates: Record<string, Template> = {
-     cover: { ...COVER_SIZE, alt: "...", node: () => cover({ markSrc }) },
-     "mon-visuel": { ...MON_VISUEL_SIZE, alt: "...", node: () => monVisuel(props) },
-   };
+1. Créer le fichier sous le projet voulu, p.ex. `src/templates/comptaopen/og.tsx`
+   (un nouveau dossier sous `templates/` = un nouveau projet, et il peut contenir
+   des sous-dossiers).
+2. Exporter le template par défaut, qui charge lui-même ses assets :
+   ```tsx
+   import type { Template } from "../../template";
+
+   const SIZE = { width: 1200, height: 630 };
+
+   function render() {
+     return ( /* ton JSX */ );
+   }
+
+   export default { size: SIZE, alt: "Description du visuel", render } satisfies Template;
    ```
-3. C'est tout : `http://localhost:4000/mon-visuel` en dev, et `npm run build`
-   le sort dans `out/mon-visuel.png`. Pas besoin de toucher `serve.ts` ni `build.ts`.
+3. C'est tout : `http://localhost:4000/comptaopen/og` en dev, et `npm run build`
+   le sort dans `out/comptaopen/og.png`. Aucun registre à éditer, la découverte
+   est automatique.
 
 ## Formats de référence
 
@@ -123,7 +133,7 @@ Premier visuel de l'atelier : la couverture sociale de ComptaOpen (1500 x 500).
 Pour le projet ComptaOpen, la charte de marque (couleurs, logotype, police Sora,
 règles d'usage) fait référence à
 [`assets/comptaopen/brand.md`](assets/comptaopen/brand.md), appliquée directement
-dans `src/templates/cover.tsx`. Repère rapide :
+dans `src/templates/comptaopen/cover.tsx`. Repère rapide :
 
 | Rôle | Hex | Usage |
 |---|---|---|
