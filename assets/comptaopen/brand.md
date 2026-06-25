@@ -69,7 +69,6 @@ Le bleu est la couleur d'action de toute la plateforme ; l'orange/amber reste un
 | `logo-mono-dark.svg` | Tout en encre — fond clair, impression N&B |
 | `logo-mono-white.svg` | Tout en blanc — aplat bleu, photo, fond sombre |
 | `logo-white.png` | Raster sur fond blanc plein |
-| `oauth-120-mark*.png`, `oauth-120-tile.png` | Marque 120 px pour les écrans de consentement OAuth |
 
 ### Favicon et icônes d'app — `favicon/`
 
@@ -84,6 +83,9 @@ deviendrait illisible à 16 px ; le bracket-O reste reconnaissable.
 | `icon-16/32/48/64/180/192/512.png` | Rasters par taille |
 | `apple-icon.png` | 180 px, carré (Apple arrondit lui-même) |
 | `favicon.ico` | Multi-résolution 16 / 32 / 48 |
+| `oauth-120-mark.png` | 120 px — bracket-O bleu sur transparent (écrans de consentement OAuth) |
+| `oauth-120-mark-white.png` | 120 px — bracket-O bleu sur fond blanc opaque |
+| `oauth-120-tile.png` | 120 px — bracket-O blanc sur tuile bleue arrondie |
 
 **Fichiers de production** : `favicon.ico`, `apple-icon.png`, `icon.svg`
 (présents dans `favicon/`).
