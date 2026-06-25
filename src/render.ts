@@ -3,11 +3,12 @@ import { Resvg } from "@resvg/resvg-js";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import type { ReactNode } from "react";
+import { asset } from "./assets";
 
 // Satori n'accede a aucune police systeme : on les fournit explicitement.
 const fonts = [
-	{ name: "Sora", weight: 700 as const, style: "normal" as const, data: await readFile("assets/fonts/Sora-700.ttf") },
-	{ name: "Sora", weight: 500 as const, style: "normal" as const, data: await readFile("assets/fonts/Sora-500.ttf") },
+	{ name: "Sora", weight: 700 as const, style: "normal" as const, data: await readFile(asset("fonts/Sora-700.ttf")) },
+	{ name: "Sora", weight: 500 as const, style: "normal" as const, data: await readFile(asset("fonts/Sora-500.ttf")) },
 ];
 
 type RenderSize = { width: number; height: number; scale?: number };

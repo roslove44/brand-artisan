@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "tsx watch src/serve.ts",
     "build": "tsx src/build.ts",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "test": "node --import tsx --test test/**/*.test.ts"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",

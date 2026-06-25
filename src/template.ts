@@ -5,7 +5,7 @@ import { capitalize } from "./utils";
 // Il charge lui-meme ses assets (co-location), serve.ts/build.ts ne font que l'appeler.
 // title : libelle humain du visuel ; si absent, fallback sur le nom de fichier capitalise.
 export type Template = {
-	size: { width: number; height: number };
+	size: { width: number; height: number; scale?: number };
 	title?: string;
 	render: () => ReactNode;
 };

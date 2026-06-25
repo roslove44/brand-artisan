@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 import { toPng } from "./render";
 import { resolve, list, load } from "./discover";
 import { resolveTitle } from "./template";
-import { esc, capitalize, last, slug } from "./utils";
+import { esc, capitalize, last, slug, clean } from "./utils";
 
 const PORT = 4000;
 const PROJECT_NAME = "OgArtisan";
@@ -97,7 +97,7 @@ function previewPage(relPath: string, title: string, width: number, height: numb
 const server = createServer(async (req, res) => {
 	try {
 		const url = new URL(req.url ?? "/", `http://localhost:${PORT}`);
-		const relPath = decodeURIComponent(url.pathname).replace(/^\/+|\/+$/g, "");
+		const relPath = clean(decodeURIComponent(url.pathname));
 		const kind = await resolve(relPath);
 
 		if (kind === null) {
@@ -120,7 +120,7 @@ const server = createServer(async (req, res) => {
 
 		// ?raw -> PNG brut, nom de fichier = titre normalisé (pour "enregistrer sous").
 		if (url.searchParams.has("raw")) {
-			const png = await toPng(tpl.render(), { width, height });
+			const png = await toPng(tpl.render(), { width, height, scale: tpl.size.scale });
 			res.writeHead(200, {
 				"content-type": "image/png",
 				"content-disposition": `inline; filename="${slug(title)}.png"`,
