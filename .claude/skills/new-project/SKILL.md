@@ -51,7 +51,8 @@ Calquer la **structure** de `assets/comptaopen/brand.md` (c'est la référence) 
 
 Les fichiers logo/favicon vivent à côté, dans `assets/<projet>/logo/` et
 `assets/<projet>/favicon/`. Ne pas créer de faux assets — si l'utilisateur a des
-fichiers, lui dire où les déposer.
+fichiers, lui dire où les déposer. S'ils doivent être **générés par script**
+(comme ceux de comptaopen), c'est le rôle de la skill `brand-assets`.
 
 ## 3 bis. Écrire `assets/<projet>/project.md`
 
