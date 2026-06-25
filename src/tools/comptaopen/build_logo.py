@@ -1,15 +1,23 @@
-import os
-import skia
-from PIL import Image
-from fontTools.ttLib import TTFont
-from fontTools.varLib.instancer import instantiateVariableFont
-from fontTools.pens.svgPathPen import SVGPathPen
-from fontTools.pens.boundsPen import BoundsPen
+"""Genere le logotype ComptaOpen (toutes variantes SVG + PNG) via brandkit.
 
-HERE = os.path.dirname(__file__)
-OUT = os.path.join(HERE, "..", "logo")
-os.makedirs(OUT, exist_ok=True)
-FONT = os.path.join(HERE, "_sora.ttf")
+Sortie : out/comptaopen/withtool/logo/ (artefacts a promouvoir vers
+assets/comptaopen/logo/ apres revue). Pour ecrire directement dans les assets,
+changer OUT_BASE ci-dessous.
+"""
+
+import sys
+import pathlib
+from PIL import Image
+
+HERE = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
+from brandkit import load_instanced, glyph_path, render_svg
+
+ROOT = HERE.parents[2]  # src/tools/comptaopen -> repo root
+OUT_BASE = ROOT / "out" / "comptaopen" / "withtool"  # -> "assets" / "comptaopen" pour ecrire en place
+OUT = OUT_BASE / "logo"
+OUT.mkdir(parents=True, exist_ok=True)
+FONT = HERE / "_sora.ttf"
 
 INK = "#0f172a"; BLUE = "#1d4ed8"
 LIGHT = "#f8fafc"; LIGHT_BLUE = "#60a5fa"; WHITE = "#ffffff"
@@ -22,9 +30,7 @@ BRACKET = (
     'stroke-width="164" stroke-linecap="round"/>'
 )
 
-f = TTFont(FONT)
-instantiateVariableFont(f, {"wght": 700}, inplace=True)
-gs = f.getGlyphSet(); cmap = f.getBestCmap(); hmtx = f["hmtx"].metrics
+gs, cmap, hmtx = load_instanced(FONT, {"wght": 700})
 
 minx = 1e9; maxx = -1e9; miny = 1e9; maxy = -1e9
 def add_ink(x0, x1, y0, y1):
@@ -37,12 +43,10 @@ def place(s, role):
     global x
     for ch in s:
         name = cmap[ord(ch)]
-        pen = SVGPathPen(gs); gs[name].draw(pen)
-        bp = BoundsPen(gs); gs[name].draw(bp)
-        d = pen.getCommands()
+        d, bounds = glyph_path(gs, name)
         if d.strip():
             items.append((d, x, role))
-            gx0, gy0, gx1, gy1 = bp.bounds
+            gx0, gy0, gx1, gy1 = bounds
             add_ink(x + gx0, x + gx1, BASE - gy1, BASE - gy0)
         x += hmtx[name][0] + LS
 
@@ -71,27 +75,18 @@ variants = {
     "logo-mono-dark.svg": build(INK, INK),
 }
 for fn, svg in variants.items():
-    with open(os.path.join(OUT, fn), "w", encoding="utf-8") as fh:
-        fh.write(svg)
+    (OUT / fn).write_text(svg, encoding="utf-8")
 
 def raster(svg_name, out, white=False, height=360):
-    # render at the viewBox's NATIVE size so nothing is cropped, then downscale
-    dom = skia.SVGDOM.MakeFromStream(skia.FILEStream(os.path.join(OUT, svg_name)))
+    # rendu a la taille NATIVE du viewBox (rien n'est rogne), puis downscale LANCZOS
     nw, nh = int(round(VBW)), int(round(VBH))
-    surf = skia.Surface(nw, nh)
-    with surf as canvas:
-        if white:
-            canvas.clear(skia.ColorWHITE)
-        dom.setContainerSize(skia.Size(nw, nh))
-        dom.render(canvas)
-    tmp = os.path.join(OUT, "_native.png")
-    surf.makeImageSnapshot().save(tmp, skia.kPNG)
+    img = render_svg(OUT / svg_name, nw, nh, nw, nh, white_bg=white)
     target_w = int(round(height * (VBW / VBH)))
-    Image.open(tmp).convert("RGBA").resize((target_w, height), Image.LANCZOS).save(os.path.join(OUT, out))
-    os.remove(tmp)
+    img.resize((target_w, height), Image.LANCZOS).save(str(OUT / out))
 
 raster("logo.svg", "logo.png")
 raster("logo.svg", "logo-white.png", white=True)
-raster("logo-dark.svg", "logo-dark.png")     # transparent, light colors (place on dark)
+raster("logo-dark.svg", "logo-dark.png")     # transparent, couleurs claires (a poser sur fond sombre)
 print(f"viewBox {VBW:.0f}x{VBH:.0f}  aspect {VBW/VBH:.2f}")
-print("files:", sorted(os.listdir(OUT)))
+print("out:", OUT)
+print("files:", sorted(p.name for p in OUT.iterdir()))

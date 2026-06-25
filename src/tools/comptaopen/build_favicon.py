@@ -1,10 +1,22 @@
-import os
-import skia
+"""Genere le favicon ComptaOpen (icones + apple-icon + favicon.ico) via brandkit.
+
+Sortie : out/comptaopen/withtool/favicon/ (artefacts a promouvoir vers
+assets/comptaopen/favicon/ apres revue). Pour ecrire directement dans les
+assets, changer OUT_BASE ci-dessous.
+"""
+
+import sys
+import pathlib
 from PIL import Image
 
-HERE = os.path.dirname(__file__)
-OUT = os.path.join(HERE, "..", "favicon")
-os.makedirs(OUT, exist_ok=True)
+HERE = pathlib.Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
+from brandkit import render_svg, make_ico
+
+ROOT = HERE.parents[2]  # src/tools/comptaopen -> repo root
+OUT_BASE = ROOT / "out" / "comptaopen" / "withtool"  # -> "assets" / "comptaopen" pour ecrire en place
+OUT = OUT_BASE / "favicon"
+OUT.mkdir(parents=True, exist_ok=True)
 
 ARCS = (
     '<path d="M62.97 27.54 A25.93 25.93 0 0 1 62.97 72.46" fill="none" stroke="#fff" '
@@ -19,32 +31,23 @@ ICON_SQUARE = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" wi
                'role="img" aria-label="ComptaOpen"><rect width="100" height="100" fill="#1d4ed8"/>'
                + ARCS + '</svg>')
 
-with open(os.path.join(OUT, "icon.svg"), "w", encoding="utf-8") as f: f.write(ICON)
-with open(os.path.join(OUT, "icon-square.svg"), "w", encoding="utf-8") as f: f.write(ICON_SQUARE)
+(OUT / "icon.svg").write_text(ICON, encoding="utf-8")
+(OUT / "icon-square.svg").write_text(ICON_SQUARE, encoding="utf-8")
 
 def render(svg_name, px, out, vb=100):
-    # scale vectors to the target resolution -> crisp, centered, no crop
-    dom = skia.SVGDOM.MakeFromStream(skia.FILEStream(os.path.join(OUT, svg_name)))
-    surf = skia.Surface(px, px)
-    with surf as canvas:
-        canvas.scale(px / vb, px / vb)
-        dom.setContainerSize(skia.Size(vb, vb))
-        dom.render(canvas)
-    surf.makeImageSnapshot().save(os.path.join(OUT, out), skia.kPNG)
+    # vecteurs mis a l'echelle de la resolution cible -> net, centre, sans crop
+    render_svg(OUT / svg_name, px, px, vb, vb).save(str(OUT / out), "PNG")
 
 for n in (16, 32, 48, 64, 180, 192, 512):
     render("icon.svg", n, f"icon-{n}.png")
 render("icon-square.svg", 180, "apple-icon.png")
 
-# favicon.ico (16/32/48) from a crisp 256 render
-render("icon.svg", 256, "_ico.png")
-Image.open(os.path.join(OUT, "_ico.png")).save(
-    os.path.join(OUT, "favicon.ico"), sizes=[(16, 16), (32, 32), (48, 48)])
-os.remove(os.path.join(OUT, "_ico.png"))
+make_ico(OUT / "icon.svg", OUT / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
 
-# validation on the 32px favicon
-im = Image.open(os.path.join(OUT, "icon-32.png")).convert("RGBA")
+# validation sur le favicon 32px
+im = Image.open(OUT / "icon-32.png").convert("RGBA")
 print("corner(1,1)   :", im.getpixel((1, 1)), "(transparent)")
 print("left arc(6,16):", im.getpixel((6, 16)), "(blanc)")
 print("center(16,16) :", im.getpixel((16, 16)), "(bleu, gap)")
 print("right arc(26,16):", im.getpixel((26, 16)), "(blanc)")
+print("out:", OUT)

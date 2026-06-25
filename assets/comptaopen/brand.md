@@ -122,15 +122,18 @@ hauteur du bracket-O**. Rien (texte, bord, autre logo) n'entre dans cette zone.
 
 ## 4. Régénération
 
-Les fichiers de `logo/` et `favicon/` sont générés par deux scripts Python,
-dans `tools/`.
-
-**Dépendances :** `skia-python`, `Pillow`, `fontTools`.
+Les fichiers de `logo/` et `favicon/` sont générés par deux scripts Python de la
+toolchain `src/tools/comptaopen/`, qui s'appuient sur le socle partagé
+`src/tools/brandkit/`. Environnement géré par **uv** (voir `src/tools/README.md`).
 
 ```bash
-python tools/build_logo.py      # -> logo/    (logotype, toutes variantes + PNG)
-python tools/build_favicon.py   # -> favicon/ (icônes, apple-icon, favicon.ico)
+uv sync                                          # une fois : env Python + deps
+uv run python src/tools/comptaopen/build_logo.py     # -> out/comptaopen/withtool/logo/
+uv run python src/tools/comptaopen/build_favicon.py  # -> out/comptaopen/withtool/favicon/
 ```
+
+La sortie va dans `out/comptaopen/withtool/` (artefacts éphémères, non commités).
+Après revue, **promouvoir** les fichiers validés vers `logo/` et `favicon/` ici.
 
 `build_logo.py` lit la police variable `_sora.ttf` (instanciée à `wght=700`) et
 dérive le logotype ; la géométrie du bracket-O est codée en dur dans les deux

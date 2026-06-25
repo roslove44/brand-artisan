@@ -2,6 +2,7 @@ node_modules/
 out/
 *.log
 __pycache__/
+.venv/
 
 # AI agent
 .claude/settings.local.json

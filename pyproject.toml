@@ -1,0 +1,15 @@
+[project]
+name = "og-artisan-tools"
+version = "0.1.0"
+description = "Toolchain Python d'OgArtisan : generation des assets de marque (logo, favicon) par projet."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "skia-python",
+    "pillow",
+    "fonttools",
+]
+
+# App, pas une librairie a builder : uv gere juste le venv et les deps.
+# brandkit/ est importe via sys.path (voir les scripts), pas installe.
+[tool.uv]
+package = false
