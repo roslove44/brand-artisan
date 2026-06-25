@@ -1,80 +1,80 @@
 ---
 name: facebook-post
-description: Cree une image de publication Facebook (post image / affiche / visuel publicitaire simple sur le fil) aux dimensions Meta, dans l'orientation choisie. A utiliser quand l'utilisateur veut une "image Facebook", un "post Facebook", une "affiche", un "visuel publicitaire" ou une "publication" pour un projet. Demande l'orientation (portrait par defaut, carre, paysage) et produit un template .tsx au bon ratio, aligne sur la charte, rendu en PNG via le moteur du projet. Necessite un projet avec sa brand.md en place.
+description: Crée une image de publication Facebook (post image / affiche / visuel publicitaire simple sur le fil) aux dimensions Meta, dans l'orientation choisie. À utiliser quand l'utilisateur veut une "image Facebook", un "post Facebook", une "affiche", un "visuel publicitaire" ou une "publication" pour un projet. Demande l'orientation (portrait par défaut, carré, paysage) et produit un template .tsx au bon ratio, aligné sur la charte, rendu en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
 ---
 
 # facebook-post — image de publication Facebook
 
 Objectif : produire l'**asset PNG** d'une image de post Facebook (publication
 sur le fil, affiche, visuel publicitaire simple), au **ratio Meta** choisi,
-aligne sur la charte.
+aligné sur la charte.
 
-C'est une specialisation de `new-template` avec les contraintes Facebook en dur.
-Memes conventions : contrat `Template` (`src/template.ts`), assets via
-`asset()`, police Sora chargee dans `render.ts`, `export default ... satisfies
+C'est une spécialisation de `new-template` avec les contraintes Facebook en dur.
+Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
+`asset()`, police Sora chargée dans `render.ts`, `export default ... satisfies
 Template`.
 
 > **Statut des dimensions.** Meta ne publie **aucune** spec de dimensions pour
 > les *posts organiques* : les chiffres ci-dessous viennent des specs du
-> **Gestionnaire de publicites** (Ads Guide + pages de placement). Le moteur de
-> rendu du fil etant le meme, c'est la meilleure reference. Les **ratios** sont
+> **Gestionnaire de publicités** (Ads Guide + pages de placement). Le moteur de
+> rendu du fil étant le même, c'est la meilleure référence. Les **ratios** sont
 > officiels Meta ; pour le **paysage**, les px sont une convention (Meta ne
-> documente pas de resolution pour ce ratio).
+> documente pas de résolution pour ce ratio).
 
-## 0. Prerequis — bloquant
+## 0. Prérequis — bloquant
 
-La chaine **projet -> dossier de templates -> charte** doit exister :
+La chaîne **projet -> dossier de templates -> charte** doit exister :
 
-- Resoudre `<projet>` (arguments, sinon demander).
-- Verifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
+- Résoudre `<projet>` (arguments, sinon demander).
+- Vérifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
 - Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
-  d'abord. Aucun visuel sans charte (regle CLAUDE.md).
+  d'abord. Aucun visuel sans charte (règle CLAUDE.md).
 
 ## 1. Cadrer
 
-- **Orientation ?** Demander. **Defaut : portrait** (4:5, le plus performant sur
-  le fil). Sinon carre (1:1) ou paysage (1.91:1).
-- Slug par defaut `facebook-post` (ou `facebook-post-<orientation>` si plusieurs
-  variantes). Verifier que le `.tsx` cible n'existe pas.
+- **Orientation ?** Demander. **Défaut : portrait** (4:5, le plus performant sur
+  le fil). Sinon carré (1:1) ou paysage (1.91:1).
+- Slug par défaut `facebook-post` (ou `facebook-post-<orientation>` si plusieurs
+  variantes). Vérifier que le `.tsx` cible n'existe pas.
 - Lire `assets/<projet>/brand.md` : palette (hex), typo, variantes de logo selon
-  le fond, et les **a ne pas faire**.
+  le fond, et les **à ne pas faire**.
 - Demander le **message** : titre court + accroche (1 phrase). Pas de paragraphe.
-- S'il y a deja un `.tsx` dans le projet, le lire comme reference de style.
+- S'il y a déjà un `.tsx` dans le projet, le lire comme référence de style.
 
-## 2. Contraintes Facebook (a respecter dans le template)
+## 2. Contraintes Facebook (à respecter dans le template)
 
 ### Dimensions par orientation
 
 | Orientation | Taille (px) | Ratio | Statut |
 |---|---|---|---|
-| **Portrait** (defaut) | **1440x1800** | 4:5 | Resolution cible Meta (min 1080x1350) |
-| **Carre** | **1080x1080** | 1:1 | Minimum officiel Meta |
+| **Portrait** (défaut) | **1440x1800** | 4:5 | Résolution cible Meta (min 1080x1350) |
+| **Carré** | **1080x1080** | 1:1 | Minimum officiel Meta |
 | **Paysage** | **1080x566** | 1.91:1 | Ratio officiel ; px de convention (alt 1200x628) |
 
 - **Ne pas utiliser le 16:9** en paysage : il n'est **pas** pris en charge sur le
-  Fil Facebook. Le paysage supporte est **1.91:1**.
+  Fil Facebook. Le paysage supporté est **1.91:1**.
 - Largeur minimale officielle : **600 px**. Ne pas descendre en dessous.
 - `scale: 2` possible pour un rendu plus net ; inutile aux tailles ci-dessus.
 
 ### Mise en page
 
 - **Fond opaque**, jamais de transparence.
-- **Zone de securite** ~80 px de marge : garder logo et texte vers le centre, le
-  fil peut rogner legerement et arrondir les coins selon le contexte.
-- **Lisible en petit** : le fil s'affiche souvent etroit sur mobile. Titre gros,
+- **Zone de sécurité** ~80 px de marge : garder logo et texte vers le centre, le
+  fil peut rogner légèrement et arrondir les coins selon le contexte.
+- **Lisible en petit** : le fil s'affiche souvent étroit sur mobile. Titre gros,
   accroche courte, fort contraste.
-- L'ancienne **regle des 20 % de texte** de Meta est **abandonnee** : pas de
-  limite de texte, mais garder une affiche aeree et lisible.
+- L'ancienne **règle des 20 % de texte** de Meta est **abandonnée** : pas de
+  limite de texte, mais garder une affiche aérée et lisible.
 
 ### Format et poids
 
 - **PNG** (ou JPG) : le moteur sort du PNG, net pour le texte/logo.
-- Poids max Meta : **30 Mo** — le rendu flat est tres loin de cette limite, rien
-  a optimiser de particulier.
+- Poids max Meta : **30 Mo** — le rendu flat est très loin de cette limite, rien
+  à optimiser de particulier.
 
-## 3. Ecrire le template
+## 3. Écrire le template
 
-`src/templates/<projet>/<slug>.tsx`, couleurs en constantes tirees de la charte
+`src/templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
 (ne rien inventer). Choisir `SIZE` selon l'orientation. Squelette :
 
 ```tsx
@@ -113,18 +113,18 @@ export default { size: SIZE, title: "Post Facebook <Projet>", render } satisfies
 ```
 
 Conventions communes : assets via `asset("<projet>/...")`, police **Sora**
-uniquement (graisses 500/700 chargees dans `render.ts`) ; police absente ->
+uniquement (graisses 500/700 chargées dans `render.ts`) ; police absente ->
 suivre l'annexe "police manquante" de `new-template`, jamais en silence. Garder
 le code minimal (principe #2).
 
-## 4. Verifier
+## 4. Vérifier
 
 - `npm run typecheck` -> vert.
-- `npm run build` -> ecrit `out/<projet>/<slug>.png`.
-- Controler le PNG : **dimensions exactes** selon l'orientation, fond opaque,
+- `npm run build` -> écrit `out/<projet>/<slug>.png`.
+- Contrôler le PNG : **dimensions exactes** selon l'orientation, fond opaque,
   ratio correct (4:5 / 1:1 / 1.91:1).
-- Preview : `npm run dev` puis `/<projet>/<slug>` ; verifier la lisibilite reduit
-  a la largeur d'un fil mobile.
+- Preview : `npm run dev` puis `/<projet>/<slug>` ; vérifier la lisibilité réduit
+  à la largeur d'un fil mobile.
 
-**Critere de succes** : PNG aux dimensions Meta de l'orientation choisie,
+**Critère de succès** : PNG aux dimensions Meta de l'orientation choisie,
 opaque, lisible en petit, et n'utilisant que des couleurs/typo de `brand.md`.

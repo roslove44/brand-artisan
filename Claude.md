@@ -16,7 +16,9 @@ Guide Claude Code pour **OgArtisan** — mon outil perso de construction d'image
 
 **6. Franchise absolue.** Être direct et franc sur les problèmes de code et autres que je présente. Pas besoin de prendre des gants avec moi — priorité : qualité du projet.
 
-**7. Never change code you haven't read.**
+## 7. Never change code you haven't read
+
+## 8. Pour les rédactions en français, pense à bien respecter les accents et surtout la grammaire et l’orthographe
 
 ## Charte par projet
 
