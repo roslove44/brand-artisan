@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guide Claude Code pour **BrandArtisan** — mon outil perso de construction d'image (NextJs og like)
+Guide Claude Code pour **BrandArtisan** — un outil de construction d'images de marque (façon next/og).
 
 ## Principes
 
@@ -14,7 +14,7 @@ Guide Claude Code pour **BrandArtisan** — mon outil perso de construction d'im
 
 **5. Qualité — tolérance zéro.** Signaler **immédiatement** tout anti-pattern React 19+ : `useEffect` abusif, état dérivé inutile, state-flag relay, props drilling évitable, re-renders inutiles. Pas de « on verra plus tard ». `eslint-disable` = dernier recours absolu : épuiser toutes les alternatives (refacto, `key` prop, extraction de hook) avant ; justifier dans un commentaire si inévitable.
 
-**6. Franchise absolue.** Être direct et franc sur les problèmes de code et autres que je présente. Pas besoin de prendre des gants avec moi — priorité : qualité du projet.
+**6. Franchise absolue.** Être direct et franc sur les problèmes de code et autres que l'utilisateur présente. Pas besoin de prendre des gants — priorité : qualité du projet.
 
 ## 7. Never change code you haven't read
 

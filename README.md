@@ -25,6 +25,28 @@ son emballage Next. Tu écris une mise en page en flexbox, tu obtiens un fichier
 `react` n'est présent que pour fournir le runtime JSX (`react/jsx-runtime`) ;
 il n'y a ni `react-dom` ni rendu côté client.
 
+## Prérequis
+
+- **Node.js ≥ 18** et **npm** — pour le moteur de rendu (TypeScript). C'est tout
+  ce qu'il faut pour composer des visuels.
+- **[uv](https://docs.astral.sh/uv/)** — uniquement pour la *toolchain de marque*
+  en Python (génération des logos/favicons, voir plus bas). Inutile si tu ne fais
+  que composer des visuels.
+
+Installer uv (si tu ne l'as pas déjà) :
+
+```bash
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+uv installe et gère lui-même la bonne version de Python (3.12) : rien d'autre à
+installer côté Python. Autres méthodes (Homebrew, pip…) :
+[docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/).
+
 ## Installation
 
 ```bash
@@ -75,7 +97,8 @@ d'après le titre normalisé (même règle que le téléchargement du serveur) :
 À côté du moteur TS (qui **compose** des visuels), une toolchain Python **génère
 les assets de marque** d'un projet (logo, favicon et leurs déclinaisons), dans
 `src/tools/`. Environnement géré par **uv** (Python épinglé à 3.12 pour
-`skia-python`). Commandes, depuis la racine :
+`skia-python` ; installer uv : voir [Prérequis](#prérequis)). Commandes, depuis
+la racine :
 
 ```bash
 uv sync                                                # une seule fois : env + deps
