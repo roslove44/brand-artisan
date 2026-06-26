@@ -66,14 +66,24 @@ via la skill `brand-assets`.
 
 ### Favicon et icône — `favicon/`
 
-Concept **arrêté**, design **à produire** : monogramme **`RM`** (Geist, graisse à
-caler) sur une **tuile à coins arrondis**. Direction de couleur proposée, par
-cohérence avec le site et le favicon ComptaOpen : **RM blanc sur tuile bleue
-`#2563eb`** — `_(à confirmer)_`. Géométrie exacte (crénage des deux lettres,
-rayon de la tuile, version sur transparent) `_(à définir lors de la génération)_`.
+Le mark est le monogramme **`RM`** en **Geist 700**, centré sur une **tuile à
+coins arrondis** (rayon 22 %). Couleur par défaut : **RM blanc sur tuile bleue
+`#2563eb`**. Produit par `src/tools/rostand-migan/build_favicon.py`.
 
-> Aujourd'hui, l'« icône » du site est une **photo** de Rostand emballée dans un
-> SVG (`icon.svg`) — ce n'est pas un mark. Le monogramme RM la remplacera.
+| Fichier | Détail |
+|---|---|
+| `icon.svg` | Source vectorielle, tuile bleue arrondie, RM blanc |
+| `icon-square.svg` | Tuile bleue à coins droits, RM blanc |
+| `icon-mark.svg` | RM seul, **bleu**, sur transparent (fonds clairs) |
+| `icon-white-mark.svg` | RM seul, **blanc**, sur transparent (fonds sombres) |
+| `icon-white.svg` | RM bleu sur fond blanc, coins arrondis |
+| `icon-white-square.svg` | RM bleu sur fond blanc, coins droits |
+| `icon-16/32/48/64/180/192/512.png` | Rasters par taille |
+| `apple-icon.png` | 180 px, carré (Apple arrondit lui-même) |
+| `favicon.ico` | Multi-résolution 16 / 32 / 48 |
+
+> L'« icône » actuelle du site est une **photo** de Rostand emballée dans un SVG
+> (`icon.svg` en ligne) — ce n'est pas un mark. Le monogramme RM la remplace.
 
 ---
 
@@ -103,7 +113,21 @@ une version monochrome `_(à définir)_`.
 
 ## 4. Régénération
 
-Le monogramme RM et les déclinaisons du wordmark sont à produire via la skill
-`brand-assets` (toolchain Python dans `src/tools/`, socle `src/tools/brandkit/`),
-puis à promouvoir vers `logo/` et `favicon/` ici. Tant que la toolchain
-`src/tools/rostand-migan/` n'existe pas, c'est `brand-assets` qui la met en place.
+Le favicon est généré par la toolchain Python `src/tools/rostand-migan/`, qui
+s'appuie sur le socle partagé `src/tools/brandkit/`. Environnement géré par **uv**
+(voir `src/tools/README.md`).
+
+```bash
+uv sync                                                  # une fois : env Python + deps
+uv run python src/tools/rostand-migan/build_favicon.py   # -> out/rostand-migan/withtool/favicon/ (icon*.svg + rasters)
+```
+
+`build_favicon.py` instancie Geist à `wght=700`, extrait les glyphes `R` et `M`,
+les centre dans la tuile, et imprime en fin de course une validation pixel du
+favicon 32 px (coin = tuile bleue, centre = trait blanc d'une lettre).
+
+La sortie va dans `out/rostand-migan/withtool/` (artefacts éphémères, non
+commités). Après revue, **promouvoir** les fichiers validés vers `favicon/` ici.
+
+Le **wordmark `rostand.dev`** (déclinaisons logo) n'est pas encore scripté :
+`logo/` reste `_(à définir)_`, à produire via `brand-assets` quand utile.
