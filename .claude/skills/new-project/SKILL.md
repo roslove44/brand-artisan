@@ -22,8 +22,9 @@ Interviewer l'utilisateur. **Ne jamais inventer couleurs, typo ou logo** —
 c'est le cœur de la règle projet. Recueillir au minimum :
 
 - **Concept / signification** du logo et du nom.
-- **Typographie** : police, graisse, source. Note : le moteur ne charge
-  aujourd'hui que **Sora 500/700** (voir `src/render.ts`). Si la charte impose
+- **Typographie** : police, graisse, source. Note : le moteur charge
+  aujourd'hui **Sora 500/700** et **Geist 400/600/700** (voir `src/render.ts`).
+  Si la charte impose
   une autre police absente d'`assets/fonts/`, suivre la procédure **Police
   manquante** ci-dessous — proposer de la pré-installer maintenant, ou laisser
   `/new-template` la récupérer au premier visuel qui en a besoin.

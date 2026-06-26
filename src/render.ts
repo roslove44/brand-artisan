@@ -9,6 +9,9 @@ import { asset } from "./assets";
 const fonts = [
 	{ name: "Sora", weight: 700 as const, style: "normal" as const, data: await readFile(asset("fonts/Sora-700.ttf")) },
 	{ name: "Sora", weight: 500 as const, style: "normal" as const, data: await readFile(asset("fonts/Sora-500.ttf")) },
+	{ name: "Geist", weight: 700 as const, style: "normal" as const, data: await readFile(asset("fonts/Geist-700.ttf")) },
+	{ name: "Geist", weight: 600 as const, style: "normal" as const, data: await readFile(asset("fonts/Geist-600.ttf")) },
+	{ name: "Geist", weight: 400 as const, style: "normal" as const, data: await readFile(asset("fonts/Geist-400.ttf")) },
 ];
 
 type RenderSize = { width: number; height: number; scale?: number };
