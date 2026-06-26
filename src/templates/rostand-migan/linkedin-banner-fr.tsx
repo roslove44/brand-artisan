@@ -2,11 +2,12 @@ import type { ReactNode } from "react";
 import type { Template } from "../../template";
 
 // Banner de profil perso LinkedIn (FR) : 1584x396 (4:1). Compo : tout sombre,
-// SANS fenetre (juste le texte du terminal), bloc cale full-right. Le bas-gauche
+// SANS fenetre (juste le texte du terminal), bloc cale a droite. Le bas-gauche
 // reste vide et sombre -> la photo de profil (cercle ~x49-305, y214-396) s'y pose
-// sans gener. padding-right = proportion 25/790 de la largeur (~50px).
-const SIZE = { width: 1584, height: 396 };
-const PAD_RIGHT = Math.round((1584 * 25) / 790); // ~50
+// sans gener. padding-right ~110px : marge pour decoller le bloc du bord,
+// sinon le texte (cale a droite) se fait rogner au crop mobile de LinkedIn.
+const SIZE = { width: 1584, height: 396, scale: 2 };
+const PAD_RIGHT = Math.round((1584 * 55) / 790); // ~110
 
 const BLUE = "#60a5fa"; // accent — chemin du prompt, sortie
 const GREEN = "#7ee787"; // valeur (produit)
@@ -16,7 +17,7 @@ const DESC = "#94a3b8"; // description — slate-400, contraste AA meme sur le g
 const MUTED = "#64748b"; // separateurs ~ uniquement (decoratif, exempte WCAG)
 
 const MONO = "Geist Mono";
-const line = { display: "flex", fontFamily: MONO, fontWeight: 400 as const, fontSize: 28, lineHeight: 1, color: SOFT };
+const line = { display: "flex", fontFamily: MONO, fontWeight: 400 as const, fontSize: 36, lineHeight: 1, color: SOFT };
 
 function render(): ReactNode {
 	return (
@@ -39,30 +40,30 @@ function render(): ReactNode {
 
 			{/* Texte du terminal, sans chrome */}
 			<div style={{ display: "flex", flexDirection: "column" }}>
-				<div style={{ display: "flex", fontFamily: MONO, fontWeight: 600, fontSize: 28, lineHeight: 1 }}>
+				<div style={{ display: "flex", fontFamily: MONO, fontWeight: 600, fontSize: 36, lineHeight: 1 }}>
 					<span style={{ color: BLUE }}>rostand.dev</span>
 					<span style={{ color: MUTED }}>&nbsp;~&nbsp;</span>
 					<span style={{ color: GREEN }}>%&nbsp;</span>
 					<span style={{ color: TEXT }}>whoami</span>
 				</div>
-				<div style={{ ...line, marginTop: 18 }}>
+				<div style={{ ...line, marginTop: 23 }}>
 					<span style={{ color: BLUE }}>&gt;&nbsp;</span>
 					Développeur Full Stack & Comptable
 				</div>
-				<div style={{ ...line, marginTop: 14 }}>
+				<div style={{ ...line, marginTop: 18 }}>
 					<span style={{ color: BLUE }}>&gt;&nbsp;</span>
 					<span>Je construis actuellement&nbsp;</span>
 					<span style={{ color: GREEN }}>ComptaOpen</span>
 				</div>
-				<div style={{ ...line, marginTop: 14 }}>
+				<div style={{ ...line, marginTop: 18 }}>
 					<span style={{ color: BLUE }}>&gt;&nbsp;</span>
-					<span style={{ color: DESC }}>la compta en accès libre au Bénin</span>
+					<span style={{ color: DESC }}>le hub comptable &amp; fiscal des pros du Bénin</span>
 				</div>
-				<div style={{ display: "flex", alignItems: "center", marginTop: 22, fontFamily: MONO, fontWeight: 600, fontSize: 28, lineHeight: 1 }}>
+				<div style={{ display: "flex", alignItems: "center", marginTop: 28, fontFamily: MONO, fontWeight: 600, fontSize: 36, lineHeight: 1 }}>
 					<span style={{ color: BLUE }}>rostand.dev</span>
 					<span style={{ color: MUTED }}>&nbsp;~&nbsp;</span>
 					<span style={{ color: GREEN }}>%</span>
-					<div style={{ display: "flex", width: 14, height: 26, marginLeft: 12, backgroundColor: BLUE }} />
+					<div style={{ display: "flex", width: 18, height: 34, marginLeft: 16, backgroundColor: BLUE }} />
 				</div>
 			</div>
 		</div>
