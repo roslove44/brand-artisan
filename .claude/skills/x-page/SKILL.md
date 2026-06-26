@@ -47,10 +47,12 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
   en cercle). 400×400 est la taille officielle ; `scale: 2` conseillé pour la
   netteté. Pour une organisation, préférer la **marque / favicon** (bracket-O) au
   wordmark, illisible en petit. Suivre brand.md.
-- **Header (1500×500)** : sur mobile, X **rogne les côtés** et la **photo de
-  profil recouvre le bas-gauche**. Garder le contenu important **centré**, hors
-  du coin bas-gauche, avec des marges latérales confortables (X ne publie pas de
-  zone sûre).
+- **Header (1500×500)** : sur mobile, X **rogne les côtés** → garder le contenu
+  important centré, marges latérales confortables.
+- **Zone morte bas-gauche (photo de profil)** : sur la page profil, l'avatar
+  recouvre le bas-gauche du header — tout texte/logo qui y tombe est **masqué**.
+  La laisser libre : marge gauche **~2,5 %** de la largeur, boîte **~23 % L ×
+  ~35 % H** ancrée en bas-gauche. Sur 1500×500 : env. **x 38→388, y 325→500**.
 
 ## 3. Écrire le(s) template(s)
 

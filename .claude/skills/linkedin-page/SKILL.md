@@ -53,12 +53,16 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
   (le profil est affiché en cercle). 400×400 est le **minimum** : `scale: 2`
   conseillé pour un rendu net. Pour une organisation, préférer la **marque /
   favicon** (bracket-O) au wordmark complet, illisible en petit. Suivre brand.md.
-- **Banner perso (1584×396)** : la **photo de profil recouvre le coin
-  bas-gauche** ; garder le contenu important **centré ou à droite**, hors de cette
-  zone. Marges de sécurité confortables (LinkedIn ne publie pas de zone sûre).
-- **Cover entreprise (4200×700)** : LinkedIn peut la **rogner** horizontalement
-  ou verticalement selon l'écran -> garder logo et texte **au centre**, marges
-  larges.
+- **Zone morte bas-gauche (avatar / logo)** : sur la page, la photo de profil
+  (perso) ou le logo (entreprise) recouvre le bas-gauche de la cover — tout
+  texte/logo qui y tombe est **masqué**. **Mêmes proportions** dans les deux cas
+  (marge gauche **~3,1 %** de la largeur, boîte **~16 % L × ~46 % H** ancrée en
+  bas-gauche) ; seule la **forme du masque** change : **cercle** (rounded-full) en
+  perso, **carré** en entreprise.
+  - Banner perso 1584×396 : env. **x 49→305, y 214→396** (masque rond).
+  - Cover entreprise 4200×700 : env. **x 130→808, y 378→700** (masque carré).
+- **Cover entreprise** : LinkedIn peut aussi la **rogner** selon l'écran → garder
+  le reste du contenu **centré**, marges larges.
 
 ## 3. Écrire le(s) template(s)
 

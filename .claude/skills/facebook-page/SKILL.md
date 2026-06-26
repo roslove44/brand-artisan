@@ -61,9 +61,10 @@ Dimensions **officielles** Facebook (ne pas dévier) :
   2.4:1 -> ~48 px rognés de chaque côté) et l'affichage **ordinateur** est en
   16:9. Garder texte et logo à l'intérieur, avec une marge latérale d'au moins
   **~60 px**.
-- **Coin bas-gauche libre** : la photo de profil **recouvre** cette zone
-  (~40 px de chevauchement sur mobile, davantage sur ordinateur). Ne rien y
-  placer d'important.
+- **Zone morte bas-gauche (photo de profil)** : sur la page, l'avatar recouvre le
+  bas-gauche de la cover — tout texte/logo qui y tombe est **masqué**. La laisser
+  libre : marge gauche **~2,5 %** de la largeur, boîte **~11 % L × ~23 % H** ancrée
+  en bas-gauche. Sur 851×315 : env. **x 22→116, y 243→315**.
 - **Fond opaque**, jamais de transparence.
 
 ### Format et poids (les deux)
