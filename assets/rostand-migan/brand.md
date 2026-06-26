@@ -33,13 +33,14 @@ d'icône.
 |---|---|
 | Police | **Geist** (Vercel) |
 | Graisses | **400** (Regular), **600** (SemiBold), **700** (Bold) |
-| Police mono | **Geist Mono** (code, détails techniques) _(à fournir si besoin)_ |
+| Police mono | **Geist Mono** (code, détails techniques), chargée en **400 / 600** |
 | Source | Police variable Geist, instanciée en statiques 400/600/700 |
 | Licence | SIL Open Font License (OFL) |
 
 Geist est la police de tout rostand.dev. Elle est désormais chargée dans le
-moteur (`src/render.ts`) en 400/600/700. **Geist Mono** n'est pas encore installée :
-à récupérer (même source, OFL) au premier visuel qui en a besoin.
+moteur (`src/render.ts`) en 400/600/700. **Geist Mono** est désormais chargée elle
+aussi (`src/render.ts`, graisses 400/600), instanciée depuis sa variable OFL —
+réservée au code et aux détails techniques.
 
 ### Couleurs
 

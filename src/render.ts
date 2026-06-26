@@ -12,6 +12,8 @@ const fonts = [
 	{ name: "Geist", weight: 700 as const, style: "normal" as const, data: await readFile(asset("fonts/Geist-700.ttf")) },
 	{ name: "Geist", weight: 600 as const, style: "normal" as const, data: await readFile(asset("fonts/Geist-600.ttf")) },
 	{ name: "Geist", weight: 400 as const, style: "normal" as const, data: await readFile(asset("fonts/Geist-400.ttf")) },
+	{ name: "Geist Mono", weight: 600 as const, style: "normal" as const, data: await readFile(asset("fonts/GeistMono-600.ttf")) },
+	{ name: "Geist Mono", weight: 400 as const, style: "normal" as const, data: await readFile(asset("fonts/GeistMono-400.ttf")) },
 ];
 
 type RenderSize = { width: number; height: number; scale?: number };
