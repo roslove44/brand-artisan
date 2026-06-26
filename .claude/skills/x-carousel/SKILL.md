@@ -11,7 +11,7 @@ carrousel n'est pas N images indépendantes : c'est une **série** qui raconte
 quelque chose. La cohérence inter-cartes est le cœur du livrable.
 
 C'est une spécialisation de `new-template`. Mêmes conventions : contrat
-`Template`, assets via `asset()`, police Sora chargée dans `render.ts`,
+`Template`, assets via `asset()`, polices chargées dans `render.ts`,
 `export default ... satisfies Template`. Même modèle que `facebook-carousel`.
 
 > **Carousel ad.** X n'a pas de « carrousel organique » : un tweet ne porte que
@@ -101,8 +101,7 @@ src/templates/<projet>/<nom>/
   découvert comme une fausse carte et casserait le build.
 - **Nommage et ordre** : tri **lexical**. Avec 6 cartes max, `card-1` … `card-6`
   reste correctement ordonné (pas besoin de padding).
-- Couleurs depuis `theme.ts`, assets via `asset("<projet>/...")`, police **Sora**
-  (graisses 500/700 de `render.ts`) ; police absente -> annexe « police
+- Couleurs depuis `theme.ts`, assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
   manquante » de `new-template`, jamais en silence.
 
 ### `theme.ts` — squelette

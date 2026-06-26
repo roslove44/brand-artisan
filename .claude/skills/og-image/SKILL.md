@@ -12,7 +12,7 @@ pipeline du projet (Satori -> resvg), aligné sur la charte. BrandArtisan ne gé
 
 C'est une spécialisation de `new-template` avec les contraintes OG en dur. Mêmes
 conventions : contrat `Template` (`src/template.ts`), assets via `asset()`,
-police Sora chargée dans `render.ts`, `export default ... satisfies Template`.
+polices chargées dans `render.ts`, `export default ... satisfies Template`.
 
 ## 0. Prérequis — bloquant
 

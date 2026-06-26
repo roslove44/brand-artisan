@@ -9,7 +9,7 @@ Objectif : produire l'**asset PNG** d'une image de tweet, au **ratio** choisi,
 aligné sur la charte.
 
 C'est une spécialisation de `new-template` avec les contraintes X en dur. Mêmes
-conventions : contrat `Template`, assets via `asset()`, police Sora chargée dans
+conventions : contrat `Template`, assets via `asset()`, polices chargées dans
 `render.ts`, `export default ... satisfies Template`.
 
 > **Statut des dimensions.** X ne documente **aucune dimension** pour les images
@@ -95,8 +95,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "Post X <Projet>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `asset("<projet>/...")`, police **Sora**
-(graisses 500/700 de `render.ts`) ; police absente -> annexe « police
+Conventions communes : assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
 manquante » de `new-template`, jamais en silence. Garder le code minimal.
 
 ## 4. Vérifier

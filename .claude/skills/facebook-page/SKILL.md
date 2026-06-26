@@ -15,7 +15,7 @@ charte. Deux visuels possibles, indépendants :
 
 C'est une spécialisation de `new-template` avec les contraintes Facebook en dur.
 Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
-`asset()`, police Sora chargée dans `render.ts`, `export default ... satisfies
+`asset()`, polices chargées dans `render.ts`, `export default ... satisfies
 Template`.
 
 ## 0. Prérequis — bloquant
@@ -158,8 +158,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "Couverture Facebook <Projet>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `asset("<projet>/...")`, police **Sora**
-uniquement (graisses 500/700 chargées dans `render.ts`) ; police absente ->
+Conventions communes : assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente ->
 suivre l'annexe "police manquante" de `new-template`, jamais en silence.
 
 ## 4. Vérifier

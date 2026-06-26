@@ -11,7 +11,7 @@ aligné sur la charte.
 
 C'est une spécialisation de `new-template` avec les contraintes Facebook en dur.
 Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
-`asset()`, police Sora chargée dans `render.ts`, `export default ... satisfies
+`asset()`, polices chargées dans `render.ts`, `export default ... satisfies
 Template`.
 
 > **Statut des dimensions.** Meta ne publie **aucune** spec de dimensions pour
@@ -115,8 +115,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "Post Facebook <Projet>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `asset("<projet>/...")`, police **Sora**
-uniquement (graisses 500/700 chargées dans `render.ts`) ; police absente ->
+Conventions communes : assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente ->
 suivre l'annexe "police manquante" de `new-template`, jamais en silence. Garder
 le code minimal (principe #2).
 

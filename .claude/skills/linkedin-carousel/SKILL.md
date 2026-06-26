@@ -12,7 +12,7 @@ alignés sur la charte. Un carrousel n'est pas N images indépendantes : c'est u
 livrable.
 
 C'est une spécialisation de `new-template`. Mêmes conventions : contrat
-`Template`, assets via `asset()`, police Sora chargée dans `render.ts`,
+`Template`, assets via `asset()`, polices chargées dans `render.ts`,
 `export default ... satisfies Template`. Même modèle que `facebook-carousel`.
 
 > **Carousel ad ≠ carrousel organique.** Ce que tu produis ici, ce sont les
@@ -108,8 +108,7 @@ src/templates/<projet>/<nom>/
   est répété dans chaque carte.
 - **Nommage et ordre** : tri **lexical** -> `card-10` passe avant `card-2`. Dès
   10 cartes, **padder** : `card-01` … `card-10`.
-- Couleurs depuis `theme.ts`, assets via `asset("<projet>/...")`, police **Sora**
-  (graisses 500/700 de `render.ts`) ; police absente -> annexe « police
+- Couleurs depuis `theme.ts`, assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
   manquante » de `new-template`, jamais en silence.
 
 ### `theme.ts` — squelette

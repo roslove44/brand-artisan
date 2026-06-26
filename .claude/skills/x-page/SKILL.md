@@ -13,7 +13,7 @@ charte. Deux visuels possibles, indépendants :
 - **header / bannière** : 1500×500 (3:1).
 
 C'est une spécialisation de `new-template` avec les contraintes X en dur. Mêmes
-conventions : contrat `Template`, assets via `asset()`, police Sora chargée dans
+conventions : contrat `Template`, assets via `asset()`, polices chargées dans
 `render.ts`, `export default ... satisfies Template`.
 
 ## 0. Prérequis — bloquant
@@ -83,8 +83,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "<Titre humain>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `asset("<projet>/...")`, police **Sora**
-(graisses 500/700 de `render.ts`) ; police absente -> annexe « police
+Conventions communes : assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
 manquante » de `new-template`, jamais en silence.
 
 ## 4. Vérifier

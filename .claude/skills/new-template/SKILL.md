@@ -49,8 +49,9 @@ silence (principe #1 de CLAUDE.md).
 Respecter le contrat (`src/template.ts`) et les conventions du projet :
 
 - Couleurs en **constantes nommées tirées de la charte** — ne pas inventer de hex.
-- Police : **Sora** (graisses 500/700) et **Geist** (400/600/700) chargées dans
-  `render.ts`. Si la charte impose une autre police absente d'`assets/fonts/`,
+- Polices : celles chargées dans `src/render.ts` — consulter le tableau `fonts`
+  pour les familles et graisses disponibles (fichiers dans `assets/fonts/`). Si la
+  charte impose une autre police absente d'`assets/fonts/`,
   suivre la procédure **Police manquante** ci-dessous — ne jamais l'utiliser en
   silence.
 - Assets via `asset("<projet>/...")` (jamais de chemin relatif au cwd ni de
@@ -121,4 +122,5 @@ Si la charte impose une police qui n'est pas dans `assets/fonts/` :
 6. **Confirmer avant de commit** le `.ttf` (binaire) avec l'utilisateur.
 
 Si l'utilisateur refuse le téléchargement -> ne pas utiliser la police ; lui
-demander de déposer le fichier dans `assets/fonts/`, ou rester sur Sora.
+demander de déposer le fichier dans `assets/fonts/`, ou rester sur une police
+déjà chargée dans `render.ts`.

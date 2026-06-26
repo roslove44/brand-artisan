@@ -17,7 +17,7 @@ indépendants :
 
 C'est une spécialisation de `new-template` avec les contraintes LinkedIn en dur.
 Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
-`asset()`, police Sora chargée dans `render.ts`, `export default ... satisfies
+`asset()`, polices chargées dans `render.ts`, `export default ... satisfies
 Template`.
 
 ## 0. Prérequis — bloquant
@@ -95,8 +95,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "<Titre humain>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `asset("<projet>/...")`, police **Sora**
-(graisses 500/700 de `render.ts`) ; police absente -> annexe « police
+Conventions communes : assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
 manquante » de `new-template`, jamais en silence.
 
 ## 4. Vérifier

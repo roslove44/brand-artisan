@@ -11,7 +11,7 @@ charte. Un carrousel n'est pas N images indépendantes : c'est une **série** qu
 raconte quelque chose. La cohérence inter-cartes est le cœur du livrable.
 
 C'est une spécialisation de `new-template`. Mêmes conventions : contrat
-`Template` (`src/template.ts`), assets via `asset()`, police Sora chargée dans
+`Template` (`src/template.ts`), assets via `asset()`, polices chargées dans
 `render.ts`, `export default ... satisfies Template`.
 
 > **Statut des dimensions.** Les specs viennent du **Gestionnaire de publicités**
@@ -127,7 +127,7 @@ src/templates/<projet>/<nom>/
   donc `card-10` passerait avant `card-2`. Dès qu'on atteint 10 cartes, **padder
   à deux chiffres** : `card-01` … `card-10`.
 - Couleurs en constantes (depuis `theme.ts`), assets via `asset("<projet>/...")`,
-  police **Sora** (graisses 500/700 de `render.ts`) ; police absente -> annexe
+  les polices chargées dans `render.ts` ; police absente -> annexe
   « police manquante » de `new-template`, jamais en silence.
 
 ### `theme.ts` — squelette
