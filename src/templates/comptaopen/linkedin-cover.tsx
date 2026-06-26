@@ -42,10 +42,21 @@ function render(): ReactNode {
 				}}
 			/>
 
+			{/* Halo bleu bas-gauche : sur la Page entreprise, la tuile de l'avatar
+			    (#1d4ed8) se pose ici -> on l'enveloppe de sa propre teinte pour la
+			    fondre dans la cover au lieu de la laisser claquer sur le navy. */}
+			<div
+				style={{
+					position: "absolute",
+					inset: 0,
+					backgroundImage: "radial-gradient(circle at 11% 82%, rgba(29,78,216,0.72), rgba(15,23,42,0) 52%)",
+				}}
+			/>
+
 			{/* Lockup centre (zone sure : LinkedIn peut rogner les bords) */}
 			<div style={{ display: "flex", alignItems: "center" }}>
-				<img src={markSrc} width={120} height={120} alt="" style={{ marginRight: 40 }} />
-				<div style={{ display: "flex", fontFamily: "Sora", fontWeight: 700, fontSize: 118, letterSpacing: -3, lineHeight: 1 }}>
+				<img src={markSrc} width={144} height={144} alt="" style={{ marginRight: 48 }} />
+				<div style={{ display: "flex", fontFamily: "Sora", fontWeight: 700, fontSize: 140, letterSpacing: -3, lineHeight: 1 }}>
 					<span style={{ color: PAPER }}>Compta</span>
 					<span style={{ color: BLUE_LIGHT }}>Open</span>
 				</div>
@@ -53,10 +64,10 @@ function render(): ReactNode {
 			<div
 				style={{
 					display: "flex",
-					marginTop: 30,
+					marginTop: 38,
 					fontFamily: "Sora",
 					fontWeight: 500,
-					fontSize: 44,
+					fontSize: 54,
 					color: MUTED,
 					letterSpacing: 0.5,
 				}}
