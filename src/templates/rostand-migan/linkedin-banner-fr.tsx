@@ -55,10 +55,10 @@ function render(): ReactNode {
 					<span>Je construis actuellement&nbsp;</span>
 					<span style={{ color: GREEN }}>ComptaOpen</span>
 				</div>
-				<div style={{ ...line, marginTop: 18 }}>
+				{/* <div style={{ ...line, marginTop: 18 }}>
 					<span style={{ color: BLUE }}>&gt;&nbsp;</span>
 					<span style={{ color: DESC }}>le hub comptable &amp; fiscal des pros du Bénin</span>
-				</div>
+				</div> */}
 				<div style={{ display: "flex", alignItems: "center", marginTop: 28, fontFamily: MONO, fontWeight: 600, fontSize: 36, lineHeight: 1 }}>
 					<span style={{ color: BLUE }}>rostand.dev</span>
 					<span style={{ color: MUTED }}>&nbsp;~&nbsp;</span>
