@@ -17,12 +17,15 @@ technique**, fond blanc, beaucoup de respiration, un seul accent bleu.
 
 Deux porteurs d'identité, à ne pas confondre :
 
-- **Logotype principal — le wordmark `rostand.dev`** (minuscules, sans point
-  d'accent visuel). C'est déjà la signature de fait, affichée en tête du site.
+- **Logotype principal — le wordmark `rostand.dev`** (minuscules). Déjà la
+  signature de fait, affichée en tête du site. Découpé en deux registres :
+  `rostand` en encre, `.dev` en accent bleu (la TLD mise en avant).
 - **Icône / favicon — le monogramme `RM`** sur une tuile à coins arrondis (même
   principe que le favicon ComptaOpen : un mark compact, lisible à 16 px, là où le
-  wordmark deviendrait illisible). **Cette icône n'existe pas encore** : c'est la
-  création à produire (voir §2 et §4).
+  wordmark deviendrait illisible).
+
+Les deux sont produits (voir §2 et §4) ; ils remplacent la photo qui servait
+d'icône.
 
 ### Typographie
 
@@ -49,9 +52,10 @@ Relevées sur le rendu de rostand.dev (mode clair).
 | Accent | `#2563eb` | `blue-600` | Liens, surbrillances, mark, CTA |
 | Fond | `#ffffff` | `white` | Fond par défaut |
 
-**Mode sombre** : le site propose une bascule clair/sombre, mais la palette
-sombre n'a pas été relevée précisément — `_(à définir)_` (encre claire + accent
-bleu éclairci, à confirmer sur le site avant usage).
+**Mode sombre** : le site propose une bascule clair/sombre. La palette sombre du
+site n'a pas été relevée pixel par pixel ; les variantes sombres du logo
+utilisent les contreparties Tailwind cohérentes — encre claire `#f8fafc`
+(`slate-50`) et accent `#60a5fa` (`blue-400`). `_(à confirmer sur le site)_`.
 
 ---
 
@@ -59,10 +63,17 @@ bleu éclairci, à confirmer sur le site avant usage).
 
 ### Logotype — `logo/`
 
-Le wordmark **`rostand.dev`** en Geist. Les fichiers ne sont **pas encore
-produits** ; jeu de variantes cible `_(à définir)_` (au minimum : fond clair,
-fond sombre, monochrome). Déposer les fichiers dans `logo/` ici, ou les générer
-via la skill `brand-assets`.
+Le wordmark **`rostand.dev`** en **Geist 700**, `rostand` en encre et `.dev` en
+bleu. Produit par `src/tools/rostand-migan/build_logo.py`.
+
+| Fichier | Quand l'utiliser |
+|---|---|
+| `logo.svg` / `logo.png` | Par défaut, sur fond clair (encre + bleu) |
+| `logo-dark.svg` / `logo-dark.png` | Sur fond sombre (couleurs éclaircies, fond transparent) |
+| `logo-mono.svg` | Inline, hérite de `currentColor` (s'aligne sur la couleur de texte du contexte) |
+| `logo-mono-dark.svg` | Tout en encre — impression N&B, fond clair |
+| `logo-mono-white.svg` | Tout en blanc — aplat bleu, photo, fond sombre |
+| `logo-white.png` | Raster sur fond blanc plein |
 
 ### Favicon et icône — `favicon/`
 
@@ -95,9 +106,11 @@ hauteur d'une minuscule du mot. Rien n'entre dans cette zone.
 **Taille minimale.** En deçà d'une lisibilité confortable du wordmark, préférer le
 monogramme **RM** seul.
 
-**Fonds.** Sur fond clair, encre `#111827` et accent `#2563eb`. Sur fond sombre,
-utiliser les variantes claires `_(à définir)_`. Sur photo ou aplat bleu, préférer
-une version monochrome `_(à définir)_`.
+**Fonds.** Choisir la variante selon le contraste :
+
+- fond clair → `logo.svg`
+- fond sombre → `logo-dark.svg`
+- photo / aplat bleu → `logo-mono-white.svg`
 
 ### À ne pas faire
 
@@ -113,21 +126,21 @@ une version monochrome `_(à définir)_`.
 
 ## 4. Régénération
 
-Le favicon est généré par la toolchain Python `src/tools/rostand-migan/`, qui
-s'appuie sur le socle partagé `src/tools/brandkit/`. Environnement géré par **uv**
-(voir `src/tools/README.md`).
+Le logo et le favicon sont générés par la toolchain Python
+`src/tools/rostand-migan/`, qui s'appuie sur le socle partagé
+`src/tools/brandkit/`. Environnement géré par **uv** (voir `src/tools/README.md`).
 
 ```bash
 uv sync                                                  # une fois : env Python + deps
+uv run python src/tools/rostand-migan/build_logo.py      # -> out/rostand-migan/withtool/logo/    (wordmark + variantes + PNG)
 uv run python src/tools/rostand-migan/build_favicon.py   # -> out/rostand-migan/withtool/favicon/ (icon*.svg + rasters)
 ```
 
-`build_favicon.py` instancie Geist à `wght=700`, extrait les glyphes `R` et `M`,
-les centre dans la tuile, et imprime en fin de course une validation pixel du
-favicon 32 px (coin = tuile bleue, centre = trait blanc d'une lettre).
+Les deux scripts instancient Geist à `wght=700` et composent depuis les glyphes :
+`build_logo.py` aligne le wordmark et le découpe en deux couleurs ;
+`build_favicon.py` centre le monogramme `RM` dans la tuile et imprime une
+validation pixel du favicon 32 px (coin = tuile bleue, centre = trait blanc).
 
 La sortie va dans `out/rostand-migan/withtool/` (artefacts éphémères, non
-commités). Après revue, **promouvoir** les fichiers validés vers `favicon/` ici.
-
-Le **wordmark `rostand.dev`** (déclinaisons logo) n'est pas encore scripté :
-`logo/` reste `_(à définir)_`, à produire via `brand-assets` quand utile.
+commités). Après revue, **promouvoir** les fichiers validés vers `logo/` et
+`favicon/` ici.
