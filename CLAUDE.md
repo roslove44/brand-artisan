@@ -20,6 +20,21 @@ Guide Claude Code pour **BrandArtisan** — un outil de construction d'images de
 
 ## 8. Pour les rédactions en français, pense à bien respecter les accents et surtout la grammaire et l’orthographe
 
+## 9. Exigence graphique — chaque visuel est composé, pas rempli
+
+Un visuel n'est pas « du texte sur un fond ». Avant de rendre, vérifier :
+- **Concept** : une idée visuelle porte le message (un motif, un cadrage, un jeu
+  sur le logo) — pas seulement un titre posé sur un dégradé.
+- **Hiérarchie** : un seul point focal, contraste d'échelle fort entre titre,
+  kicker et accroche. Si deux éléments se disputent l'œil → en subordonner un.
+- **Composition** : vide et tension assumés (asymétrie, respiration). Ne pas
+  centrer par défaut ; le centrage est un choix, pas un réflexe.
+- **Retenue** : palette limitée, un seul moment d'accent. Toute déco qui ne sert
+  pas le message → retirée.
+Le tout **dans** la charte (`brand.md`), jamais contre elle : l'art est dans la
+composition, pas dans des couleurs ou des polices inventées.
+**Test : un directeur artistique le sortirait en l'état, ou ça fait « template » ?**
+
 ## Charte par projet
 
 Chaque projet de visuels vit dans `src/templates/<projet>/` et s'appuie sur deux références, dans `assets/<projet>/` :
@@ -36,6 +51,8 @@ Exemple actuel : `assets/comptaopen/brand.md` et `assets/comptaopen/project.md` 
 ## Skills
 
 Les skills (`.claude/skills/`) décrivent *comment faire*, pas le code. Ils encodent des conventions du moteur (contrat `Template`, `asset()`, fonts chargées dans `render.ts`, structure de `brand.md`). **Faire évoluer le moteur → mettre les skills à jour en miroir** dans le même changement.
+
+**Créer un visuel → invoquer le skill plateforme** (`og-image`, `new-template`, `linkedin-*`, `facebook-*`, `x-*`…) : il encode déjà la recette du moteur. Ne pas reverse-engineer en relisant `render.ts`, `build.ts` ou d'autres templates — le skill + `brand.md` (+ `project.md` pour le texte) suffisent. Pas de fichier de référence dupliquant `brand.md` ou les skills.
 
 ## Commands
 
