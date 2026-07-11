@@ -37,7 +37,7 @@ function render(): ReactNode {
 			<div
 				style={{
 					position: "absolute",
-					inset: 0,
+					top: 0, right: 0, bottom: 0, left: 0,
 					backgroundImage: "radial-gradient(circle at 50% 50%, rgba(96,165,250,0.18), rgba(15,23,42,0) 60%)",
 				}}
 			/>
@@ -48,7 +48,7 @@ function render(): ReactNode {
 			<div
 				style={{
 					position: "absolute",
-					inset: 0,
+					top: 0, right: 0, bottom: 0, left: 0,
 					backgroundImage: "radial-gradient(circle at 11% 82%, rgba(29,78,216,0.72), rgba(15,23,42,0) 52%)",
 				}}
 			/>

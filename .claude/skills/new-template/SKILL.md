@@ -90,6 +90,9 @@ Garder le code minimal (principe #2) : pas d'abstraction pour du single-use, pas
 de helper non demandé. Si un effet de fond (trame, glow) est répété, le factoriser
 localement comme dans `cover.tsx`.
 
+Satori ne couvre qu'un sous-ensemble de CSS : lire l'annexe **pièges Satori**
+avant de positionner des calques ou de tenter un effet de texte.
+
 ## 6. Vérifier
 
 - `npm run typecheck` -> vert.
@@ -98,6 +101,19 @@ localement comme dans `cover.tsx`.
 
 **Critère de succès** : le fichier typecheck, rend un PNG, et n'utilise que des
 couleurs/typo issues de `brand.md`.
+
+## Annexe : pièges Satori
+
+Propriétés CSS que Satori ignore **silencieusement** (aucun warning, le calque
+disparaît ou l'effet ne se produit pas) :
+
+- **`inset` n'existe pas.** Un calque avec `position: "absolute", inset: 0`
+  n'est jamais rendu. Écrire les quatre propriétés :
+  `top: 0, right: 0, bottom: 0, left: 0`.
+- **`color: "transparent"` ne rend aucun glyphe**, même combiné à un
+  `WebkitTextStroke`. Pour un effet de texte en contour (outline), donner au
+  texte un `color` de la couleur du fond : le stroke dessine le contour, le
+  fill « troue » visuellement le glyphe.
 
 ## Annexe : police manquante
 

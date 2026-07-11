@@ -35,7 +35,7 @@ function render(): ReactNode {
 			<div
 				style={{
 					position: "absolute",
-					inset: 0,
+					top: 0, right: 0, bottom: 0, left: 0,
 					display: "flex",
 					alignItems: "center",
 					justifyContent: "center",
@@ -52,7 +52,7 @@ function render(): ReactNode {
 			</div>
 
 			{/* Glow bleu cote droit, lumiere dirigee derriere le bloc */}
-			<div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 82% 50%, rgba(37,99,235,0.34), rgba(6,9,17,0) 55%)" }} />
+			<div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, backgroundImage: "radial-gradient(circle at 82% 50%, rgba(37,99,235,0.34), rgba(6,9,17,0) 55%)" }} />
 
 			{/* Bloc focal, cale a droite */}
 			<div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", textAlign: "right" }}>

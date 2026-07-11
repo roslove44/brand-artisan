@@ -36,7 +36,7 @@ function render(): ReactNode {
 			}}
 		>
 			{/* Glow bleu cote droit, derriere le texte */}
-			<div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 82% 50%, rgba(37,99,235,0.34), rgba(6,9,17,0) 55%)" }} />
+			<div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, backgroundImage: "radial-gradient(circle at 82% 50%, rgba(37,99,235,0.34), rgba(6,9,17,0) 55%)" }} />
 
 			{/* Texte du terminal, sans chrome */}
 			<div style={{ display: "flex", flexDirection: "column" }}>
