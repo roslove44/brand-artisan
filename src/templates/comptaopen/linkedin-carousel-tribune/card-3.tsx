@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { Template } from "../../../template";
 import { SIZE, frame, headerRow, wordmarkText, indexText, titleStyle, subStyle, markSrc, PAPER, BLUE_LIGHT } from "./theme";
 
-// Carte 3 — solution. ComptaOpen centralise ce que la carte 2 disperse.
+// Carte 3 : solution. ComptaOpen centralise ce que la carte 2 disperse.
 function render(): ReactNode {
 	return (
 		<div style={frame}>

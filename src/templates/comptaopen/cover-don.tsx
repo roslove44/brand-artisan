@@ -129,4 +129,4 @@ function render(): ReactNode {
 	);
 }
 
-export default { size: SIZE, title: "Couverture don — Soutenir ComptaOpen", render } satisfies Template;
+export default { size: SIZE, title: "Couverture don : Soutenir ComptaOpen", render } satisfies Template;

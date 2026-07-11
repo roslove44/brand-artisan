@@ -3,7 +3,7 @@ name: x-page
 description: Crée les visuels de profil X / Twitter (photo de profil et header / bannière) aux dimensions officielles X. À utiliser quand l'utilisateur veut une "photo de profil X/Twitter", un "header Twitter", une "bannière X" ou "l'avatar X" pour un projet. Produit un ou deux templates .tsx aux tailles imposées par X (profil 400x400, header 1500x500), alignés sur la charte, rendus en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
 ---
 
-# x-page — visuels de profil X / Twitter
+# x-page : visuels de profil X / Twitter
 
 Objectif : produire les **assets PNG** d'un profil X (Twitter) aux dimensions
 **officielles** (source : aide X « customize your profile »), alignés sur la
@@ -16,7 +16,7 @@ C'est une spécialisation de `new-template` avec les contraintes X en dur. Même
 conventions : contrat `Template`, assets via `asset()`, polices chargées dans
 `render.ts`, `export default ... satisfies Template`.
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
@@ -50,7 +50,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 - **Header (1500×500)** : sur mobile, X **rogne les côtés** → garder le contenu
   important centré, marges latérales confortables.
 - **Zone morte bas-gauche (photo de profil)** : sur la page profil, l'avatar
-  recouvre le bas-gauche du header — tout texte/logo qui y tombe est **masqué**.
+  recouvre le bas-gauche du header : tout texte/logo qui y tombe est **masqué**.
   La laisser libre : marge gauche **~2,5 %** de la largeur, boîte **~23 % L ×
   ~35 % H** ancrée en bas-gauche. Sur 1500×500 : env. **x 38→388, y 325→500**.
 

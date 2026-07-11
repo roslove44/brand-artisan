@@ -3,7 +3,7 @@ name: x-carousel
 description: Crée les cartes d'un carousel ad X / Twitter aux dimensions X, comme une série de visuels cohérents. À utiliser quand l'utilisateur veut un "carrousel X", une "publicité carrousel Twitter" ou "plusieurs cartes qui défilent" pour un projet X. Produit N templates .tsx (une carte = un PNG) dans un sous-dossier dédié, partageant une charte commune, alignés sur la brand.md. Nécessite un projet avec sa brand.md en place.
 ---
 
-# x-carousel — cartes d'un carousel ad X / Twitter
+# x-carousel : cartes d'un carousel ad X / Twitter
 
 Objectif : produire les **assets PNG des N cartes** d'un **carousel ad** X
 (Twitter Ads), au ratio choisi, cohérents entre eux et alignés sur la charte. Un
@@ -18,7 +18,7 @@ C'est une spécialisation de `new-template`. Mêmes conventions : contrat
 > **1 à 4 images** affichées en mosaïque (non documentée). Ce que cette skill
 > produit, ce sont les **cartes d'un carousel publicitaire** (X Ads).
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
@@ -60,7 +60,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 - Le **texte du tweet** et les titres de carte se règlent dans X Ads, **pas dans
   l'image** : une idée par carte.
 
-## 3. L'esprit — agencer pour que ça pope
+## 3. L'esprit : agencer pour que ça pope
 
 ### Mécaniques narratives (choisir UNE)
 - **Story séquentielle** : hook -> problème -> solution -> CTA.
@@ -104,7 +104,7 @@ src/templates/<projet>/<nom>/
 - Couleurs depuis `theme.ts`, assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
   manquante » de `new-template`, jamais en silence.
 
-### `theme.ts` — squelette
+### `theme.ts` (squelette)
 
 ```ts
 import type { CSSProperties } from "react";
@@ -129,7 +129,7 @@ export const frame: CSSProperties = {
 };
 ```
 
-### `card-1.tsx` — squelette
+### `card-1.tsx` (squelette)
 
 ```tsx
 import type { ReactNode } from "react";

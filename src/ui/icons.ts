@@ -17,7 +17,7 @@ export const folderIcon = (size: number) => `
 	<rect x="5" y="17" width="54" height="2.5" fill="#ffffff" opacity="0.35"/>
 </svg>`;
 
-// Mini dossier plein (sidebar, path bar, vue liste) — teinté via currentColor.
+// Mini dossier plein (sidebar, path bar, vue liste), teinté via currentColor.
 export const folderMini = (size: number) => `
 <svg width="${size}" height="${size}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 	<path d="M2 5.8C2 4.7 2.9 3.8 4 3.8h3.1c.5 0 1 .2 1.4.6l.9.9c.2.2.5.3.7.3h5.9c1.1 0 2 .9 2 2v6.6c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V5.8z"/>

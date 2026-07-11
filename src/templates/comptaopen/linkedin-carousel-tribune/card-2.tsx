@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { Template } from "../../../template";
 import { SIZE, frame, headerRow, wordmarkText, indexText, titleStyle, subStyle, markSrc, PAPER, BLUE_LIGHT } from "./theme";
 
-// Carte 2 — probleme. Le cout cache de la dispersion.
+// Carte 2 : probleme. Le cout cache de la dispersion.
 function render(): ReactNode {
 	return (
 		<div style={frame}>

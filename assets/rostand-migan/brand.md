@@ -1,4 +1,4 @@
-# Charte de marque — Rostand Migan
+# Charte de marque : Rostand Migan
 
 Référence de l'identité visuelle personnelle de **Rostand Migan** (développeur
 full stack et fondateur). Elle sert toute la marque, pas seulement le portfolio
@@ -12,15 +12,15 @@ pas inventées. Les fichiers logo/favicon vivront dans [`logo/`](logo/) et
 ## 1. Concept et signification
 
 La marque est **personnelle** : c'est le nom et le travail de Rostand Migan, pas
-un produit. L'esthétique de référence est celle de rostand.dev — **épurée, sobre,
+un produit. L'esthétique de référence est celle de rostand.dev : **épurée, sobre,
 technique**, fond blanc, beaucoup de respiration, un seul accent bleu.
 
 Deux porteurs d'identité, à ne pas confondre :
 
-- **Logotype principal — le wordmark `rostand.dev`** (minuscules). Déjà la
+- **Logotype principal : le wordmark `rostand.dev`** (minuscules). Déjà la
   signature de fait, affichée en tête du site. Découpé en deux registres :
   `rostand` en encre, `.dev` en accent bleu (la TLD mise en avant).
-- **Icône / favicon — le monogramme `RM`** sur une tuile à coins arrondis (même
+- **Icône / favicon : le monogramme `RM`** sur une tuile à coins arrondis (même
   principe que le favicon ComptaOpen : un mark compact, lisible à 16 px, là où le
   wordmark deviendrait illisible).
 
@@ -39,7 +39,7 @@ d'icône.
 
 Geist est la police de tout rostand.dev. Elle est désormais chargée dans le
 moteur (`src/render.ts`) en 400/600/700. **Geist Mono** est désormais chargée elle
-aussi (`src/render.ts`, graisses 400/600), instanciée depuis sa variable OFL —
+aussi (`src/render.ts`, graisses 400/600), instanciée depuis sa variable OFL,
 réservée au code et aux détails techniques.
 
 ### Couleurs
@@ -55,14 +55,14 @@ Relevées sur le rendu de rostand.dev (mode clair).
 
 **Mode sombre** : le site propose une bascule clair/sombre. La palette sombre du
 site n'a pas été relevée pixel par pixel ; les variantes sombres du logo
-utilisent les contreparties Tailwind cohérentes — encre claire `#f8fafc`
+utilisent les contreparties Tailwind cohérentes : encre claire `#f8fafc`
 (`slate-50`) et accent `#60a5fa` (`blue-400`). `_(à confirmer sur le site)_`.
 
 ---
 
 ## 2. Variantes
 
-### Logotype — `logo/`
+### Logotype (`logo/`)
 
 Le wordmark **`rostand.dev`** en **Geist 700**, `rostand` en encre et `.dev` en
 bleu. Produit par `src/tools/rostand-migan/build_logo.py`.
@@ -72,11 +72,11 @@ bleu. Produit par `src/tools/rostand-migan/build_logo.py`.
 | `logo.svg` / `logo.png` | Par défaut, sur fond clair (encre + bleu) |
 | `logo-dark.svg` / `logo-dark.png` | Sur fond sombre (couleurs éclaircies, fond transparent) |
 | `logo-mono.svg` | Inline, hérite de `currentColor` (s'aligne sur la couleur de texte du contexte) |
-| `logo-mono-dark.svg` | Tout en encre — impression N&B, fond clair |
-| `logo-mono-white.svg` | Tout en blanc — aplat bleu, photo, fond sombre |
+| `logo-mono-dark.svg` | Tout en encre : impression N&B, fond clair |
+| `logo-mono-white.svg` | Tout en blanc : aplat bleu, photo, fond sombre |
 | `logo-white.png` | Raster sur fond blanc plein |
 
-### Favicon et icône — `favicon/`
+### Favicon et icône (`favicon/`)
 
 Le mark est le monogramme **`RM`** en **Geist 700**, centré sur une **tuile à
 coins arrondis** (rayon 22 %). Couleur par défaut : **RM blanc sur tuile bleue
@@ -95,7 +95,7 @@ coins arrondis** (rayon 22 %). Couleur par défaut : **RM blanc sur tuile bleue
 | `favicon.ico` | Multi-résolution 16 / 32 / 48 |
 
 > L'« icône » actuelle du site est une **photo** de Rostand emballée dans un SVG
-> (`icon.svg` en ligne) — ce n'est pas un mark. Le monogramme RM la remplace.
+> (`icon.svg` en ligne) : ce n'est pas un mark. Le monogramme RM la remplace.
 
 ---
 

@@ -1,4 +1,4 @@
-# src/tools — toolchain de marque (Python)
+# src/tools : toolchain de marque (Python)
 
 Génération des **assets de marque** d'un projet (logo, favicon et leurs
 déclinaisons). Monde séparé du moteur de composition TypeScript/Satori : ici on

@@ -3,7 +3,7 @@ name: og-image
 description: Crée une image Open Graph (aperçu de partage réseaux sociaux) optimisée pour BrandArtisan. À utiliser quand l'utilisateur veut une "og image", une "image de partage", un aperçu "Open Graph / Twitter / LinkedIn / Discord" pour un projet. Produit un template .tsx en 1200x630 aligné sur la charte, rendu en PNG léger via le moteur Satori du projet. Nécessite un projet avec sa brand.md en place.
 ---
 
-# og-image — image Open Graph optimisée
+# og-image : image Open Graph optimisée
 
 Objectif : produire l'**asset PNG** d'une image de partage (1200×630), via le
 pipeline du projet (Satori -> resvg), aligné sur la charte. BrandArtisan ne génère
@@ -14,7 +14,7 @@ C'est une spécialisation de `new-template` avec les contraintes OG en dur. Mêm
 conventions : contrat `Template` (`src/template.ts`), assets via `asset()`,
 polices chargées dans `render.ts`, `export default ... satisfies Template`.
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister avant de
 commencer. Ne pas débuter tant que ce n'est pas le cas :
@@ -43,7 +43,7 @@ commencer. Ne pas débuter tant que ce n'est pas le cas :
 - **Fond opaque**, jamais de transparence : les plateformes composent l'image
   sur des fonds variés.
 - **Zone de sécurité** ~80 px de marge : garder logo et texte vers le centre.
-  Les coins peuvent être rognés ou arrondis (Discord, X) — rien d'important dans
+  Les coins peuvent être rognés ou arrondis (Discord, X) : rien d'important dans
   les angles.
 - **Lisible en petit** : l'aperçu s'affiche souvent ~400 px de large sur mobile.
   Titre gros (~60–90 px), tagline courte, fort contraste. Test mental : lisible
@@ -52,7 +52,7 @@ commencer. Ne pas débuter tant que ce n'est pas le cas :
   (WhatsApp notamment) ne génèrent pas l'aperçu. Le rendu flat du moteur est
   naturellement léger : privilégier le mark **SVG en data-URI** (comme
   `cover.tsx`), éviter d'embarquer de gros PNG raster, et **ne pas gonfler avec
-  `scale`** — `scale` absent (= 1) suffit à 1200×630 pour de l'OG.
+  `scale`** : `scale` absent (= 1) suffit à 1200×630 pour de l'OG.
 - **PNG** : c'est la sortie du moteur, idéal pour du texte net.
 
 ## 3. Écrire le template

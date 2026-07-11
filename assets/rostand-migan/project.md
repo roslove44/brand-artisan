@@ -1,4 +1,4 @@
-# Projet — Rostand Migan
+# Projet : Rostand Migan
 
 Référence de **substance et de voix** pour rédiger les textes des visuels (titres,
 accroches, messages) de la marque personnelle de Rostand Migan. Complète
@@ -12,7 +12,7 @@ En cas de doute sur un fait (parcours, stack, projets), s'y reporter.
 ## 1. En une phrase
 
 Rostand Migan est un **développeur full stack et fondateur** : il construit des
-logiciels qui marchent — applications web, outils fintech — pensés pour les
+logiciels qui marchent (applications web, outils fintech) pensés pour les
 utilisateurs et ancrés dans des contraintes réelles.
 
 **Titre affiché** : « Full Stack Developer & Builder ».
@@ -22,11 +22,11 @@ utilisateurs et ancrés dans des contraintes réelles.
 Une **marque personnelle**, pas un produit. Elle porte deux casquettes :
 
 - **Développeur full stack** : il livre des projets de bout en bout. Stack
-  adaptée au contexte — **Symfony, Next.js, Go** notamment ; « whatever solves
+  adaptée au contexte : **Symfony, Next.js, Go** notamment ; « whatever solves
   the problem best ». Parcours **autodidacte** (depuis 2022).
 - **Fondateur / builder** : il construit ses propres produits. Le principal est
   **ComptaOpen** (plateforme ouverte pour les professionnels de la gestion en
-  Afrique de l'Ouest — voir le projet `comptaopen`). Autres projets cités :
+  Afrique de l'Ouest ; voir le projet `comptaopen`). Autres projets cités :
   **Gestiloc.io** (SaaS de gestion locative), **GoogleMapsScrape** (extraction de
   prospects).
 

@@ -1,4 +1,4 @@
-# Charte de marque — ComptaOpen
+# Charte de marque : ComptaOpen
 
 Référence du logo ComptaOpen : sa signification, ses variantes et ses règles
 d'usage. Les fichiers vivent dans [`logo/`](logo/) et [`favicon/`](favicon/),
@@ -59,18 +59,18 @@ Le bleu est la couleur d'action de toute la plateforme ; l'orange/amber reste un
 
 ## 2. Variantes
 
-### Logotype — `logo/`
+### Logotype (`logo/`)
 
 | Fichier | Quand l'utiliser |
 |---|---|
 | `logo.svg` / `logo.png` | Par défaut, sur fond clair |
 | `logo-dark.svg` / `logo-dark.png` | Sur fond sombre (couleurs éclaircies, fond transparent) |
 | `logo-mono.svg` | Inline, hérite de `currentColor` (s'aligne sur la couleur de texte du contexte) |
-| `logo-mono-dark.svg` | Tout en encre — fond clair, impression N&B |
-| `logo-mono-white.svg` | Tout en blanc — aplat bleu, photo, fond sombre |
+| `logo-mono-dark.svg` | Tout en encre : fond clair, impression N&B |
+| `logo-mono-white.svg` | Tout en blanc : aplat bleu, photo, fond sombre |
 | `logo-white.png` | Raster sur fond blanc plein |
 
-### Favicon et icônes d'app — `favicon/`
+### Favicon et icônes d'app (`favicon/`)
 
 Le favicon est le **bracket-O seul**, en blanc, centré sur une tuile bleue
 (`#1d4ed8`) à coins arrondis (rayon ≈ 22 %). Réduit au wordmark, le mot
@@ -117,7 +117,7 @@ hauteur du bracket-O**. Rien (texte, bord, autre logo) n'entre dans cette zone.
 ### À ne pas faire
 
 - Ne pas **recolorer** le logo hors des variantes fournies.
-- Ne pas **déformer** (étirer, comprimer, incliner) — conserver le ratio.
+- Ne pas **déformer** (étirer, comprimer, incliner) : conserver le ratio.
 - Ne pas **séparer** le bracket-O des mots dans le logotype, ni recomposer
   manuellement `COMPTA O PEN` avec un vrai « O ».
 - Ne pas ajouter **ombre, contour, dégradé** ni d'effet.

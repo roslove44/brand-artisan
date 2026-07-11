@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { Template } from "../../../template";
 import { SIZE, frame, headerRow, wordmarkText, indexText, titleStyle, markSrc, PAPER, BLUE_LIGHT } from "./theme";
 
-// Carte 1 — hook. Seule visible avant le swipe : un seul message, ton pro.
+// Carte 1 : hook. Seule visible avant le swipe : un seul message, ton pro.
 function render(): ReactNode {
 	return (
 		<div style={frame}>

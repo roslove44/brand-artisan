@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Fabrique des images (couvertures, OG, bannières) via Satori + resvg — le moteur next/og sorti de Next.",
+  "description": "Fabrique des images (couvertures, OG, bannières) via Satori + resvg : le moteur next/og sorti de Next.",
   "scripts": {
     "dev": "tsx watch src/serve.ts",
     "build": "tsx src/build.ts",

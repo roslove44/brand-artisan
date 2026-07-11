@@ -1,4 +1,4 @@
-"""brandkit — socle partage de la toolchain de marque BrandArtisan.
+"""brandkit : socle partage de la toolchain de marque BrandArtisan.
 
 Plomberie reutilisable (skia SVG -> PNG, builder .ico, instanciation de police
 variable + extraction de glyphes). La geometrie et les couleurs propres a une

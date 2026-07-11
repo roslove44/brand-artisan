@@ -11,8 +11,8 @@ const SIZE = { width: 1584, height: 396, scale: 2 };
 const PAD_RIGHT = Math.round((1584 * 55) / 790); // ~110
 
 // Palette charte Rostand Migan, contreparties mode sombre (brand.md §1).
-const INK = "#f8fafc"; // encre claire — titre, focal (slate-50)
-const ACCENT = "#60a5fa"; // accent unique — .dev, glow, motif (blue-400)
+const INK = "#f8fafc"; // encre claire : titre, focal (slate-50)
+const ACCENT = "#60a5fa"; // accent unique : .dev, glow, motif (blue-400)
 const GEIST = "Geist";
 
 function render(): ReactNode {
@@ -62,7 +62,7 @@ function render(): ReactNode {
 					<span style={{ color: ACCENT }}>.dev</span>
 				</div>
 
-				{/* Titre — point focal, contraste de valeur (blanc sur sombre) */}
+				{/* Titre : point focal, contraste de valeur (blanc sur sombre) */}
 				<div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginTop: 26, fontFamily: GEIST, fontWeight: 700, fontSize: 58, lineHeight: 1.02, letterSpacing: -1.5, color: INK }}>
 					<span style={{ display: "flex" }}>Développeur Full Stack</span>
 					<span style={{ display: "flex" }}>&amp; Comptable</span>
@@ -72,4 +72,4 @@ function render(): ReactNode {
 	);
 }
 
-export default { size: SIZE, title: "Banner LinkedIn Rostand Migan (FR) — v2", render } satisfies Template;
+export default { size: SIZE, title: "Banner LinkedIn Rostand Migan (FR) v2", render } satisfies Template;

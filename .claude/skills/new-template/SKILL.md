@@ -3,7 +3,7 @@ name: new-template
 description: Scaffolde un nouveau visuel (.tsx) dans un projet BrandArtisan existant, aligné sur sa charte brand.md. À utiliser quand l'utilisateur veut créer une nouvelle image/couverture/bannière/OG dans un projet ("nouveau visuel", "ajoute une couverture pour X", "crée l'OG de Y"). Lit obligatoirement assets/<projet>/brand.md et refuse si absente.
 ---
 
-# new-template — scaffold d'un visuel
+# new-template : scaffold d'un visuel
 
 Objectif : créer `src/templates/<projet>/<nom>.tsx` conforme au contrat
 `Template` et **aligné sur la charte du projet**.
@@ -14,7 +14,7 @@ Les prendre dans les arguments. Sinon les demander. `<nom>` est un slug
 kebab-case (ex. `cover`, `og-home`, `banniere-linkedin`). Vérifier que
 `src/templates/<projet>/<nom>.tsx` n'existe pas déjà.
 
-## 2. Lire la charte — bloquant
+## 2. Lire la charte (bloquant)
 
 **Lire `assets/<projet>/brand.md`.** Si le fichier n'existe pas -> **STOP** :
 ne pas produire de visuel, dire à l'utilisateur de lancer `/new-project <projet>`
@@ -48,11 +48,11 @@ silence (principe #1 de CLAUDE.md).
 
 Respecter le contrat (`src/template.ts`) et les conventions du projet :
 
-- Couleurs en **constantes nommées tirées de la charte** — ne pas inventer de hex.
-- Polices : celles chargées dans `src/render.ts` — consulter le tableau `fonts`
+- Couleurs en **constantes nommées tirées de la charte** : ne pas inventer de hex.
+- Polices : celles chargées dans `src/render.ts` : consulter le tableau `fonts`
   pour les familles et graisses disponibles (fichiers dans `assets/fonts/`). Si la
   charte impose une autre police absente d'`assets/fonts/`,
-  suivre la procédure **Police manquante** ci-dessous — ne jamais l'utiliser en
+  suivre la procédure **Police manquante** ci-dessous : ne jamais l'utiliser en
   silence.
 - Assets via `asset("<projet>/...")` (jamais de chemin relatif au cwd ni de
   `../../..`).
@@ -99,11 +99,11 @@ localement comme dans `cover.tsx`.
 **Critère de succès** : le fichier typecheck, rend un PNG, et n'utilise que des
 couleurs/typo issues de `brand.md`.
 
-## Annexe — police manquante
+## Annexe : police manquante
 
 Si la charte impose une police qui n'est pas dans `assets/fonts/` :
 
-1. **Demander l'autorisation** de la récupérer — action réseau sortante, jamais
+1. **Demander l'autorisation** de la récupérer : action réseau sortante, jamais
    en silence. Nommer la **source** et la **licence** avant de télécharger.
 2. **Source fiable, format ttf/otf** (Satori ne lit pas le woff2) : le `.ttf`
    brut du repo officiel (`github.com/google/fonts`) ou un package
@@ -114,7 +114,7 @@ Si la charte impose une police qui n'est pas dans `assets/fonts/` :
    nommage existante), via `curl -L <url> -o ...` ou `Invoke-WebRequest -OutFile`.
    WebFetch ne convient pas (binaire).
 4. **Vérifier le fichier** : taille non nulle et en-tête de vraie police
-   (`.ttf` commence par `00 01 00 00`, OpenType par `OTTO`) — pas une page
+   (`.ttf` commence par `00 01 00 00`, OpenType par `OTTO`), pas une page
    d'erreur HTML déguisée, qui ferait planter Satori à l'exécution.
 5. **Enregistrer dans `src/render.ts`** : ajouter au tableau `fonts` une entrée
    `{ name, weight, style, data: await readFile(asset("fonts/<fichier>")) }`.

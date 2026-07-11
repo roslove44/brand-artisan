@@ -9,11 +9,11 @@ import type { Template } from "../../template";
 const SIZE = { width: 1584, height: 396, scale: 2 };
 const PAD_RIGHT = Math.round((1584 * 55) / 790); // ~110
 
-const BLUE = "#60a5fa"; // accent — chemin du prompt, sortie
+const BLUE = "#60a5fa"; // accent : chemin du prompt, sortie
 const GREEN = "#7ee787"; // valeur (produit)
 const TEXT = "#e2e8f0"; // commande
 const SOFT = "#cbd5e1"; // sortie
-const DESC = "#94a3b8"; // description — slate-400, contraste AA meme sur le glow (>= 4.5)
+const DESC = "#94a3b8"; // description : slate-400, contraste AA meme sur le glow (>= 4.5)
 const MUTED = "#64748b"; // separateurs ~ uniquement (decoratif, exempte WCAG)
 
 const MONO = "Geist Mono";

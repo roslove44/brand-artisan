@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guide Claude Code pour **BrandArtisan** — un outil de construction d'images de marque (façon next/og).
+Guide Claude Code pour **BrandArtisan**, un outil de construction d'images de marque (façon next/og).
 
 ## Principes
 
@@ -12,19 +12,19 @@ Guide Claude Code pour **BrandArtisan** — un outil de construction d'images de
 
 **4. Goal-driven execution.** Définir un critère de succès vérifiable, boucler jusqu'à validation. *Add validation* → écrire les tests pour inputs invalides, puis les faire passer. *Fix bug* → test qui reproduit, puis faire passer. *Refactor X* → tests verts avant ET après. Multi-step → plan bref `Step → verify: check`. Critères forts = autonomie ; critères faibles (« make it work ») = clarifications permanentes.
 
-**5. Qualité — tolérance zéro.** Signaler **immédiatement** tout anti-pattern React 19+ : `useEffect` abusif, état dérivé inutile, state-flag relay, props drilling évitable, re-renders inutiles. Pas de « on verra plus tard ». `eslint-disable` = dernier recours absolu : épuiser toutes les alternatives (refacto, `key` prop, extraction de hook) avant ; justifier dans un commentaire si inévitable.
+**5. Qualité : tolérance zéro.** Signaler **immédiatement** tout anti-pattern React 19+ : `useEffect` abusif, état dérivé inutile, state-flag relay, props drilling évitable, re-renders inutiles. Pas de « on verra plus tard ». `eslint-disable` = dernier recours absolu : épuiser toutes les alternatives (refacto, `key` prop, extraction de hook) avant ; justifier dans un commentaire si inévitable.
 
-**6. Franchise absolue.** Être direct et franc sur les problèmes de code et autres que l'utilisateur présente. Pas besoin de prendre des gants — priorité : qualité du projet.
+**6. Franchise absolue.** Être direct et franc sur les problèmes de code et autres que l'utilisateur présente. Pas besoin de prendre des gants ; priorité : qualité du projet.
 
 ## 7. Never change code you haven't read
 
 ## 8. Pour les rédactions en français, pense à bien respecter les accents et surtout la grammaire et l’orthographe
 
-## 9. Exigence graphique — chaque visuel est composé, pas rempli
+## 9. Exigence graphique : chaque visuel est composé, pas rempli
 
 Un visuel n'est pas « du texte sur un fond ». Avant de rendre, vérifier :
 - **Concept** : une idée visuelle porte le message (un motif, un cadrage, un jeu
-  sur le logo) — pas seulement un titre posé sur un dégradé.
+  sur le logo), pas seulement un titre posé sur un dégradé.
 - **Hiérarchie** : un seul point focal, contraste d'échelle fort entre titre,
   kicker et accroche. Si deux éléments se disputent l'œil → en subordonner un.
 - **Composition** : vide et tension assumés (asymétrie, respiration). Ne pas
@@ -39,12 +39,12 @@ composition, pas dans des couleurs ou des polices inventées.
 
 Chaque projet de visuels vit dans `src/templates/<projet>/` et s'appuie sur deux références, dans `assets/<projet>/` :
 
-- **`brand.md` — identité visuelle (« à quoi ça ressemble »)** : palette, logotype, typographie, do/don't.
-- **`project.md` — substance et voix (« qu'est-ce que ça dit, pour qui, sur quel ton »)** : pitch, produit, public cible, proposition de valeur, voix éditoriale, vocabulaire et claims autorisés.
+- **`brand.md`, identité visuelle (« à quoi ça ressemble »)** : palette, logotype, typographie, do/don't.
+- **`project.md`, substance et voix (« qu'est-ce que ça dit, pour qui, sur quel ton »)** : pitch, produit, public cible, proposition de valeur, voix éditoriale, vocabulaire et claims autorisés.
 
 **`brand.md` est bloquant.** Avant de créer ou modifier un visuel, lire son `assets/<projet>/brand.md` : s'aligner sur la palette et la typographie, ne pas inventer de couleurs ni recomposer le logo à la main. **S'il n'existe pas, ne pas poursuivre : demander qu'il soit mis en place d'abord.** Pas de visuel sans charte de référence.
 
-**`project.md` est lu s'il existe.** Avant de rédiger du texte sur un visuel (titre, accroche, message), lire `assets/<projet>/project.md` pour caler le ton et ne pas inventer de chiffres ni de promesses. **S'il manque, demander le ton et les claims plutôt que de deviner** — ne pas fabriquer de copy au jugé.
+**`project.md` est lu s'il existe.** Avant de rédiger du texte sur un visuel (titre, accroche, message), lire `assets/<projet>/project.md` pour caler le ton et ne pas inventer de chiffres ni de promesses. **S'il manque, demander le ton et les claims plutôt que de deviner** : ne pas fabriquer de copy au jugé.
 
 **Briefs ponctuels.** Un projet peut avoir des briefs thématiques à côté de la paire (ex. `assets/comptaopen/donation.md` pour les visuels liés au don) : les lire quand le visuel demandé s'y rapporte. Ils précisent un besoin, ils ne remplacent ni `brand.md` ni `project.md`.
 
@@ -58,7 +58,7 @@ Le Python (`src/tools/`) sert à **générer les assets de marque** que le moteu
 
 Les skills (`.claude/skills/`) décrivent *comment faire*, pas le code. Ils encodent des conventions du moteur (contrat `Template`, `asset()`, fonts chargées dans `render.ts`, structure de `brand.md`). **Faire évoluer le moteur → mettre les skills à jour en miroir** dans le même changement.
 
-**Créer un visuel → invoquer le skill plateforme** (`og-image`, `new-template`, `linkedin-*`, `facebook-*`, `x-*`…) : il encode déjà la recette du moteur. Ne pas reverse-engineer en relisant `render.ts`, `build.ts` ou d'autres templates — le skill + `brand.md` (+ `project.md` pour le texte) suffisent. Pas de fichier de référence dupliquant `brand.md` ou les skills.
+**Créer un visuel → invoquer le skill plateforme** (`og-image`, `new-template`, `linkedin-*`, `facebook-*`, `x-*`…) : il encode déjà la recette du moteur. Ne pas reverse-engineer en relisant `render.ts`, `build.ts` ou d'autres templates : le skill + `brand.md` (+ `project.md` pour le texte) suffisent. Pas de fichier de référence dupliquant `brand.md` ou les skills.
 
 **L'utilisateur fournit des exemples visuels** (son logo, ses visuels existants, une image qui lui plaît) → invoquer `import-reference` : il encode comment mesurer (Pillow) plutôt que deviner, et le garde-fou composition-vient-de-l'exemple / habillage-vient-de-la-charte.
 

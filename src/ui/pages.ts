@@ -179,7 +179,7 @@ function listView(entries: Entry[], view: View): string {
 		return `
 			<tr data-href="${href}">
 				<td><span class="name-cell">${icon}<a href="${href}">${esc(e.name)}</a></span></td>
-				<td class="dim">${dims(e) || "—"}</td>
+				<td class="dim">${dims(e) || "--"}</td>
 				<td class="type">${type}</td>
 			</tr>`;
 	});
@@ -196,7 +196,7 @@ function galleryView(entries: Entry[], view: View): string {
 	);
 	const items = entries.map((e) => {
 		const href = e.kind === "dir" ? dirHref(e.rel, view) : imgHref(e.rel);
-		const meta = e.kind === "dir" ? "Dossier · double-clic pour ouvrir" : `${dims(e) || "—"} · double-clic pour ouvrir`;
+		const meta = e.kind === "dir" ? "Dossier · double-clic pour ouvrir" : `${dims(e) || "--"} · double-clic pour ouvrir`;
 		return `
 			<button class="gitem" type="button" data-href="${href}" data-label="${esc(e.name)}" data-meta="${esc(meta)}">
 				${entryIcon(e, 40, 120)}

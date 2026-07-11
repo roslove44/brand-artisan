@@ -3,7 +3,7 @@ name: campagne
 description: Orchestre la production d'un kit de visuels cohérent sur plusieurs plateformes à partir d'un seul brief. À utiliser quand l'utilisateur veut "une campagne", "décliner sur Facebook/LinkedIn/X", "un kit de visuels", "tous les visuels d'un lancement" ou "la même annonce sur tous les réseaux". Mène l'interview une seule fois, consolide le message depuis project.md, puis délègue aux skills plateforme (facebook-*, linkedin-*, x-*, og-image). Nécessite un projet avec sa brand.md (et idéalement sa project.md) en place.
 ---
 
-# campagne — kit de visuels multi-plateformes
+# campagne : kit de visuels multi-plateformes
 
 Objectif : produire un **ensemble cohérent** de visuels pour **plusieurs
 plateformes** à partir d'**un seul brief**. Cette skill ne crée pas les images
@@ -11,12 +11,12 @@ elle-même : elle **mène l'interview une fois**, consolide le message, puis
 **délègue** aux skills plateforme. C'est le chef d'orchestre ; les briques
 restent `og-image`, `facebook-*`, `linkedin-*`, `x-*`.
 
-> **Garde-fou — ne pas dupliquer.** Cette skill ne réécrit **jamais** les
+> **Garde-fou : ne pas dupliquer.** Cette skill ne réécrit **jamais** les
 > dimensions, ratios ou contraintes d'une plateforme : elle renvoie à la skill
 > concernée et la laisse appliquer ses propres specs. Son seul périmètre propre
 > est le **brief** et la **cohérence** de l'ensemble.
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 - Résoudre `<projet>` (arguments, sinon demander).
 - Vérifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
@@ -26,7 +26,7 @@ restent `og-image`, `facebook-*`, `linkedin-*`, `x-*`.
   socle du brief : s'il manque, demander le ton et les claims plutôt que
   d'inventer.
 
-## 1. Interview (le cœur — tirer le meilleur de l'utilisateur)
+## 1. Interview (le cœur : tirer le meilleur de l'utilisateur)
 
 Mener une seule fois, en s'appuyant sur `project.md` pour proposer plutôt que
 faire deviner :
@@ -34,7 +34,7 @@ faire deviner :
 1. **Objectif** de la campagne : lancement, promo d'un outil, annonce,
    recrutement, événement… (un objectif clair = un message clair).
 2. **Plateformes cibles** : Facebook, LinkedIn, X, OG générique (et combinaisons).
-3. **Formats voulus** par plateforme : profil/header, post, carrousel — ou
+3. **Formats voulus** par plateforme : profil/header, post, carrousel, ou
    laisser les défauts de chaque skill plateforme.
 4. **Message clé** : proposer **2-3 angles** tirés de `project.md` (produit réel,
    proposition de valeur), faire **choisir et affiner**. Ne jamais inventer de
@@ -47,7 +47,7 @@ Présenter les choix manquants, ne pas trancher en silence (principe #1 CLAUDE.m
 ## 2. Brief consolidé
 
 Écrire un **message maître** unique (titre + accroche), puis sa **déclinaison de
-ton par plateforme** — même fond, registre adapté. Repère par défaut (à ajuster
+ton par plateforme** : même fond, registre adapté. Repère par défaut (à ajuster
 selon `project.md`) :
 
 | Plateforme | Registre |
@@ -60,7 +60,7 @@ selon `project.md`) :
 Le message maître et toutes ses déclinaisons restent dans les **claims
 autorisés** par `project.md`.
 
-## 3. Fan-out — déléguer aux skills plateforme
+## 3. Fan-out : déléguer aux skills plateforme
 
 Pour chaque couple (plateforme, format) retenu, appliquer la **skill
 correspondante** en lui passant le **message déjà décliné** et le projet. Ne pas
@@ -83,7 +83,7 @@ Cohérence inter-plateformes (le rôle propre de `campagne`) :
 
 - **Même message maître** partout, seul le ton et le cadrage changent.
 - **Mêmes partis pris visuels** quand c'est pertinent (même fond clair ou sombre,
-  même variante de logo) — dans le respect de `brand.md`.
+  même variante de logo), dans le respect de `brand.md`.
 - Slugs cohérents : préfixer par la campagne si utile
   (ex. `lancement-facebook-post`, `lancement-x-post`) pour regrouper la sortie.
 
@@ -92,7 +92,7 @@ Cohérence inter-plateformes (le rôle propre de `campagne`) :
 - `npm run typecheck` -> vert ; `npm run build` -> écrit tous les PNG.
 - Contrôler **chaque** visuel via le critère de sa skill plateforme (dimensions,
   poids, fond opaque).
-- **Cohérence du kit** : relire l'ensemble côte à côte — message aligné, ton
+- **Cohérence du kit** : relire l'ensemble côte à côte ; message aligné, ton
   adapté sans rupture de marque, claims conformes à `project.md`.
 - **Récap** : lister les PNG produits **par plateforme**, et rappeler le message
   maître retenu.

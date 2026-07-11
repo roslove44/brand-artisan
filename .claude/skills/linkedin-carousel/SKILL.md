@@ -3,7 +3,7 @@ name: linkedin-carousel
 description: Crée les cartes d'un carousel ad LinkedIn (Campaign Manager) aux dimensions LinkedIn, comme une série de visuels 1:1 cohérents. À utiliser quand l'utilisateur veut un "carrousel LinkedIn", une "publicité carrousel LinkedIn" ou "plusieurs cartes qui défilent" pour un projet LinkedIn. Produit N templates .tsx (une carte = un PNG, ratio 1:1) dans un sous-dossier dédié, partageant une charte commune, alignés sur la brand.md. Nécessite un projet avec sa brand.md en place.
 ---
 
-# linkedin-carousel — cartes d'un carousel ad LinkedIn
+# linkedin-carousel : cartes d'un carousel ad LinkedIn
 
 Objectif : produire les **assets PNG des N cartes** d'un **carousel ad** LinkedIn
 (Campaign Manager / Sponsored Content), au format **1:1**, cohérents entre eux et
@@ -18,10 +18,10 @@ C'est une spécialisation de `new-template`. Mêmes conventions : contrat
 > **Carousel ad ≠ carrousel organique.** Ce que tu produis ici, ce sont les
 > **cartes images 1:1** d'un *carousel ad* (publicité, Campaign Manager). Le
 > « carrousel » **organique** du fil LinkedIn est un **document multi-pages
-> (PDF)**, pas une série d'images — **hors périmètre** de ce moteur (qui sort du
+> (PDF)**, pas une série d'images : **hors périmètre** de ce moteur (qui sort du
 > PNG).
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
@@ -60,7 +60,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 - Le **texte d'intro** et les headlines/liens se règlent dans Campaign Manager,
   **pas dans l'image** : une idée par carte.
 
-## 3. L'esprit — agencer pour que ça pope
+## 3. L'esprit : agencer pour que ça pope
 
 ### Mécaniques narratives (choisir UNE)
 - **Story séquentielle** : hook -> problème -> solution -> preuve -> CTA.
@@ -111,7 +111,7 @@ src/templates/<projet>/<nom>/
 - Couleurs depuis `theme.ts`, assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
   manquante » de `new-template`, jamais en silence.
 
-### `theme.ts` — squelette
+### `theme.ts` (squelette)
 
 ```ts
 import type { CSSProperties } from "react";
@@ -136,7 +136,7 @@ export const frame: CSSProperties = {
 };
 ```
 
-### `card-1.tsx` — squelette
+### `card-1.tsx` (squelette)
 
 ```tsx
 import type { ReactNode } from "react";

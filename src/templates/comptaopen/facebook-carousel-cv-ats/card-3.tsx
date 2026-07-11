@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { Template } from "../../../template";
 import { SIZE, frame, headerRow, wordmarkText, indexText, titleStyle, subStyle, markSrc, PAPER, BLUE_LIGHT } from "./theme";
 
-// Carte 3 — solution. ComptaOpen resout le probleme pose en carte 2.
+// Carte 3 : solution. ComptaOpen resout le probleme pose en carte 2.
 function render(): ReactNode {
 	return (
 		<div style={frame}>

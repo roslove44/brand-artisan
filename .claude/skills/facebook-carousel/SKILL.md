@@ -3,7 +3,7 @@ name: facebook-carousel
 description: Crée les cartes d'une publicité carrousel Facebook (carousel ad) aux dimensions Meta, comme une série de visuels cohérents. À utiliser quand l'utilisateur veut un "carrousel Facebook", une "publicité carrousel", un "carousel ad" ou "plusieurs cartes qui défilent" pour un projet. Produit N templates .tsx (une carte = un PNG) dans un sous-dossier dédié, partageant une charte commune, alignés sur la brand.md. Nécessite un projet avec sa brand.md en place.
 ---
 
-# facebook-carousel — cartes d'un carrousel Facebook
+# facebook-carousel : cartes d'un carrousel Facebook
 
 Objectif : produire les **assets PNG des N cartes** d'un carrousel publicitaire
 Facebook, au **ratio Meta** choisi, **cohérents entre eux** et alignés sur la
@@ -15,11 +15,11 @@ C'est une spécialisation de `new-template`. Mêmes conventions : contrat
 `render.ts`, `export default ... satisfies Template`.
 
 > **Statut des dimensions.** Les specs viennent du **Gestionnaire de publicités**
-> Meta (Ads Guide + pages d'aide carrousel) — il n'existe pas de spec de post
+> Meta (Ads Guide + pages d'aide carrousel) ; il n'existe pas de spec de post
 > organique. Les ratios sont officiels Meta ; le « 1080×1080 » est une
 > convention (Meta documente 1024×1024 comme minimum recommandé en 1:1).
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
@@ -51,7 +51,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 | Point | Valeur | Statut |
 |---|---|---|
 | Nombre de cartes | 2 à 10 (sweet spot 3-5) | Officiel Meta |
-| Ratio (identique partout) | 1:1, 4:5 ou 9:16 — tolérance 3 % | Officiel Meta |
+| Ratio (identique partout) | 1:1, 4:5 ou 9:16 (tolérance 3 %) | Officiel Meta |
 | Taille 1:1 | **1080x1080** (min reco Meta 1024) | Convention / Meta |
 | Taille 4:5 | 1080x1350 | Officiel Meta |
 | Taille 9:16 | 1080x1920 | Officiel Meta |
@@ -66,7 +66,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 - L'ancienne **règle des 20 % de texte** est abandonnée (2021), mais une carte
   surchargée reste illisible sur mobile : **une idée par carte**.
 
-## 3. L'esprit — agencer pour que ça pope
+## 3. L'esprit : agencer pour que ça pope
 
 ### Mécaniques narratives (choisir UNE)
 - **Story séquentielle** : hook -> problème -> solution -> preuve -> CTA. Chaque
@@ -89,7 +89,7 @@ contraste, un élément qui crée la curiosité (chiffre sans contexte, visuel q
 - **Palette et typo identiques** sur toutes les cartes (un seul accent qui varie
   au besoin).
 - **Logo en position fixe et discrète** (même coin partout), jamais en pièce
-  maîtresse — l'agrandir sur chaque carte est une erreur fréquente.
+  maîtresse : l'agrandir sur chaque carte est une erreur fréquente.
 - **Placements constants** : si le titre est en bas, il est toujours en bas.
 - **Fil conducteur visuel** : élément ou couleur qui relie les cartes ; une
   nuance qui évolue de carte en carte signale la progression.
@@ -130,7 +130,7 @@ src/templates/<projet>/<nom>/
   les polices chargées dans `render.ts` ; police absente -> annexe
   « police manquante » de `new-template`, jamais en silence.
 
-### `theme.ts` — squelette
+### `theme.ts` (squelette)
 
 ```ts
 import type { CSSProperties } from "react";
@@ -154,7 +154,7 @@ export const frame: CSSProperties = {
 };
 ```
 
-### `card-1.tsx` — squelette
+### `card-1.tsx` (squelette)
 
 ```tsx
 import type { ReactNode } from "react";
@@ -176,7 +176,7 @@ export default { size: SIZE, render } satisfies Template;
 
 (Sans `title`, le PNG sort sous le nom du fichier : `out/<projet>/<nom>/card-1.png`.)
 
-### Avertissement — mode seamless (panoramique)
+### Avertissement : mode seamless (panoramique)
 
 Facebook insère des **gouttières** (bordure + ombre) entre les cartes : une image
 panoramique n'est **jamais** parfaitement continue à l'écran. Si l'utilisateur

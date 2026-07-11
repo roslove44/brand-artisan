@@ -5,7 +5,7 @@ import { asset } from "../../assets";
 
 // Cover d'article 16:9 (1280x720) pour le site ComptaOpen.
 // Article : « La comptabilite n'est pas une discipline isolee.
-//            C'est le langage de toute l'entreprise. » — Rostand MIGAN.
+//            C'est le langage de toute l'entreprise. » (Rostand MIGAN).
 const SIZE = { width: 1280, height: 720 };
 
 // Palette charte ComptaOpen (assets/comptaopen/brand.md). Fond sombre.
@@ -104,4 +104,4 @@ function render(): ReactNode {
 	);
 }
 
-export default { size: SIZE, title: "Cover article — Le langage de toute l'entreprise", render } satisfies Template;
+export default { size: SIZE, title: "Cover article : Le langage de toute l'entreprise", render } satisfies Template;

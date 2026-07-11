@@ -3,7 +3,7 @@ name: facebook-page
 description: Crée les visuels d'une Page Facebook (photo de profil = la marque, et photo de couverture) aux dimensions officielles Facebook. À utiliser quand l'utilisateur veut une "photo de profil Facebook", une "couverture Facebook", une "bannière de page Facebook" ou "le logo de la page FB" pour un projet. Produit un ou deux templates .tsx aux tailles imposées par Facebook (profil 320x320, couverture 851x315), alignés sur la charte, rendus en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
 ---
 
-# facebook-page — visuels d'une Page Facebook
+# facebook-page : visuels d'une Page Facebook
 
 Objectif : produire les **assets PNG** d'une Page Facebook aux dimensions
 **officielles** (source : page d'aide Facebook 125379114252045), alignés sur la
@@ -18,7 +18,7 @@ Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
 `asset()`, polices chargées dans `render.ts`, `export default ... satisfies
 Template`.
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister avant de
 commencer :
@@ -62,14 +62,14 @@ Dimensions **officielles** Facebook (ne pas dévier) :
   16:9. Garder texte et logo à l'intérieur, avec une marge latérale d'au moins
   **~60 px**.
 - **Zone morte bas-gauche (photo de profil)** : sur la page, l'avatar recouvre le
-  bas-gauche de la cover — tout texte/logo qui y tombe est **masqué**. La laisser
+  bas-gauche de la cover : tout texte/logo qui y tombe est **masqué**. La laisser
   libre : marge gauche **~2,5 %** de la largeur, boîte **~11 % L × ~23 % H** ancrée
   en bas-gauche. Sur 851×315 : env. **x 22→116, y 243→315**.
 - **Fond opaque**, jamais de transparence.
 
 ### Format et poids (les deux)
 - **PNG** : Facebook recommande le PNG dès qu'il y a logo ou texte (plus net que
-  le JPG) — c'est justement la sortie du moteur.
+  le JPG) : c'est justement la sortie du moteur.
 - **< 100 Ko** pour la couverture (chargement plus rapide). Le rendu flat est
   naturellement léger : privilégier le mark **SVG en data-URI**, éviter
   d'embarquer un gros PNG raster, ne pas gonfler avec `scale`.
@@ -79,7 +79,7 @@ Dimensions **officielles** Facebook (ne pas dévier) :
 `src/templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
 (ne rien inventer). Garder le code minimal (principe #2).
 
-### Profil — squelette
+### Profil (squelette)
 
 ```tsx
 import { readFile } from "node:fs/promises";
@@ -117,7 +117,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "Photo de profil Facebook <Projet>", render } satisfies Template;
 ```
 
-### Couverture — squelette
+### Couverture (squelette)
 
 ```tsx
 import type { ReactNode } from "react";
@@ -177,11 +177,11 @@ suivre l'annexe "police manquante" de `new-template`, jamais en silence.
 < 100 Ko, marque (pas wordmark) lisible en petit pour le profil, zone sûre
 respectée pour la couverture, et uniquement des couleurs/typo de `brand.md`.
 
-## Annexe — poser les visuels sur la Page
+## Annexe : poser les visuels sur la Page
 
 Hors périmètre du repo (BrandArtisan ne fait que l'image). Côté Facebook :
 - Photo de profil : Paramètres de la Page -> Photo de profil ; vérifier le rendu
   rond et le recadrage proposé.
-- Photo de couverture : ajouter la bannière ; Facebook propose de repositionner
-  — confirmer que le texte reste visible sur mobile (côtés) et que la photo de
+- Photo de couverture : ajouter la bannière ; Facebook propose de repositionner ;
+  confirmer que le texte reste visible sur mobile (côtés) et que la photo de
   profil ne masque rien d'important en bas à gauche.

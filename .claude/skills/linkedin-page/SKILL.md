@@ -3,7 +3,7 @@ name: linkedin-page
 description: Crée les visuels d'un profil ou d'une Page LinkedIn (photo de profil, banner perso, logo entreprise, cover entreprise) aux dimensions officielles LinkedIn. À utiliser quand l'utilisateur veut une "photo de profil LinkedIn", un "banner LinkedIn", une "bannière de page entreprise", un "logo de page LinkedIn" ou une "cover LinkedIn" pour un projet. Produit un ou plusieurs templates .tsx aux tailles imposées par LinkedIn, alignés sur la charte, rendus en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
 ---
 
-# linkedin-page — visuels d'un profil / Page LinkedIn
+# linkedin-page : visuels d'un profil / Page LinkedIn
 
 Objectif : produire les **assets PNG** d'un profil personnel ou d'une Page
 entreprise LinkedIn, aux dimensions **officielles** (source : help LinkedIn
@@ -20,7 +20,7 @@ Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
 `asset()`, polices chargées dans `render.ts`, `export default ... satisfies
 Template`.
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
@@ -54,7 +54,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
   conseillé pour un rendu net. Pour une organisation, préférer la **marque seule /
   le favicon** au wordmark complet, illisible en petit. Suivre brand.md.
 - **Zone morte bas-gauche (avatar / logo)** : sur la page, la photo de profil
-  (perso) ou le logo (entreprise) recouvre le bas-gauche de la cover — tout
+  (perso) ou le logo (entreprise) recouvre le bas-gauche de la cover : tout
   texte/logo qui y tombe est **masqué**. **Mêmes proportions** dans les deux cas
   (marge gauche **~3,1 %** de la largeur, boîte **~16 % L × ~46 % H** ancrée en
   bas-gauche) ; seule la **forme du masque** change : **cercle** (rounded-full) en
@@ -103,7 +103,7 @@ manquante » de `new-template`, jamais en silence.
 - `npm run typecheck` -> vert.
 - `npm run build` -> écrit `out/<projet>/<slug>.png`.
 - Contrôler chaque PNG : **dimensions exactes** selon le visuel, fond opaque,
-  poids sous la limite (≤ 8 Mo perso, ≤ 3 Mo entreprise — trivial en rendu flat).
+  poids sous la limite (≤ 8 Mo perso, ≤ 3 Mo entreprise, trivial en rendu flat).
 - Profil/logo : vérifier le **rognage en cercle** (rien dans les coins).
 - Banner : rien d'important dans le **coin bas-gauche** (photo de profil).
 - Cover entreprise : contenu **centré** (rognage possible).

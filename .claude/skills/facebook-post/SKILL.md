@@ -3,7 +3,7 @@ name: facebook-post
 description: Crée une image de publication Facebook (post image / affiche / visuel publicitaire simple sur le fil) aux dimensions Meta, dans l'orientation choisie. À utiliser quand l'utilisateur veut une "image Facebook", un "post Facebook", une "affiche", un "visuel publicitaire" ou une "publication" pour un projet. Demande l'orientation (portrait par défaut, carré, paysage) et produit un template .tsx au bon ratio, aligné sur la charte, rendu en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
 ---
 
-# facebook-post — image de publication Facebook
+# facebook-post : image de publication Facebook
 
 Objectif : produire l'**asset PNG** d'une image de post Facebook (publication
 sur le fil, affiche, visuel publicitaire simple), au **ratio Meta** choisi,
@@ -21,7 +21,7 @@ Template`.
 > officiels Meta ; pour le **paysage**, les px sont une convention (Meta ne
 > documente pas de résolution pour ce ratio).
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
@@ -72,7 +72,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 ### Format et poids
 
 - **PNG** (ou JPG) : le moteur sort du PNG, net pour le texte/logo.
-- Poids max Meta : **30 Mo** — le rendu flat est très loin de cette limite, rien
+- Poids max Meta : **30 Mo**, le rendu flat est très loin de cette limite, rien
   à optimiser de particulier.
 
 ## 3. Écrire le template

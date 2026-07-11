@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { Template } from "../../../template";
 import { SIZE, frame, headerRow, wordmarkText, indexText, titleStyle, subStyle, markSrc, PAPER, BLUE_LIGHT } from "./theme";
 
-// Carte 2 — probleme. Fait avancer le recit : pourquoi un CV se fait recaler.
+// Carte 2 : probleme. Fait avancer le recit : pourquoi un CV se fait recaler.
 function render(): ReactNode {
 	return (
 		<div style={frame}>

@@ -3,7 +3,7 @@ name: x-post
 description: Crée une image pour un post X / Twitter (image de tweet) aux ratios X, dans l'orientation choisie. À utiliser quand l'utilisateur veut une "image X", un "visuel Twitter", une "image de tweet" ou un "post X" pour un projet. Demande l'orientation (paysage 16:9 par défaut, carré, portrait) et produit un template .tsx au bon ratio, aligné sur la charte, rendu en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
 ---
 
-# x-post — image de post X / Twitter
+# x-post : image de post X / Twitter
 
 Objectif : produire l'**asset PNG** d'une image de tweet, au **ratio** choisi,
 aligné sur la charte.
@@ -13,11 +13,11 @@ conventions : contrat `Template`, assets via `asset()`, polices chargées dans
 `render.ts`, `export default ... satisfies Template`.
 
 > **Statut des dimensions.** X ne documente **aucune dimension** pour les images
-> de tweet organiques — seul le **poids (5 Mo)** est officiel. Les tailles
+> de tweet organiques ; seul le **poids (5 Mo)** est officiel. Les tailles
 > ci-dessous sont des **conventions** alignées sur les ratios que X liste pour
 > ses formats publicitaires.
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
@@ -49,7 +49,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 
 - **Format** : PNG ou JPG, fond **opaque**, **≤ 5 Mo** (limite officielle des
   images de tweet ; trivial en rendu flat).
-- Le **texte du tweet** vit hors image, dans le post — ne pas tout écrire dans le
+- Le **texte du tweet** vit hors image, dans le post : ne pas tout écrire dans le
   visuel. **Une idée par image.**
 - **Lisible en petit** : le fil X défile vite et étroit sur mobile. Titre gros,
   accroche courte, fort contraste, **zone de sécurité ~80 px**.

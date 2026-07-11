@@ -3,7 +3,7 @@ name: linkedin-post
 description: Crée une image de publication LinkedIn (post image) aux dimensions LinkedIn, dans l'orientation choisie. À utiliser quand l'utilisateur veut une "image LinkedIn", un "post LinkedIn", un "visuel LinkedIn" ou une "publication LinkedIn" pour un projet. Demande l'orientation (portrait par défaut, carré, paysage) et produit un template .tsx au bon ratio, aligné sur la charte, rendu en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
 ---
 
-# linkedin-post — image de publication LinkedIn
+# linkedin-post : image de publication LinkedIn
 
 Objectif : produire l'**asset PNG** d'une image de post LinkedIn, au **ratio**
 choisi, aligné sur la charte.
@@ -19,7 +19,7 @@ Template`.
 > 1080×1080** et le **portrait 1080×1350** sont des **conventions** (reprises des
 > specs publicitaires), pas de la doc organique.
 
-## 0. Prérequis — bloquant
+## 0. Prérequis (bloquant)
 
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
@@ -51,7 +51,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 | **Paysage** | **1200x627** | 1.91:1 | Officiel LinkedIn (aperçu de lien) |
 
 - **Format** : PNG ou JPG, fond **opaque**.
-- **Texte du post** (corps, lien) : vit **hors image**, dans la publication —
+- **Texte du post** (corps, lien) : vit **hors image**, dans la publication :
   ne pas tout écrire dans le visuel. **Une idée par carte**.
 - **Lisible en petit** : le fil LinkedIn s'affiche étroit sur mobile. Titre gros,
   accroche courte, fort contraste, **zone de sécurité ~80 px**.
