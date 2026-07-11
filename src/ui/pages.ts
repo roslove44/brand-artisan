@@ -1,0 +1,246 @@
+// Pages HTML du serveur de dev : une fenêtre façon Finder macOS
+// (sidebar, toolbar, vues icônes/liste/galerie, barre de chemin).
+import { esc, capitalize, last } from "../utils";
+import { STYLE } from "./style";
+import { folderIcon, folderMini, rootMini, imageMini, chevron, viewIcons, downloadIcon } from "./icons";
+
+const PROJECT_NAME = "BrandArtisan";
+
+export const VIEWS = ["icons", "list", "gallery"] as const;
+export type View = (typeof VIEWS)[number];
+
+// Un enfant d'un dossier : sous-projet, ou image (broken = template qui ne charge pas).
+export type Entry =
+	| { kind: "dir"; name: string; rel: string }
+	| { kind: "image"; name: string; rel: string; title: string; width: number; height: number; broken?: boolean };
+
+// Lien vers un nœud ; la vue courante est conservée pour les dossiers ("icons" = défaut, sans query).
+const dirHref = (rel: string, view: View) => `/${esc(rel)}${view === "icons" ? "" : `?view=${view}`}`;
+const imgHref = (rel: string) => `/${esc(rel)}`;
+const thumbSrc = (rel: string, w: number) => `/${esc(rel)}?thumb=${w}`;
+
+const dims = (e: Entry) => (e.kind === "image" && !e.broken ? `${e.width}×${e.height}` : "");
+
+// Petit JS partagé : lignes cliquables (vue liste) + sélection/clavier de la galerie.
+const SCRIPT = `
+	document.addEventListener("click", (e) => {
+		const row = e.target.closest("[data-href]");
+		if (row && !e.target.closest("a") && !row.classList.contains("gitem")) location.href = row.dataset.href;
+	});
+	const gallery = document.querySelector(".gallery");
+	if (gallery) {
+		const slides = [...gallery.querySelectorAll(".slide")];
+		const items = [...gallery.querySelectorAll(".gitem")];
+		const label = gallery.querySelector(".glabel");
+		const meta = gallery.querySelector(".gmeta");
+		let sel = 0;
+		const show = (i) => {
+			sel = (i + items.length) % items.length;
+			slides.forEach((s, j) => (s.hidden = j !== sel));
+			items.forEach((b, j) => b.classList.toggle("sel", j === sel));
+			label.textContent = items[sel].dataset.label;
+			meta.textContent = items[sel].dataset.meta;
+			items[sel].scrollIntoView({ inline: "nearest", block: "nearest" });
+		};
+		items.forEach((b, i) => {
+			b.addEventListener("click", () => show(i));
+			b.addEventListener("dblclick", () => (location.href = b.dataset.href));
+		});
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "ArrowRight") show(sel + 1);
+			else if (e.key === "ArrowLeft") show(sel - 1);
+			else if (e.key === "Enter" && items.length) location.href = items[sel].dataset.href;
+		});
+		if (items.length) show(0);
+	}
+`;
+
+// Sidebar : racine + projets de premier niveau, section active selon le chemin.
+function sidebar(relPath: string, favorites: string[], view: View): string {
+	const first = relPath.split("/")[0];
+	const item = (href: string, icon: string, name: string, active: boolean) =>
+		`<a class="side-item${active ? " active" : ""}" href="${href}">${icon}<span>${esc(name)}</span></a>`;
+	return `
+		<aside class="sidebar">
+			<div class="lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+			<div class="side-section">Favoris</div>
+			${item(dirHref("", view), rootMini(16), "Tous les visuels", relPath === "")}
+			<div class="side-section">Projets</div>
+			${favorites.map((p) => item(dirHref(p, view), folderMini(16), p, p === first)).join("\n")}
+		</aside>`;
+}
+
+// Barre de chemin en bas : BrandArtisan › projet › visuel, + compteur d'éléments.
+function pathbar(relPath: string, view: View, leafIsImage: boolean, status: string): string {
+	const segs = relPath ? relPath.split("/") : [];
+	const crumbs = [`${rootMini(12)}<a href="${dirHref("", view)}">${esc(PROJECT_NAME)}</a>`];
+	let acc = "";
+	segs.forEach((s, i) => {
+		acc = acc ? `${acc}/${s}` : s;
+		const isLeaf = i === segs.length - 1;
+		const icon = isLeaf && leafIsImage ? imageMini(12) : folderMini(12);
+		crumbs.push(isLeaf ? `${icon}<span>${esc(s)}</span>` : `${icon}<a href="${dirHref(acc, view)}">${esc(s)}</a>`);
+	});
+	return `
+		<footer class="pathbar">
+			<div class="crumbs">${crumbs.join(`<span class="sep">›</span>`)}</div>
+			<div class="status">${esc(status)}</div>
+		</footer>`;
+}
+
+// Squelette commun : fenêtre = sidebar + (toolbar / contenu / barre de chemin).
+function windowShell(opts: {
+	pageTitle: string;
+	heading: string;
+	relPath: string;
+	view: View;
+	favorites: string[];
+	toolbarRight: string;
+	content: string;
+	leafIsImage: boolean;
+	status: string;
+}): string {
+	return `<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>${esc(opts.pageTitle)}</title>
+	<style>${STYLE}</style>
+</head>
+<body>
+	<main class="window">
+		${sidebar(opts.relPath, opts.favorites, opts.view)}
+		<section class="pane">
+			<header class="toolbar">
+				<button class="nav-btn" onclick="history.back()" title="Précédent">${chevron("left")}</button>
+				<button class="nav-btn" onclick="history.forward()" title="Suivant">${chevron("right")}</button>
+				<h1>${esc(opts.heading)}</h1>
+				<div class="spacer"></div>
+				${opts.toolbarRight}
+			</header>
+			<div class="content">${opts.content}</div>
+			${pathbar(opts.relPath, opts.view, opts.leafIsImage, opts.status)}
+		</section>
+	</main>
+	<script>${SCRIPT}</script>
+</body>
+</html>`;
+}
+
+// Sélecteur segmenté icônes / liste / galerie, sur le chemin courant.
+function viewSwitcher(relPath: string, view: View): string {
+	const labels: Record<View, string> = { icons: "Icônes", list: "Liste", gallery: "Galerie" };
+	return `<nav class="segmented">${VIEWS.map(
+		(v) => `<a class="${v === view ? "active" : ""}" href="${dirHref(relPath, v)}" title="${labels[v]}">${viewIcons[v]}</a>`,
+	).join("")}</nav>`;
+}
+
+// Icône d'un enfant : dossier bleu, vignette rendue, ou fallback si template cassé.
+function entryIcon(e: Entry, folderSize: number, thumbWidth: number): string {
+	if (e.kind === "dir") return folderIcon(folderSize);
+	if (e.broken) return imageMini(Math.round(folderSize * 0.55));
+	return `<img loading="lazy" src="${thumbSrc(e.rel, thumbWidth)}" alt="${esc(e.name)}" />`;
+}
+
+function iconsView(entries: Entry[], view: View): string {
+	const cells = entries.map((e) => {
+		const href = e.kind === "dir" ? dirHref(e.rel, view) : imgHref(e.rel);
+		const meta = dims(e);
+		return `
+			<a class="cell" href="${href}">
+				<span class="thumb">${entryIcon(e, 78, 280)}</span>
+				<span class="label">${esc(e.name)}</span>
+				${meta ? `<span class="meta">${meta}</span>` : ""}
+			</a>`;
+	});
+	return `<div class="grid">${cells.join("")}</div>`;
+}
+
+function listView(entries: Entry[], view: View): string {
+	const rows = entries.map((e) => {
+		const href = e.kind === "dir" ? dirHref(e.rel, view) : imgHref(e.rel);
+		const icon = e.kind === "dir" ? `<span class="mini-fld">${folderMini(16)}</span>` : entryIcon(e, 30, 64);
+		const type = e.kind === "dir" ? "Dossier" : "Image PNG";
+		return `
+			<tr data-href="${href}">
+				<td><span class="name-cell">${icon}<a href="${href}">${esc(e.name)}</a></span></td>
+				<td class="dim">${dims(e) || "—"}</td>
+				<td class="type">${type}</td>
+			</tr>`;
+	});
+	return `
+		<table class="list">
+			<thead><tr><th>Nom</th><th>Dimensions</th><th>Type</th></tr></thead>
+			<tbody>${rows.join("")}</tbody>
+		</table>`;
+}
+
+function galleryView(entries: Entry[], view: View): string {
+	const slides = entries.map(
+		(e) => `<figure class="slide" hidden>${entryIcon(e, 150, 1000)}</figure>`,
+	);
+	const items = entries.map((e) => {
+		const href = e.kind === "dir" ? dirHref(e.rel, view) : imgHref(e.rel);
+		const meta = e.kind === "dir" ? "Dossier · double-clic pour ouvrir" : `${dims(e) || "—"} · double-clic pour ouvrir`;
+		return `
+			<button class="gitem" type="button" data-href="${href}" data-label="${esc(e.name)}" data-meta="${esc(meta)}">
+				${entryIcon(e, 40, 120)}
+			</button>`;
+	});
+	return `
+		<div class="gallery">
+			<div class="stage">${slides.join("")}</div>
+			<div class="ginfo"><div class="glabel"></div><div class="gmeta"></div></div>
+			<div class="strip">${items.join("")}</div>
+		</div>`;
+}
+
+// Page de listing d'un dossier, dans la vue demandée.
+export function listingPage(opts: { relPath: string; view: View; entries: Entry[]; favorites: string[] }): string {
+	const { relPath, view, entries, favorites } = opts;
+	const heading = relPath ? capitalize(last(relPath)) : PROJECT_NAME;
+	const renderers: Record<View, (e: Entry[], v: View) => string> = {
+		icons: iconsView,
+		list: listView,
+		gallery: galleryView,
+	};
+	const content = entries.length ? renderers[view](entries, view) : `<p class="empty">Ce dossier est vide.</p>`;
+	return windowShell({
+		pageTitle: relPath ? `${heading} | ${PROJECT_NAME}` : PROJECT_NAME,
+		heading,
+		relPath,
+		view,
+		favorites,
+		toolbarRight: viewSwitcher(relPath, view),
+		content,
+		leafIsImage: false,
+		status: `${entries.length} élément${entries.length === 1 ? "" : "s"}`,
+	});
+}
+
+// Page d'aperçu d'une image : grand rendu + bouton de téléchargement du PNG.
+export function previewPage(opts: {
+	relPath: string;
+	title: string;
+	width: number;
+	height: number;
+	imgSrc: string;
+	favorites: string[];
+}): string {
+	const { relPath, title, width, height, imgSrc, favorites } = opts;
+	return windowShell({
+		pageTitle: `${title} | ${PROJECT_NAME} · ${width}×${height}`,
+		heading: title,
+		relPath,
+		view: "icons",
+		favorites,
+		toolbarRight: `<a class="tool-link" href="${esc(imgSrc)}" download>${downloadIcon}<span>PNG</span></a>`,
+		content: `
+			<div class="preview-stage">
+				<img src="${esc(imgSrc)}" alt="${esc(title)}" width="${width}" height="${height}" />
+			</div>`,
+		leafIsImage: true,
+		status: `${title} · ${width}×${height}`,
+	});
+}

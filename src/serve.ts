@@ -1,99 +1,44 @@
 import { createServer } from "node:http";
 import { toPng } from "./render";
-import { resolve, list, load } from "./discover";
+import { resolve, list, load, modified } from "./discover";
 import { resolveTitle } from "./template";
-import { esc, capitalize, last, slug, clean } from "./utils";
+import { capitalize, last, slug, clean } from "./utils";
+import { listingPage, previewPage, VIEWS, type Entry, type View } from "./ui/pages";
 
 const PORT = 4000;
-const PROJECT_NAME = "BrandArtisan";
 
-// Titre de page image : "Couverture sociale ComptaOpen | BrandArtisan · 1500×500".
-function buildTitle(title: string, width: number, height: number, separator = "|"): string {
-	return `${title} ${separator} ${PROJECT_NAME} · ${width}×${height}`;
+// Vignettes en mémoire, clé = chemin + largeur + mtime du .tsx (invalidées à l'édition).
+const thumbs = new Map<string, Buffer>();
+
+// Rend une vignette : Satori à la taille native du template, puis downscale resvg (net).
+async function thumbnail(relPath: string, width: number): Promise<Buffer> {
+	const key = `${relPath}@${width}:${await modified(relPath)}`;
+	const hit = thumbs.get(key);
+	if (hit) return hit;
+	const tpl = await load(relPath, true);
+	const png = await toPng(tpl.render(), { width: tpl.size.width, height: tpl.size.height, scale: width / tpl.size.width });
+	for (const k of thumbs.keys()) if (k.startsWith(`${relPath}@${width}:`)) thumbs.delete(k);
+	thumbs.set(key, png);
+	return png;
 }
 
-// Fil d'ariane : BrandArtisan / comptaopen / cover (le dernier segment n'est pas un lien).
-function breadcrumb(relPath: string): string {
-	const segs = relPath ? relPath.split("/") : [];
-	const crumbs = [`<a href="/">${esc(PROJECT_NAME)}</a>`];
-	let acc = "";
-	segs.forEach((s, i) => {
-		acc = acc ? `${acc}/${s}` : s;
-		crumbs.push(i === segs.length - 1 ? esc(s) : `<a href="/${esc(acc)}">${esc(s)}</a>`);
-	});
-	return `<nav>${crumbs.join(" / ")}</nav>`;
+// Métadonnées d'une image d'un listing ; un template cassé reste listé (broken).
+async function imageEntry(rel: string, name: string): Promise<Entry> {
+	try {
+		const tpl = await load(rel, true);
+		return { kind: "image", name, rel, title: resolveTitle(tpl, name), width: tpl.size.width, height: tpl.size.height };
+	} catch {
+		return { kind: "image", name, rel, title: capitalize(name), width: 0, height: 0, broken: true };
+	}
 }
 
-function shell(title: string, body: string): string {
-	return `
-		<!doctype html>
-		<html lang="fr">
-			<head>
-				<meta charset="utf-8" />
-				<title>${esc(title)}</title>
-				<style>
-					body {
-						margin: 0;
-						min-height: 100vh;
-						box-sizing: border-box;
-						padding: 48px;
-						display: flex;
-						flex-direction: column;
-						align-items: center;
-						justify-content: center;
-						gap: 20px;
-						background: #0f172a;
-						color: #f8fafc;
-						font-family: system-ui, sans-serif;
-					}
-					a { color: #60a5fa; text-decoration: none; }
-					a:hover { text-decoration: underline; }
-					nav { font-size: 13px; color: #cbd5e1; }
-					h1 { margin: 0; font-size: 22px; font-weight: 700; }
-					ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 280px; }
-					li { background: #1e293b; border-radius: 8px; }
-					li a { display: flex; justify-content: space-between; padding: 12px 16px; }
-					.kind { color: #64748b; font-size: 12px; }
-					img { max-width: 92vw; height: auto; border-radius: 8px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
-					figcaption { color: #cbd5e1; font-size: 14px; }
-				</style>
-			</head>
-			<body>
-				${body}
-			</body>
-		</html>
-	`;
-}
-
-// Page de listing : sous-projets puis images, en liens.
-function listingPage(relPath: string, projects: string[], images: string[]): string {
-	const heading = relPath ? capitalize(last(relPath)) : PROJECT_NAME;
-	const title = relPath ? `${heading} | ${PROJECT_NAME}` : PROJECT_NAME;
-	const href = (child: string) => "/" + [relPath, child].filter(Boolean).join("/");
-	const li = (label: string, kind: string, target: string) =>
-		`<li><a href="${esc(target)}"><span>${esc(label)}</span><span class="kind">${kind}</span></a></li>`;
-	const items = [
-		...projects.map((p) => li(`${p}/`, "projet", href(p))),
-		...images.map((i) => li(i, "image", href(i))),
-	];
-	const listHtml = items.length ? `<ul>${items.join("")}</ul>` : `<p class="kind">Aucun visuel ici.</p>`;
-	return shell(title, `\t\t${breadcrumb(relPath)}\n\t\t<h1>${esc(heading)}</h1>\n\t\t${listHtml}`);
-}
-
-// Page de preview d'une image : <title> parlant + <img alt> dérivé du titre.
-function previewPage(relPath: string, title: string, width: number, height: number, imgSrc: string): string {
-	const body = `\t\t${breadcrumb(relPath)}
-		<img src="${esc(imgSrc)}" alt="${esc(title)}" width="${width}" height="${height}" />
-		<figcaption>${esc(title)} · ${width}×${height}</figcaption>`;
-	return shell(buildTitle(title, width, height), body);
-}
-
-// Serveur de dev : l'arborescence de templates/ est navigable.
-//   /                    -> liste les projets
-//   /comptaopen          -> liste images + sous-projets
-//   /comptaopen/cover    -> page de preview (titre + alt)
-//   /comptaopen/cover?raw -> PNG brut (utilisable comme src)
-//   ?w=1245&h=527        -> override de la taille
+// Serveur de dev : l'arborescence de templates/ est navigable, façon Finder.
+//   /                      -> fenêtre sur la racine (projets)
+//   /comptaopen            -> listing du projet (?view=icons|list|gallery)
+//   /comptaopen/cover      -> page d'aperçu (titre + alt)
+//   /comptaopen/cover?raw  -> PNG brut (utilisable comme src)
+//   /comptaopen/cover?thumb=280 -> vignette PNG (cache mémoire)
+//   ?w=1245&h=527          -> override de la taille sur l'aperçu
 const server = createServer(async (req, res) => {
 	try {
 		const url = new URL(req.url ?? "/", `http://localhost:${PORT}`);
@@ -107,9 +52,26 @@ const server = createServer(async (req, res) => {
 		}
 
 		if (kind === "dir") {
+			const view: View = (VIEWS as readonly string[]).includes(url.searchParams.get("view") ?? "")
+				? (url.searchParams.get("view") as View)
+				: "icons";
 			const { projects, images } = await list(relPath);
+			const favorites = relPath === "" ? projects : (await list("")).projects;
+			const join = (name: string) => [relPath, name].filter(Boolean).join("/");
+			const entries: Entry[] = [
+				...projects.map((p): Entry => ({ kind: "dir", name: p, rel: join(p) })),
+				...(await Promise.all(images.map((i) => imageEntry(join(i), i)))),
+			];
 			res.writeHead(200, { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" });
-			res.end(listingPage(relPath, projects, images));
+			res.end(listingPage({ relPath, view, entries, favorites }));
+			return;
+		}
+
+		// ?thumb=<largeur> -> vignette PNG pour les vues icônes/liste/galerie.
+		if (url.searchParams.has("thumb")) {
+			const width = Math.min(Math.max(Number(url.searchParams.get("thumb")) || 280, 16), 1600);
+			res.writeHead(200, { "content-type": "image/png", "cache-control": "no-store" });
+			res.end(await thumbnail(relPath, width));
 			return;
 		}
 
@@ -132,8 +94,9 @@ const server = createServer(async (req, res) => {
 
 		url.searchParams.set("raw", "");
 		const imgSrc = `${url.pathname}?${url.searchParams.toString()}`;
+		const favorites = (await list("")).projects;
 		res.writeHead(200, { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" });
-		res.end(previewPage(relPath, title, width, height, imgSrc));
+		res.end(previewPage({ relPath, title, width, height, imgSrc, favorites }));
 	} catch (err) {
 		res.writeHead(500, { "content-type": "text/plain; charset=utf-8" });
 		res.end(String(err));

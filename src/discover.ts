@@ -38,6 +38,12 @@ export async function list(relPath: string): Promise<{ projects: string[]; image
 	return { projects: projects.sort(), images: images.sort() };
 }
 
+// Date de modification du .tsx d'une image (sert de clé de cache aux vignettes).
+export async function modified(relPath: string): Promise<number> {
+	const s = await stat(new URL(`${clean(relPath)}.tsx`, TEMPLATES));
+	return s.mtimeMs;
+}
+
 // Charge le default export de <relPath>.tsx. fresh = cache-bust (hot-reload en dev).
 export async function load(relPath: string, fresh = false): Promise<Template> {
 	const url = new URL(`${clean(relPath)}.tsx`, TEMPLATES);
