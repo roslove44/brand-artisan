@@ -238,7 +238,24 @@ export const STYLE = `
 	.gitem.sel { border-color: var(--accent); }
 
 	/* ---- Aperçu d'une image ---- */
-	.preview-stage { display: flex; align-items: center; justify-content: center; height: 100%; padding: 26px; }
+	.preview-stage { position: relative; display: flex; align-items: center; justify-content: center; height: 100%; padding: 26px 64px; }
+	.pv-nav {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 38px;
+		height: 38px;
+		border-radius: 50%;
+		background: var(--seg-bg);
+		color: var(--text-2);
+		opacity: 0.75;
+	}
+	.pv-nav:hover { background: var(--active-item); color: var(--text); opacity: 1; }
+	.pv-nav.left { left: 14px; }
+	.pv-nav.right { right: 14px; }
 	.preview-stage img {
 		max-width: 100%;
 		max-height: 100%;

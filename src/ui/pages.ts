@@ -53,6 +53,13 @@ const SCRIPT = `
 		});
 		if (items.length) show(0);
 	}
+	const stage = document.querySelector(".preview-stage");
+	if (stage) {
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "ArrowLeft" && stage.dataset.prev) location.href = stage.dataset.prev;
+			else if (e.key === "ArrowRight" && stage.dataset.next) location.href = stage.dataset.next;
+		});
+	}
 `;
 
 // Sidebar : racine + projets de premier niveau, section active selon le chemin.
@@ -219,7 +226,10 @@ export function listingPage(opts: { relPath: string; view: View; entries: Entry[
 	});
 }
 
-// Page d'aperçu d'une image : grand rendu + bouton de téléchargement du PNG.
+// Navigation entre les images du dossier courant, sur la page d'aperçu.
+export type PreviewNav = { prev: string | null; next: string | null; index: number; count: number };
+
+// Page d'aperçu d'une image : grand rendu, flèches précédent/suivant, téléchargement du PNG.
 export function previewPage(opts: {
 	relPath: string;
 	title: string;
@@ -227,8 +237,12 @@ export function previewPage(opts: {
 	height: number;
 	imgSrc: string;
 	favorites: string[];
+	nav: PreviewNav;
 }): string {
-	const { relPath, title, width, height, imgSrc, favorites } = opts;
+	const { relPath, title, width, height, imgSrc, favorites, nav } = opts;
+	const arrow = (dir: "left" | "right", href: string | null) =>
+		href ? `<a class="pv-nav ${dir}" href="${esc(href)}" title="${dir === "left" ? "Image précédente" : "Image suivante"}">${chevron(dir)}</a>` : "";
+	const position = nav.index >= 0 && nav.count > 1 ? `${nav.index + 1} sur ${nav.count} · ` : "";
 	return windowShell({
 		pageTitle: `${title} | ${PROJECT_NAME} · ${width}×${height}`,
 		heading: title,
@@ -237,10 +251,12 @@ export function previewPage(opts: {
 		favorites,
 		toolbarRight: `<a class="tool-link" href="${esc(imgSrc)}" download>${downloadIcon}<span>PNG</span></a>`,
 		content: `
-			<div class="preview-stage">
+			<div class="preview-stage"${nav.prev ? ` data-prev="${esc(nav.prev)}"` : ""}${nav.next ? ` data-next="${esc(nav.next)}"` : ""}>
+				${arrow("left", nav.prev)}
 				<img src="${esc(imgSrc)}" alt="${esc(title)}" width="${width}" height="${height}" />
+				${arrow("right", nav.next)}
 			</div>`,
 		leafIsImage: true,
-		status: `${title} · ${width}×${height}`,
+		status: `${position}${title} · ${width}×${height}`,
 	});
 }

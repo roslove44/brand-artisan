@@ -95,8 +95,21 @@ const server = createServer(async (req, res) => {
 		url.searchParams.set("raw", "");
 		const imgSrc = `${url.pathname}?${url.searchParams.toString()}`;
 		const favorites = (await list("")).projects;
+
+		// Voisines dans le dossier courant (images seules) -> flèches précédent/suivant.
+		const parent = relPath.split("/").slice(0, -1).join("/");
+		const siblings = (await list(parent)).images;
+		const idx = siblings.indexOf(last(relPath));
+		const sib = (i: number) => `/${[parent, siblings[i]].filter(Boolean).join("/")}`;
+		const nav = {
+			prev: idx > 0 ? sib(idx - 1) : null,
+			next: idx >= 0 && idx < siblings.length - 1 ? sib(idx + 1) : null,
+			index: idx,
+			count: siblings.length,
+		};
+
 		res.writeHead(200, { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" });
-		res.end(previewPage({ relPath, title, width, height, imgSrc, favorites }));
+		res.end(previewPage({ relPath, title, width, height, imgSrc, favorites, nav }));
 	} catch (err) {
 		res.writeHead(500, { "content-type": "text/plain; charset=utf-8" });
 		res.end(String(err));
