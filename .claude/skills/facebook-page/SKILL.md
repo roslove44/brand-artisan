@@ -50,7 +50,7 @@ Dimensions **officielles** Facebook (ne pas dévier) :
   rond. **Rien d'important dans les coins** (ils sont coupés). Fond opaque
   **pleine page**, marque **centrée**.
 - S'affiche petit (176 px ordi, 196 px mobile, 36 px sur mobiles classiques) :
-  pour une organisation, utiliser la **marque / le favicon** (ex. bracket-O),
+  pour une organisation, utiliser la **marque seule / le favicon**,
   **pas le wordmark complet** qui deviendrait illisible. Suivre brand.md pour la
   variante et le fond.
 

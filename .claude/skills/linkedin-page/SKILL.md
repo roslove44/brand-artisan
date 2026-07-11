@@ -51,8 +51,8 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 - **Format** : PNG ou JPG. Fond **opaque** (notre rendu n'est jamais transparent).
 - **Profil & logo** : carré, **marque centrée**, rien d'important dans les coins
   (le profil est affiché en cercle). 400×400 est le **minimum** : `scale: 2`
-  conseillé pour un rendu net. Pour une organisation, préférer la **marque /
-  favicon** (bracket-O) au wordmark complet, illisible en petit. Suivre brand.md.
+  conseillé pour un rendu net. Pour une organisation, préférer la **marque seule /
+  le favicon** au wordmark complet, illisible en petit. Suivre brand.md.
 - **Zone morte bas-gauche (avatar / logo)** : sur la page, la photo de profil
   (perso) ou le logo (entreprise) recouvre le bas-gauche de la cover — tout
   texte/logo qui y tombe est **masqué**. **Mêmes proportions** dans les deux cas

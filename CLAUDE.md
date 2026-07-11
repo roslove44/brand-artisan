@@ -46,13 +46,21 @@ Chaque projet de visuels vit dans `src/templates/<projet>/` et s'appuie sur deux
 
 **`project.md` est lu s'il existe.** Avant de rédiger du texte sur un visuel (titre, accroche, message), lire `assets/<projet>/project.md` pour caler le ton et ne pas inventer de chiffres ni de promesses. **S'il manque, demander le ton et les claims plutôt que de deviner** — ne pas fabriquer de copy au jugé.
 
-Exemple actuel : `assets/comptaopen/brand.md` et `assets/comptaopen/project.md` pour le projet `comptaopen`.
+**Briefs ponctuels.** Un projet peut avoir des briefs thématiques à côté de la paire (ex. `assets/comptaopen/donation.md` pour les visuels liés au don) : les lire quand le visuel demandé s'y rapporte. Ils précisent un besoin, ils ne remplacent ni `brand.md` ni `project.md`.
+
+Exemples actuels : `comptaopen` (marque produit) et `rostand-migan` (marque personnelle), chacun avec sa paire `brand.md` / `project.md` dans `assets/<projet>/`.
+
+## Toolchain Python
+
+Le Python (`src/tools/`) sert à **générer les assets de marque** que le moteur JS ne sait pas produire : SVG à la géométrie exacte, icônes multi-tailles, `.ico`. Le moteur TS les **consomme** ensuite via `asset()`. Env et commandes : `src/tools/README.md` ; méthode : skill `brand-assets`.
 
 ## Skills
 
 Les skills (`.claude/skills/`) décrivent *comment faire*, pas le code. Ils encodent des conventions du moteur (contrat `Template`, `asset()`, fonts chargées dans `render.ts`, structure de `brand.md`). **Faire évoluer le moteur → mettre les skills à jour en miroir** dans le même changement.
 
 **Créer un visuel → invoquer le skill plateforme** (`og-image`, `new-template`, `linkedin-*`, `facebook-*`, `x-*`…) : il encode déjà la recette du moteur. Ne pas reverse-engineer en relisant `render.ts`, `build.ts` ou d'autres templates — le skill + `brand.md` (+ `project.md` pour le texte) suffisent. Pas de fichier de référence dupliquant `brand.md` ou les skills.
+
+**L'utilisateur fournit des exemples visuels** (son logo, ses visuels existants, une image qui lui plaît) → invoquer `import-reference` : il encode comment mesurer (Pillow) plutôt que deviner, et le garde-fou composition-vient-de-l'exemple / habillage-vient-de-la-charte.
 
 ## Commands
 

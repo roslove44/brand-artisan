@@ -45,7 +45,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
   ces deux visuels (le 5 Mo officiel concerne les images de tweet).
 - **Profil** : carré, **marque centrée**, rien d'important dans les coins (affiché
   en cercle). 400×400 est la taille officielle ; `scale: 2` conseillé pour la
-  netteté. Pour une organisation, préférer la **marque / favicon** (bracket-O) au
+  netteté. Pour une organisation, préférer la **marque seule / le favicon** au
   wordmark, illisible en petit. Suivre brand.md.
 - **Header (1500×500)** : sur mobile, X **rogne les côtés** → garder le contenu
   important centré, marges latérales confortables.
