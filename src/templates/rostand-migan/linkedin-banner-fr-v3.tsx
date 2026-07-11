@@ -3,10 +3,10 @@ import type { Template } from "../../template";
 
 // Banner de profil perso LinkedIn (FR), variante v3 : 1584x396 (4:1).
 // Composition dérivée d'une référence fournie (import-reference, flux B) :
-// le nom en monumental **outline** qui déborde des bords (le nom est le décor),
-// un seul glow bleu qui monte du haut-gauche, bloc focal à droite du centre
-// (chip stack + titre en deux lignes), signature wordmark en haut à gauche,
-// barre d'accent au bord droit. Habillage 100 % charte (brand.md, mode sombre).
+// le nom en monumental **outline**, ~90 % de la largeur et centré (le nom est
+// le décor et le seul focal), un seul glow bleu qui monte du haut-gauche,
+// signature wordmark en haut à gauche, barre d'accent au bord droit.
+// Habillage 100 % charte (brand.md, mode sombre).
 // Bas-gauche laissé vide : la photo de profil (cercle ~x49-305, y214-396) s'y pose.
 const SIZE = { width: 1584, height: 396, scale: 2 };
 const PAD_RIGHT = Math.round((1584 * 55) / 790); // ~110, marge anti-crop mobile
@@ -31,8 +31,9 @@ function render(): ReactNode {
 				backgroundColor: NIGHT,
 			}}
 		>
-			{/* Nom monumental en outline, débordant des deux bords : le nom est le décor.
-			    Sous les glows, pour que la lumière baigne les lettres. */}
+			{/* Nom monumental en outline, ~90 % de la largeur, centré (taille calculée
+			    depuis les avances de Geist-700). Sous les glows, pour que la lumière
+			    baigne les lettres. */}
 			<div
 				style={{
 					position: "absolute",
@@ -45,8 +46,8 @@ function render(): ReactNode {
 					justifyContent: "center",
 					fontFamily: GEIST,
 					fontWeight: 700,
-					fontSize: 216,
-					letterSpacing: -6,
+					fontSize: 172,
+					letterSpacing: -4.78,
 					lineHeight: 1,
 					whiteSpace: "nowrap",
 					// Fill couleur du fond : Satori ne rend pas les glyphes à fill transparent.
@@ -96,54 +97,6 @@ function render(): ReactNode {
 			>
 				<span style={{ color: INK }}>rostand</span>
 				<span style={{ color: ACCENT }}>.dev</span>
-			</div>
-
-			{/* Bloc focal : chip stack + titre, à droite du centre (avatar à gauche) */}
-			<div
-				style={{
-					position: "absolute",
-					top: 0,
-					bottom: 0,
-					right: PAD_RIGHT,
-					width: 760,
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-					justifyContent: "center",
-				}}
-			>
-				<div
-					style={{
-						display: "flex",
-						backgroundColor: ACCENT_DEEP,
-						color: INK,
-						fontFamily: GEIST_MONO,
-						fontWeight: 600,
-						fontSize: 21,
-						letterSpacing: 3,
-						padding: "9px 22px",
-					}}
-				>
-					SYMFONY · NEXT.JS · GO
-				</div>
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column",
-						alignItems: "center",
-						marginTop: 20,
-						fontFamily: GEIST,
-						fontWeight: 700,
-						fontSize: 84,
-						lineHeight: 1.02,
-						letterSpacing: -2,
-						color: INK,
-						textAlign: "center",
-					}}
-				>
-					<span style={{ display: "flex" }}>DÉVELOPPEUR</span>
-					<span style={{ display: "flex" }}>&amp; FONDATEUR</span>
-				</div>
 			</div>
 
 			{/* Barre d'accent au bord droit, seul autre moment de bleu plein */}
