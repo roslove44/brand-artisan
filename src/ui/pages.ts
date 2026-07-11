@@ -59,6 +59,13 @@ const SCRIPT = `
 			if (e.key === "ArrowLeft" && stage.dataset.prev) location.href = stage.dataset.prev;
 			else if (e.key === "ArrowRight" && stage.dataset.next) location.href = stage.dataset.next;
 		});
+		stage.querySelector("img").addEventListener("click", () => {
+			const zoomed = stage.classList.toggle("zoomed");
+			if (zoomed) {
+				stage.scrollLeft = (stage.scrollWidth - stage.clientWidth) / 2;
+				stage.scrollTop = (stage.scrollHeight - stage.clientHeight) / 2;
+			}
+		});
 	}
 `;
 
@@ -243,6 +250,9 @@ export function previewPage(opts: {
 	const arrow = (dir: "left" | "right", href: string | null) =>
 		href ? `<a class="pv-nav ${dir}" href="${esc(href)}" title="${dir === "left" ? "Image précédente" : "Image suivante"}">${chevron(dir)}</a>` : "";
 	const position = nav.index >= 0 && nav.count > 1 ? `${nav.index + 1} sur ${nav.count} · ` : "";
+	// Largeur de fit : taille naturelle, plafonnée par le viewport du stage (marges
+	// comprises) en largeur comme en hauteur, ratio préservé via le ratio connu.
+	const fitWidth = `min(${width}px, 100cqw - 128px, calc((100cqh - 52px) * ${(width / height).toFixed(4)}))`;
 	return windowShell({
 		pageTitle: `${title} | ${PROJECT_NAME} · ${width}×${height}`,
 		heading: title,
@@ -251,9 +261,12 @@ export function previewPage(opts: {
 		favorites,
 		toolbarRight: `<a class="tool-link" href="${esc(imgSrc)}" download>${downloadIcon}<span>PNG</span></a>`,
 		content: `
-			<div class="preview-stage"${nav.prev ? ` data-prev="${esc(nav.prev)}"` : ""}${nav.next ? ` data-next="${esc(nav.next)}"` : ""}>
+			<style>.preview-stage img { width: ${fitWidth}; }</style>
+			<div class="preview">
+				<div class="preview-stage"${nav.prev ? ` data-prev="${esc(nav.prev)}"` : ""}${nav.next ? ` data-next="${esc(nav.next)}"` : ""}>
+					<img src="${esc(imgSrc)}" alt="${esc(title)}" width="${width}" height="${height}" />
+				</div>
 				${arrow("left", nav.prev)}
-				<img src="${esc(imgSrc)}" alt="${esc(title)}" width="${width}" height="${height}" />
 				${arrow("right", nav.next)}
 			</div>`,
 		leafIsImage: true,

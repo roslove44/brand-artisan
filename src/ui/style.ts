@@ -54,6 +54,7 @@ export const STYLE = `
 	.window {
 		display: grid;
 		grid-template-columns: 210px 1fr;
+		grid-template-rows: minmax(0, 100%);
 		height: 100%;
 		border-radius: 12px;
 		overflow: hidden;
@@ -238,7 +239,13 @@ export const STYLE = `
 	.gitem.sel { border-color: var(--accent); }
 
 	/* ---- Aperçu d'une image ---- */
-	.preview-stage { position: relative; display: flex; align-items: center; justify-content: center; height: 100%; padding: 26px 64px; }
+	/* Fit par défaut ; clic -> taille réelle scrollable (.zoomed). La largeur de
+	   fit est calculée par page (unités cqw/cqh + ratio connu du serveur) : les
+	   max-width/max-height combinés ne resserrent pas la boîte sur le ratio.
+	   margin auto : centre l'image, et garde les bords atteignables au scroll. */
+	.preview { position: relative; height: 100%; }
+	.preview-stage { display: flex; container-type: size; height: 100%; overflow: auto; }
+	.preview-stage.zoomed img { width: auto; cursor: zoom-out; }
 	.pv-nav {
 		position: absolute;
 		top: 50%;
@@ -257,9 +264,9 @@ export const STYLE = `
 	.pv-nav.left { left: 14px; }
 	.pv-nav.right { right: 14px; }
 	.preview-stage img {
-		max-width: 100%;
-		max-height: 100%;
-		object-fit: contain;
+		margin: auto;
+		height: auto;
+		cursor: zoom-in;
 		border-radius: 4px;
 		box-shadow: 0 0 0 1px var(--thumb-edge), 0 18px 50px rgba(0, 0, 0, 0.32);
 	}
