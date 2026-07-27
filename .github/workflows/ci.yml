@@ -36,3 +36,8 @@ jobs:
       # controle qui exerce le moteur depuis node_modules, ou vivent les erreurs
       # de packaging que rien d'autre ne voit.
       - run: npm run test:consumer
+
+      # Genere un projet depuis le tarball du generateur, l'installe et le rend :
+      # attrape un fichier oublie dans son `files`, un placeholder non substitue,
+      # une skill absente du paquet.
+      - run: npm run test:generator

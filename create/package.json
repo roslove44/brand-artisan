@@ -1,0 +1,23 @@
+{
+  "name": "create-brand-artisan",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Crée un projet de visuels BrandArtisan, charte et exemple compris.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roslove44/brand-artisan.git",
+    "directory": "create"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "create-brand-artisan": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "template"
+  ]
+}

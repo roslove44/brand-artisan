@@ -5,9 +5,8 @@
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "strict": true,
-    "esModuleInterop": true,
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src", "templates", "tools", "test", "create"]
+  "include": ["templates", "tools"]
 }

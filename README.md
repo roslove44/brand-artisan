@@ -50,7 +50,8 @@ npm run build      # export fichier : rend toute l'arborescence dans out/
 npm run typecheck  # vérification TypeScript (tsc)
 npm test           # tests : helpers purs + chaîne de rendu (node:test)
 npm run check      # typecheck + tests, ce que lance la CI
-npm run test:consumer  # installe le paquet dans un projet vierge et y rend un visuel
+npm run test:consumer   # installe le paquet dans un projet vierge et y rend un visuel
+npm run test:generator  # génère un projet avec create-brand-artisan et le rend
 
 npx brand-artisan colors <image>  # palette d'une image : relever plutôt que deviner
 ```
@@ -198,6 +199,7 @@ validés vers `brands/<projet>/`. Détails dans
 | `brands/<projet>/` | Référence d'une marque : `brand.md`, `project.md`, logo, favicon. |
 | `fonts/` | Polices fournies en dur (Satori n'accède à aucune police système), avec leurs licences : [`NOTICE.md`](fonts/NOTICE.md). |
 | `test/` | Tests : helpers purs et chaîne de rendu (`npm test`), plus `consumer-check.ts` qui installe le paquet dans un projet vierge (`npm run test:consumer`). |
+| `create/` | Le paquet `create-brand-artisan` : `index.js` (le générateur) et `template/`, le squelette qu'il pose, marque de démonstration **Calame** comprise. |
 | `out/` | PNG générés. Ignoré par git (rien à versionner ici). |
 
 ## Ajouter un nouveau visuel

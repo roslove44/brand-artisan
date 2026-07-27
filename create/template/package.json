@@ -1,0 +1,19 @@
+{
+  "name": "__NAME__",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "brand-artisan dev",
+    "build": "brand-artisan build",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "brand-artisan": "__SPEC__"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.2"
+  }
+}
