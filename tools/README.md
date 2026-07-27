@@ -65,6 +65,18 @@ Pour écrire directement dans les assets (régénération en place), pointer la
 constante `OUT_BASE` d'un script vers `brands/<projet>` plutôt que
 `out/<projet>/withtool`.
 
+## Tests
+
+Le socle `src/brandkit/` est couvert par des tests, lancés en CI :
+
+```bash
+uv run python -m unittest discover -s test -p "test_*.py" -v
+```
+
+Ils ne testent **que le socle** : mise à l'échelle du rendu SVG, fond blanc
+optionnel, `.ico` multi-résolution, extraction de glyphes. Les scripts par marque
+n'y figurent pas, la CI ne doit pas dépendre du contenu présent dans le dépôt.
+
 ## Ajouter une marque
 
 Créer `tools/<projet>/` avec ses scripts (s'inspirer de `rostand-migan/`),
