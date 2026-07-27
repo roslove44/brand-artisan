@@ -39,9 +39,13 @@ if (occupants.length > 0) {
 }
 
 cpSync(TEMPLATE, target, { recursive: true });
-// npm renomme tout .gitignore d'un paquet publie en .npmignore : le fichier
-// voyage donc sans son point, et le retrouve ici.
+// Deux fichiers voyagent sous un nom neutre et le retrouvent ici :
+//  - .gitignore, parce que npm renomme en .npmignore tout .gitignore publie ;
+//  - tsconfig.json, pour qu'il ne devienne pas le tsconfig le plus proche des
+//    fichiers du squelette dans le depot de BrandArtisan (l'editeur y verrait
+//    des erreurs fantomes, faute de node_modules a cote).
 renameSync(join(target, "gitignore"), join(target, ".gitignore"));
+renameSync(join(target, "_tsconfig.json"), join(target, "tsconfig.json"));
 
 const pkg = join(target, "package.json");
 writeFileSync(pkg, readFileSync(pkg, "utf8").replace("__NAME__", name).replace("__SPEC__", `^${version}`));

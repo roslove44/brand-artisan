@@ -46,6 +46,8 @@ try {
 	assert.equal(pkg.name, "mes-visuels", "le nom du projet vient du dossier");
 	assert.match(pkg.dependencies["brand-artisan"], /^\^\d+\.\d+\.\d+$/, "la version du moteur doit etre substituee");
 	assert.ok(existsSync(join(APP, ".gitignore")), "gitignore doit retrouver son point");
+	assert.ok(existsSync(join(APP, "tsconfig.json")), "_tsconfig.json doit retrouver son nom");
+	assert.ok(!existsSync(join(APP, "_tsconfig.json")), "le nom de voyage ne doit pas rester");
 	for (const f of ["brands/calame/brand.md", "brands/calame/project.md", "templates/calame/og.tsx", "tools/calame/build-logo.ts", "fonts/Sora-700.ttf", "fonts/NOTICE.md"]) {
 		assert.ok(existsSync(join(APP, ...f.split("/"))), `${f} doit etre livre`);
 	}
