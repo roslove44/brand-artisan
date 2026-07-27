@@ -8,8 +8,8 @@
  */
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { renderSvg } from "../../src/brandkit";
-import { root } from "../../src/root";
+import { renderSvg } from "brand-artisan/brandkit";
+import { root } from "brand-artisan";
 
 const SRC = fileURLToPath(root("out/comptaopen/brand/favicon/"));
 const OUT = `${SRC}oauth/`;

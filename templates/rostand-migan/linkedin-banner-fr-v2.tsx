@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
+import type { Template } from "brand-artisan";
 
 // Banner de profil perso LinkedIn (FR), variante v2 : 1584x396 (4:1).
 // Concept : le nom "ROSTAND" en monumental, grave en fond (bas opacite),

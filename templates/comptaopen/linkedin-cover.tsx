@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 
 // Cover de Page entreprise LinkedIn : 4200x700 (6:1). LinkedIn peut rogner
 // horizontalement/verticalement selon l'ecran -> contenu centre, marges larges.

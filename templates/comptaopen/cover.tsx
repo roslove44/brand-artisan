@@ -1,7 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 
 const SIZE = { width: 1500, height: 500 };
 

@@ -14,8 +14,8 @@ charte. Deux visuels possibles, indépendants :
 - **photo de couverture** : la bannière haute de la Page (851x315).
 
 C'est une spécialisation de `new-template` avec les contraintes Facebook en dur.
-Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
-`brand()`, polices chargées dans `render.ts`, `export default ... satisfies
+Mêmes conventions : contrat `Template` (de `brand-artisan`), assets via
+`brand()`, polices découvertes dans `fonts/`, `export default ... satisfies
 Template`.
 
 ## 0. Prérequis (bloquant)
@@ -84,8 +84,7 @@ Dimensions **officielles** Facebook (ne pas dévier) :
 ```tsx
 import { readFile } from "node:fs/promises";
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 
 const SIZE = { width: 320, height: 320 }; // FB profil, rogne en cercle (scale:2 possible)
 
@@ -121,8 +120,7 @@ export default { size: SIZE, title: "Photo de profil Facebook <Projet>", render 
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark
 
 const SIZE = { width: 851, height: 315 }; // FB couverture (recommande)
@@ -158,7 +156,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "Couverture Facebook <Projet>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `brand("<projet>/...")`, les polices chargées dans `render.ts` ; police absente ->
+Conventions communes : assets via `brand("<projet>/...")`, les polices découvertes dans `fonts/` ; police absente ->
 suivre l'annexe "police manquante" de `new-template`, jamais en silence.
 
 ## 4. Vérifier

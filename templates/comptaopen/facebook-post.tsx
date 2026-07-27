@@ -1,7 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 
 // Post Facebook portrait 4:5 (resolution cible Meta).
 const SIZE = { width: 1440, height: 1800 };

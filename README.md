@@ -198,7 +198,7 @@ validés vers `brands/<projet>/`. Détails dans
    des sous-dossiers).
 2. Exporter le template par défaut, qui charge lui-même ses assets :
    ```tsx
-   import type { Template } from "../../template";
+   import type { Template } from "brand-artisan";
 
    const SIZE = { width: 1200, height: 630 };
 

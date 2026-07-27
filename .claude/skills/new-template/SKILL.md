@@ -46,11 +46,12 @@ silence (principe #1 de CLAUDE.md).
 
 ## 5. Écrire le `.tsx`
 
-Respecter le contrat (`src/template.ts`) et les conventions du projet :
+Respecter le contrat `Template` (de `brand-artisan`) et les conventions du
+projet :
 
 - Couleurs en **constantes nommées tirées de la charte** : ne pas inventer de hex.
 - Polices : celles présentes dans `fonts/`, découvertes automatiquement par
-  `src/render.ts`. Le nom du fichier donne la famille et la graisse
+  le moteur. Le nom du fichier donne la famille et la graisse
   (`GeistMono-600.ttf` -> famille `Geist Mono`, graisse 600). Si la charte impose
   une autre police absente de `fonts/`, suivre la procédure **Police manquante**
   ci-dessous : ne jamais l'utiliser en silence.
@@ -63,8 +64,7 @@ Squelette de départ :
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 // import { readFile } from "node:fs/promises"; // si le visuel charge un asset (SVG/PNG)
 
 const SIZE = { width: 1200, height: 630 };
@@ -135,7 +135,7 @@ Si la charte impose une police qui n'est pas dans `fonts/` :
    d'erreur HTML déguisée, qui ferait planter Satori à l'exécution.
 5. **Documenter la licence** : déposer son texte dans `fonts/` et ajouter
    la ligne correspondante au tableau de `fonts/NOTICE.md`. Aucune
-   déclaration de code n'est nécessaire : `src/render.ts` découvre le fichier au
+   déclaration de code n'est nécessaire : le moteur découvre le fichier au
    démarrage, à condition que son nom suive la convention de l'étape 3.
 6. **Confirmer avant de commit** le `.ttf` (binaire) avec l'utilisateur.
 

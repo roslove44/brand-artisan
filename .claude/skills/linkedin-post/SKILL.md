@@ -9,8 +9,8 @@ Objectif : produire l'**asset PNG** d'une image de post LinkedIn, au **ratio**
 choisi, aligné sur la charte.
 
 C'est une spécialisation de `new-template` avec les contraintes LinkedIn en dur.
-Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
-`brand()`, polices chargées dans `render.ts`, `export default ... satisfies
+Mêmes conventions : contrat `Template` (de `brand-artisan`), assets via
+`brand()`, polices découvertes dans `fonts/`, `export default ... satisfies
 Template`.
 
 > **Statut des dimensions.** LinkedIn ne documente officiellement qu'un visuel à
@@ -65,8 +65,7 @@ Choisir `SIZE` selon l'orientation. Squelette :
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark
 
 // Choisir selon l'orientation :
@@ -98,7 +97,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "Post LinkedIn <Projet>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `brand("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
+Conventions communes : assets via `brand("<projet>/...")`, les polices découvertes dans `fonts/` ; police absente -> annexe « police
 manquante » de `new-template`, jamais en silence. Garder le code minimal.
 
 ## 4. Vérifier

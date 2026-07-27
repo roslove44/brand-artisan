@@ -16,8 +16,8 @@ indépendants :
 - **cover entreprise** (Page) : la bannière haute, 4200×700 (6:1).
 
 C'est une spécialisation de `new-template` avec les contraintes LinkedIn en dur.
-Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
-`brand()`, polices chargées dans `render.ts`, `export default ... satisfies
+Mêmes conventions : contrat `Template` (de `brand-artisan`), assets via
+`brand()`, polices découvertes dans `fonts/`, `export default ... satisfies
 Template`.
 
 ## 0. Prérequis (bloquant)
@@ -72,8 +72,7 @@ visuel :
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark
 
 // Choisir selon le visuel :
@@ -95,7 +94,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "<Titre humain>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `brand("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
+Conventions communes : assets via `brand("<projet>/...")`, les polices découvertes dans `fonts/` ; police absente -> annexe « police
 manquante » de `new-template`, jamais en silence.
 
 ## 4. Vérifier

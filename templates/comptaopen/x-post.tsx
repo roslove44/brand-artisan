@@ -1,7 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 
 // Post X paysage 16:9 (convention ; X ne documente pas les dims des images de tweet).
 const SIZE = { width: 1600, height: 900 };

@@ -62,8 +62,7 @@ Choisir `SIZE` selon l'orientation. Squelette :
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark
 
 // Choisir selon l'orientation :

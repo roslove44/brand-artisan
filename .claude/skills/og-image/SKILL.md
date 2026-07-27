@@ -11,8 +11,8 @@ pipeline du projet (Satori -> resvg), aligné sur la charte. BrandArtisan ne gé
 (voir annexe).
 
 C'est une spécialisation de `new-template` avec les contraintes OG en dur. Mêmes
-conventions : contrat `Template` (`src/template.ts`), assets via `brand()`,
-polices chargées dans `render.ts`, `export default ... satisfies Template`.
+conventions : contrat `Template` (de `brand-artisan`), assets via `brand()`,
+polices découvertes dans `fonts/`, `export default ... satisfies Template`.
 
 ## 0. Prérequis (bloquant)
 
@@ -62,8 +62,7 @@ commencer. Ne pas débuter tant que ce n'est pas le cas :
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark (SVG/PNG)
 
 const SIZE = { width: 1200, height: 630 }; // OG standard, pas de scale

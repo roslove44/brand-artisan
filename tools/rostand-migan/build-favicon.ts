@@ -8,8 +8,8 @@
  */
 import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { loadInstanced, makeIco, renderPixels, renderSvg } from "../../src/brandkit";
-import { root } from "../../src/root";
+import { loadInstanced, makeIco, renderPixels, renderSvg } from "brand-artisan/brandkit";
+import { root } from "brand-artisan";
 
 const OUT = fileURLToPath(root("out/rostand-migan/brand/favicon/"));
 const FONT = fileURLToPath(root("tools/rostand-migan/_geist.ttf"));

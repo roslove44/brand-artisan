@@ -11,7 +11,7 @@ charte. Un carrousel n'est pas N images indépendantes : c'est une **série** qu
 raconte quelque chose. La cohérence inter-cartes est le cœur du livrable.
 
 C'est une spécialisation de `new-template`. Mêmes conventions : contrat
-`Template` (`src/template.ts`), assets via `brand()`, polices chargées dans
+`Template` (de `brand-artisan`), assets via `brand()`, polices chargées dans
 `render.ts`, `export default ... satisfies Template`.
 
 > **Statut des dimensions.** Les specs viennent du **Gestionnaire de publicités**
@@ -127,7 +127,7 @@ templates/<projet>/<nom>/
   donc `card-10` passerait avant `card-2`. Dès qu'on atteint 10 cartes, **padder
   à deux chiffres** : `card-01` … `card-10`.
 - Couleurs en constantes (depuis `theme.ts`), assets via `brand("<projet>/...")`,
-  les polices chargées dans `render.ts` ; police absente -> annexe
+  les polices découvertes dans `fonts/` ; police absente -> annexe
   « police manquante » de `new-template`, jamais en silence.
 
 ### `theme.ts` (squelette)
@@ -158,7 +158,7 @@ export const frame: CSSProperties = {
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../../src/template";
+import type { Template } from "brand-artisan";
 import { SIZE, frame, PAPER, ACCENT } from "./theme";
 
 function render(): ReactNode {

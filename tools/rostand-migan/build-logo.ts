@@ -9,8 +9,8 @@
  */
 import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { loadInstanced, renderSvg } from "../../src/brandkit";
-import { root } from "../../src/root";
+import { loadInstanced, renderSvg } from "brand-artisan/brandkit";
+import { root } from "brand-artisan";
 
 const OUT = fileURLToPath(root("out/rostand-migan/brand/logo/"));
 const FONT = fileURLToPath(root("tools/rostand-migan/_geist.ttf"));

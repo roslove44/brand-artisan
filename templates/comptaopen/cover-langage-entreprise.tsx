@@ -1,7 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 
 // Cover d'article 16:9 (1280x720) pour le site ComptaOpen.
 // Article : « La comptabilite n'est pas une discipline isolee.

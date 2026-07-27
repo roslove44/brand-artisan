@@ -133,7 +133,7 @@ export const frame: CSSProperties = {
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../../src/template";
+import type { Template } from "brand-artisan";
 import { SIZE, frame, PAPER, ACCENT } from "./theme";
 
 function render(): ReactNode {

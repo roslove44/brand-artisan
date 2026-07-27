@@ -61,8 +61,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark
 
 // Choisir selon le visuel :

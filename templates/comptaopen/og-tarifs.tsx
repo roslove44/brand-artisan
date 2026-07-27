@@ -1,7 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 
 // OG standard : 1200x630 (ratio 1.91:1), pas de scale (inutile a cette taille pour de l'OG).
 const SIZE = { width: 1200, height: 630 };

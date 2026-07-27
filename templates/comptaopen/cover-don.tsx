@@ -1,7 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 
 // Couverture de partage social pour la page de don FedaPay (« Soutenir ComptaOpen »).
 // Taille imposee par FedaPay : 1024x512 (ratio 2:1), PNG.

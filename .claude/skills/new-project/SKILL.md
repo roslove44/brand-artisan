@@ -24,7 +24,7 @@ c'est le cœur de la règle projet. Recueillir au minimum :
 - **Concept / signification** du logo et du nom.
 - **Typographie** : police, graisse, source. Note : les familles et graisses
   disponibles sont celles présentes dans `fonts/`, découvertes automatiquement
-  par `src/render.ts`. Si la charte impose une autre police absente de `fonts/`,
+  par le moteur. Si la charte impose une autre police absente de `fonts/`,
   suivre la procédure **Police manquante** ci-dessous : proposer de la
   pré-installer maintenant, ou laisser `/new-template` la récupérer au premier
   visuel qui en a besoin.
@@ -104,7 +104,7 @@ Si la charte impose une police qui n'est pas dans `fonts/` :
    d'erreur HTML déguisée.
 5. **Documenter la licence** : déposer son texte dans `fonts/` et ajouter
    la ligne correspondante au tableau de `fonts/NOTICE.md`. Aucune
-   déclaration de code : `src/render.ts` découvre le fichier au démarrage, si
+   déclaration de code : le moteur découvre le fichier au démarrage, si
    son nom suit la convention `<Famille>-<graisse>.ttf` de l'étape 3.
 6. **Confirmer avant de commit** le `.ttf` (binaire) avec l'utilisateur.
 

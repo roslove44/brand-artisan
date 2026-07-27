@@ -1,6 +1,6 @@
 ---
 name: brand-assets
-description: Génère ou régénère les assets de marque d'un projet (logo, favicon et leurs déclinaisons) via la toolchain de marque, fidèlement. À utiliser quand l'utilisateur veut "régénérer le logo / le favicon", "ajouter une déclinaison d'icône ou de logo", "une nouvelle variante de marque", ou "mettre en place la toolchain de marque d'un projet". Travaille dans tools/<projet>/ en réutilisant src/brandkit.ts, sort dans out/<projet>/brand/ puis promotion vers brands/<projet>/. Nécessite un projet avec sa brand.md en place.
+description: Génère ou régénère les assets de marque d'un projet (logo, favicon et leurs déclinaisons) via la toolchain de marque, fidèlement. À utiliser quand l'utilisateur veut "régénérer le logo / le favicon", "ajouter une déclinaison d'icône ou de logo", "une nouvelle variante de marque", ou "mettre en place la toolchain de marque d'un projet". Travaille dans tools/<projet>/ en réutilisant brand-artisan/brandkit, sort dans out/<projet>/brand/ puis promotion vers brands/<projet>/. Nécessite un projet avec sa brand.md en place.
 ---
 
 # brand-assets : génération des assets de marque
@@ -51,7 +51,7 @@ exacte du bracket-O dans le cadre. C'est ce qui évite un visuel « à peu près
 
 Dans `tools/<projet>/` (jamais ailleurs) :
 
-- **Réutiliser `src/brandkit.ts`** pour la plomberie générique :
+- **Réutiliser `brand-artisan/brandkit`** pour la plomberie générique :
   - `renderSvg(svg, { width } | { height }, fond?)` : SVG -> PNG,
   - `renderPixels(svg, taille)` : mêmes pixels en RGBA, pour les contrôles,
   - `makeIco(images)` : `.ico` multi-résolution,
@@ -87,6 +87,6 @@ conformes), produits par un script qui réutilise `brandkit.ts`, et promus dans
 1. Créer `tools/<projet>/` ; s'inspirer de `tools/rostand-migan/`
    (`build-logo.ts`, `build-favicon.ts`).
 2. Y déposer la police source si besoin (ex. `_geist.ttf`).
-3. Importer le socle : `import { … } from "../../src/brandkit"`. Couleurs et
+3. Importer le socle : `import { … } from "brand-artisan/brandkit"`. Couleurs et
    géométrie tirées de `brand.md`, jamais inventées.
 4. `OUT` -> `out/<projet>/brand/`. Vérifier, valider, promouvoir.

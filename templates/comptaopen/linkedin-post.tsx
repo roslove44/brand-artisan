@@ -1,7 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../src/template";
-import { brand } from "../../src/brand";
+import { brand, type Template } from "brand-artisan";
 
 // Post LinkedIn portrait 4:5 (convention ; LinkedIn ne documente que 1200x627).
 const SIZE = { width: 1080, height: 1350 };

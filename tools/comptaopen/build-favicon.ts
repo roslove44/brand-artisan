@@ -8,8 +8,8 @@
  */
 import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { makeIco, renderPixels, renderSvg } from "../../src/brandkit";
-import { root } from "../../src/root";
+import { makeIco, renderPixels, renderSvg } from "brand-artisan/brandkit";
+import { root } from "brand-artisan";
 
 const OUT = fileURLToPath(root("out/comptaopen/brand/favicon/"));
 mkdirSync(OUT, { recursive: true });

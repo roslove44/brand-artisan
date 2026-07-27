@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Template } from "../../src/template";
+import type { Template } from "brand-artisan";
 
 // Banner de profil perso LinkedIn (FR), variante v3 : 1584x396 (4:1).
 // Composition dérivée d'une référence fournie (import-reference, flux B) :

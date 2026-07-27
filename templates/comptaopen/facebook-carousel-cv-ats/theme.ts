@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import type { CSSProperties } from "react";
-import { brand } from "../../../src/brand";
+import { brand } from "brand-artisan";
 
 // Charte partagee par toutes les cartes du carrousel CV ATS. TS pur (pas de JSX) :
 // la decouverte ne charge que les .tsx, donc ce fichier est ignore comme template.
