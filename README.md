@@ -50,6 +50,7 @@ npm run build      # export fichier : rend toute l'arborescence dans out/
 npm run typecheck  # vérification TypeScript (tsc)
 npm test           # tests : helpers purs + chaîne de rendu (node:test)
 npm run check      # typecheck + tests, ce que lance la CI
+npm run test:consumer  # installe le paquet dans un projet vierge et y rend un visuel
 ```
 
 Les commandes se lancent depuis n'importe quel sous-dossier du projet : les
@@ -174,6 +175,7 @@ validés vers `brands/<projet>/`. Détails dans
 
 | Chemin | Rôle |
 |---|---|
+| `src/index.ts` | Surface publique du paquet : `Template`, `brand()`, `root()`, `toPng()`, `renderToFile()`. C'est ce que résout `import { … } from "brand-artisan"`, ici comme dans un projet qui installe le paquet. |
 | `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. Découvre aussi les polices de `fonts/` par leur nom de fichier. |
 | `src/discover.ts` | Auto-découverte : scanne `templates/` (dossier = projet, `.tsx` = image), résout une URL en noeud, charge un template. |
 | `src/template.ts` | Le type `Template` : ce que chaque `.tsx` exporte par défaut (`{ size, title?, render }`). |
@@ -188,7 +190,7 @@ validés vers `brands/<projet>/`. Détails dans
 | `tools/<projet>/` | Scripts d'une marque : géométrie et couleurs en dur, police source. |
 | `brands/<projet>/` | Référence d'une marque : `brand.md`, `project.md`, logo, favicon. |
 | `fonts/` | Polices fournies en dur (Satori n'accède à aucune police système), avec leurs licences : [`NOTICE.md`](fonts/NOTICE.md). |
-| `test/` | Tests : helpers purs et chaîne de rendu (`npm test`). |
+| `test/` | Tests : helpers purs et chaîne de rendu (`npm test`), plus `consumer-check.ts` qui installe le paquet dans un projet vierge (`npm run test:consumer`). |
 | `out/` | PNG générés. Ignoré par git (rien à versionner ici). |
 
 ## Ajouter un nouveau visuel

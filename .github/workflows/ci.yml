@@ -31,3 +31,8 @@ jobs:
       # Rend reellement toute l'arborescence de templates/ : garde-fou contre un
       # visuel casse (Satori echoue a l'execution, pas au typecheck).
       - run: npm run build
+
+      # Empaquette, installe dans un projet vierge et y rend un visuel : le seul
+      # controle qui exerce le moteur depuis node_modules, ou vivent les erreurs
+      # de packaging que rien d'autre ne voit.
+      - run: npm run test:consumer

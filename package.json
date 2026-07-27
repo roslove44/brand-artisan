@@ -22,6 +22,7 @@
     "build": "tsx src/build.ts",
     "typecheck": "tsc",
     "test": "node --import tsx --test test/**/*.test.ts",
+    "test:consumer": "tsx test/consumer-check.ts",
     "check": "npm run typecheck && npm test"
   },
   "dependencies": {
