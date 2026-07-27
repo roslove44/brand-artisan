@@ -11,10 +11,10 @@ import pathlib
 from PIL import Image
 
 HERE = pathlib.Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
+ROOT = HERE.parents[1]  # tools/rostand-migan -> racine du depot
+sys.path.insert(0, str(ROOT / "src"))  # -> import brandkit
 from brandkit import load_instanced, glyph_path, render_svg, make_ico
 
-ROOT = HERE.parents[2]  # src/tools/rostand-migan -> repo root
 OUT_BASE = ROOT / "out" / "rostand-migan" / "withtool"  # -> "brands" / "rostand-migan" pour ecrire en place
 OUT = OUT_BASE / "favicon"
 OUT.mkdir(parents=True, exist_ok=True)

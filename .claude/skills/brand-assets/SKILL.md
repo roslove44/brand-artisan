@@ -1,6 +1,6 @@
 ---
 name: brand-assets
-description: Génère ou régénère les assets de marque d'un projet (logo, favicon et leurs déclinaisons) via la toolchain Python, fidèlement. À utiliser quand l'utilisateur veut "régénérer le logo / le favicon", "ajouter une déclinaison d'icône ou de logo", "une nouvelle variante de marque", ou "mettre en place la toolchain de marque d'un projet". Travaille dans src/tools/<projet>/ en réutilisant src/tools/brandkit/, sort dans out/<projet>/withtool/ puis promotion vers brands/<projet>/. Nécessite un projet avec sa brand.md en place.
+description: Génère ou régénère les assets de marque d'un projet (logo, favicon et leurs déclinaisons) via la toolchain Python, fidèlement. À utiliser quand l'utilisateur veut "régénérer le logo / le favicon", "ajouter une déclinaison d'icône ou de logo", "une nouvelle variante de marque", ou "mettre en place la toolchain de marque d'un projet". Travaille dans tools/<projet>/ en réutilisant src/brandkit/, sort dans out/<projet>/withtool/ puis promotion vers brands/<projet>/. Nécessite un projet avec sa brand.md en place.
 ---
 
 # brand-assets : génération des assets de marque (Python)
@@ -11,7 +11,7 @@ façon **fidèle** à ce qui existe. Monde séparé du moteur TS/Satori : ici on
 **produit** les fichiers que `brands/<projet>/logo` et `/favicon` contiennent ;
 le moteur les consomme via `brand()`.
 
-> **Env et commandes : voir [`src/tools/README.md`](../../../src/tools/README.md).**
+> **Env et commandes : voir [`tools/README.md`](../../../tools/README.md).**
 > Cette skill ne duplique pas le setup (`uv sync`) ni les commandes de lancement
 > (`uv run python …`). Elle encode le **comment bien faire**.
 
@@ -27,7 +27,7 @@ Trois cas :
 - **Régénérer** un asset existant (la charte ou la géométrie a changé).
 - **Ajouter une déclinaison** d'un asset existant (nouvelle couleur, fond, taille,
   ex. les `oauth-120-*`).
-- **Amorcer une nouvelle marque** (créer `src/tools/<projet>/`, voir annexe).
+- **Amorcer une nouvelle marque** (créer `tools/<projet>/`, voir annexe).
 
 ## 2. Discipline de reproduction fidèle (le cœur)
 
@@ -46,16 +46,16 @@ exacte du bracket-O dans le cadre. C'est ce qui évite un visuel « à peu près
 
 ## 3. Construire
 
-Dans `src/tools/<projet>/` (jamais ailleurs) :
+Dans `tools/<projet>/` (jamais ailleurs) :
 
-- **Réutiliser `src/tools/brandkit/`** pour la plomberie générique :
+- **Réutiliser `src/brandkit/`** pour la plomberie générique :
   - `raster.render_svg(svg_path, w, h, container_w, container_h, white_bg)` : SVG -> image PIL,
   - `raster.make_ico(svg_path, ico_path, sizes)`,
   - `fonts.load_instanced(font_path, axes)` et `fonts.glyph_path(glyphset, name)`.
 - **Garder en local** (dans le script de la marque) les **couleurs**, la
   **géométrie** (paths, viewBox) et le **layout**, jamais dans `brandkit`.
 - Si une plomberie générique nouvelle est utile à toute marque, l'ajouter à
-  `brandkit` (et **mettre à jour `src/tools/README.md` en miroir**).
+  `brandkit` (et **mettre à jour `tools/README.md` en miroir**).
 - La sortie va dans **`out/<projet>/withtool/`** via la constante `OUT_BASE` du
   script. Ne pas écrire directement dans `brands/` (voir §5).
 
@@ -80,10 +80,10 @@ conformes), produits par un script qui réutilise `brandkit`, et promus dans
 
 ## Annexe : amorcer une nouvelle marque
 
-1. Créer `src/tools/<projet>/` ; s'inspirer de `src/tools/comptaopen/`
+1. Créer `tools/<projet>/` ; s'inspirer de `tools/comptaopen/`
    (`build_logo.py`, `build_favicon.py`).
 2. Y déposer la police source si besoin (ex. `_sora.ttf`).
-3. Importer `brandkit` via `sys.path` (insertion de `src/tools/`, comme les
+3. Importer `brandkit` via `sys.path` (insertion de `tools/`, comme les
    scripts comptaopen). Couleurs et géométrie tirées de `brand.md`, jamais
    inventées.
 4. `OUT_BASE` -> `out/<projet>/withtool/`. Vérifier, valider, promouvoir.

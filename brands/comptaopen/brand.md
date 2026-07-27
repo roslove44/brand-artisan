@@ -130,14 +130,14 @@ hauteur du bracket-O**. Rien (texte, bord, autre logo) n'entre dans cette zone.
 ## 4. Régénération
 
 Les fichiers de `logo/` et `favicon/` sont générés par les scripts Python de la
-toolchain `src/tools/comptaopen/`, qui s'appuient sur le socle partagé
-`src/tools/brandkit/`. Environnement géré par **uv** (voir `src/tools/README.md`).
+toolchain `tools/comptaopen/`, qui s'appuient sur le socle partagé
+`src/brandkit/`. Environnement géré par **uv** (voir `tools/README.md`).
 
 ```bash
 uv sync                                          # une fois : env Python + deps
-uv run python src/tools/comptaopen/build_logo.py     # -> out/comptaopen/withtool/logo/
-uv run python src/tools/comptaopen/build_favicon.py  # -> out/comptaopen/withtool/favicon/ (icon*.svg + rasters)
-uv run python src/tools/comptaopen/build_oauth.py    # -> out/comptaopen/withtool/favicon/oauth/ (icones 120px Google OAuth)
+uv run python tools/comptaopen/build_logo.py    # -> out/comptaopen/withtool/logo/
+uv run python tools/comptaopen/build_favicon.py # -> out/comptaopen/withtool/favicon/ (icon*.svg + rasters)
+uv run python tools/comptaopen/build_oauth.py   # -> out/comptaopen/withtool/favicon/oauth/ (icones 120px Google OAuth)
 ```
 
 `build_oauth.py` rend chaque `icon*.svg` en PNG 120 px (taille recommandée par

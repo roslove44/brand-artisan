@@ -9,10 +9,10 @@ import sys
 import pathlib
 
 HERE = pathlib.Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
+ROOT = HERE.parents[1]  # tools/comptaopen -> racine du depot
+sys.path.insert(0, str(ROOT / "src"))  # -> import brandkit
 from brandkit import render_svg
 
-ROOT = HERE.parents[2]  # src/tools/comptaopen -> repo root
 SRC = ROOT / "out" / "comptaopen" / "withtool" / "favicon"
 OUT = SRC / "oauth"
 OUT.mkdir(parents=True, exist_ok=True)

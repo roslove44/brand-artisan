@@ -40,7 +40,7 @@ Ambigu -> demander, ne pas choisir en silence (principe #1 de CLAUDE.md).
 Même discipline que `brand-assets` §2 : **mesurer avant d'affirmer**.
 
 - **Couleurs et géométrie : à la machine.** Avec Pillow via
-  `uv run python` (env : `uv sync`, voir `src/tools/README.md`) :
+  `uv run python` (env : `uv sync`, voir `tools/README.md`) :
   - dimensions : `Image.open(p).size` ;
   - palette et proportions : `img.convert("RGBA").getcolors(30000)`, trié par
     effectif décroissant : le premier bloc est le fond, les blocs suivants les

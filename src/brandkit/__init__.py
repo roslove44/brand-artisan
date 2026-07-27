@@ -2,7 +2,7 @@
 
 Plomberie reutilisable (skia SVG -> PNG, builder .ico, instanciation de police
 variable + extraction de glyphes). La geometrie et les couleurs propres a une
-marque vivent dans ses scripts (src/tools/<projet>/), pas ici.
+marque vivent dans ses scripts (tools/<projet>/), pas ici.
 """
 
 from .raster import render_svg, make_ico

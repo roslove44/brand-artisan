@@ -10,10 +10,10 @@ import pathlib
 from PIL import Image
 
 HERE = pathlib.Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
+ROOT = HERE.parents[1]  # tools/comptaopen -> racine du depot
+sys.path.insert(0, str(ROOT / "src"))  # -> import brandkit
 from brandkit import render_svg, make_ico
 
-ROOT = HERE.parents[2]  # src/tools/comptaopen -> repo root
 OUT_BASE = ROOT / "out" / "comptaopen" / "withtool"  # -> "brands" / "comptaopen" pour ecrire en place
 OUT = OUT_BASE / "favicon"
 OUT.mkdir(parents=True, exist_ok=True)

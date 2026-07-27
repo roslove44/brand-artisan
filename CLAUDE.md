@@ -52,7 +52,7 @@ Exemples actuels : `comptaopen` (marque produit) et `rostand-migan` (marque pers
 
 ## Toolchain Python
 
-Le Python (`src/tools/`) sert à **générer les assets de marque** que le moteur JS ne sait pas produire : SVG à la géométrie exacte, icônes multi-tailles, `.ico`. Le moteur TS les **consomme** ensuite via `brand()`. Env et commandes : `src/tools/README.md` ; méthode : skill `brand-assets`.
+Le Python (`tools/`) sert à **générer les assets de marque** que le moteur JS ne sait pas produire : SVG à la géométrie exacte, icônes multi-tailles, `.ico`. Le moteur TS les **consomme** ensuite via `brand()`. Env et commandes : `tools/README.md` ; méthode : skill `brand-assets`.
 
 ## Skills
 

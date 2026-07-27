@@ -158,7 +158,7 @@ règles de chaque marque vivent dans sa `brand.md`, jamais ailleurs.
 
 À côté du moteur TS (qui **compose** des visuels), une toolchain Python **génère
 les assets de marque** d'un projet : logo, favicon et leurs déclinaisons, dans
-`src/tools/`. Elle existe pour produire ce que le moteur JS ne sait pas faire :
+`tools/`. Elle existe pour produire ce que le moteur JS ne sait pas faire :
 des SVG à la géométrie exacte (logotype tracé depuis les glyphes de la police),
 des icônes multi-tailles, des `.ico`, des rasterisations contrôlées au pixel.
 
@@ -168,14 +168,14 @@ installer uv : voir [Prérequis](#prérequis)). Commandes, depuis la racine :
 ```bash
 uv sync                                                # une seule fois : env + deps
 
-uv run python src/tools/comptaopen/build_logo.py       # -> out/comptaopen/withtool/logo/
-uv run python src/tools/comptaopen/build_favicon.py    # -> out/comptaopen/withtool/favicon/
-uv run python src/tools/comptaopen/build_oauth.py      # -> out/comptaopen/withtool/favicon/oauth/ (120px Google OAuth)
+uv run python tools/comptaopen/build_logo.py    # -> out/comptaopen/withtool/logo/
+uv run python tools/comptaopen/build_favicon.py # -> out/comptaopen/withtool/favicon/
+uv run python tools/comptaopen/build_oauth.py   # -> out/comptaopen/withtool/favicon/oauth/ (120px Google OAuth)
 ```
 
 La sortie va dans `out/<projet>/withtool/` (éphémère) ; promouvoir les fichiers
 validés vers `brands/<projet>/`. Détails dans
-[`src/tools/README.md`](src/tools/README.md).
+[`tools/README.md`](tools/README.md).
 
 ## Structure
 
@@ -189,7 +189,8 @@ validés vers `brands/<projet>/`. Détails dans
 | `src/serve.ts` | Serveur de dev HTTP : routing récursif sur l'arbre, pages de listing + preview (`npm run dev`). |
 | `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/<projet>/<slug-du-titre>.png` (`npm run build`). |
 | `templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, title?, render }` par défaut et charge ses propres assets. |
-| `src/tools/` | Toolchain Python de marque : `brandkit/` (socle partagé) + un dossier de scripts par projet. |
+| `src/brandkit/` | Socle Python partagé de la toolchain de marque (skia SVG -> PNG, `.ico`, chargement de police). |
+| `tools/<projet>/` | Scripts Python d'une marque : géométrie et couleurs en dur, polices variables sources. |
 | `brands/<projet>/` | Référence d'une marque : `brand.md`, `project.md`, logo, favicon. |
 | `fonts/` | Polices fournies en dur (Satori n'accède à aucune police système), avec leurs licences : [`NOTICE.md`](fonts/NOTICE.md). |
 | `test/` | Tests : helpers purs et chaîne de rendu (`npm test`). |

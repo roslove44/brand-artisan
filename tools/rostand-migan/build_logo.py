@@ -1,8 +1,9 @@
-"""Genere le logotype ComptaOpen (toutes variantes SVG + PNG) via brandkit.
+"""Genere le logotype Rostand Migan : wordmark "rostand.dev" (variantes SVG + PNG).
 
-Sortie : out/comptaopen/withtool/logo/ (artefacts a promouvoir vers
-brands/comptaopen/logo/ apres revue). Pour ecrire directement dans les assets,
-changer OUT_BASE ci-dessous.
+Le wordmark est compose en Geist 700, decoupe en deux registres de couleur :
+"rostand" en encre, ".dev" en accent bleu (la TLD mise en avant). Sortie :
+out/rostand-migan/withtool/logo/ (a promouvoir vers brands/rostand-migan/logo/
+apres revue). Pour ecrire directement dans les assets, changer OUT_BASE.
 """
 
 import sys
@@ -10,25 +11,21 @@ import pathlib
 from PIL import Image
 
 HERE = pathlib.Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
+ROOT = HERE.parents[1]  # tools/rostand-migan -> racine du depot
+sys.path.insert(0, str(ROOT / "src"))  # -> import brandkit
 from brandkit import load_instanced, glyph_path, render_svg
 
-ROOT = HERE.parents[2]  # src/tools/comptaopen -> repo root
-OUT_BASE = ROOT / "out" / "comptaopen" / "withtool"  # -> "brands" / "comptaopen" pour ecrire en place
+OUT_BASE = ROOT / "out" / "rostand-migan" / "withtool"  # -> "brands" / "rostand-migan" pour ecrire en place
 OUT = OUT_BASE / "logo"
 OUT.mkdir(parents=True, exist_ok=True)
-FONT = HERE / "_sora.ttf"
+FONT = HERE / "_geist.ttf"
 
-INK = "#0f172a"; BLUE = "#1d4ed8"
-LIGHT = "#f8fafc"; LIGHT_BLUE = "#60a5fa"; WHITE = "#ffffff"
-CAP_TOP = 751.5; LS = -30; O_MARGIN = 20; O_BOX = 865; BASE = CAP_TOP; PAD = 48
-
-BRACKET = (
-    '<path d="M257.25 82 A350.5 350.5 0 0 0 257.25 689" fill="none" stroke="{c}" '
-    'stroke-width="164" stroke-linecap="round"/>'
-    '<path d="M607.75 82 A350.5 350.5 0 0 1 607.75 689" fill="none" stroke="{c}" '
-    'stroke-width="164" stroke-linecap="round"/>'
-)
+INK = "#111827"; BLUE = "#2563eb"                 # fond clair
+LIGHT = "#f8fafc"; LIGHT_BLUE = "#60a5fa"         # fond sombre (Tailwind slate-50 / blue-400)
+WHITE = "#ffffff"
+LS = 0.0          # tracking (unites police) ; Geist est deja bien cale
+BASE = 1000.0     # repere de baseline pour le flip Y (valeur arbitraire, annulee par le viewBox)
+PAD = 60          # marge autour de l'encre, en unites police
 
 gs, cmap, hmtx = load_instanced(FONT, {"wght": 700})
 
@@ -44,28 +41,24 @@ def place(s, role):
     for ch in s:
         name = cmap[ord(ch)]
         d, bounds = glyph_path(gs, name)
-        if d.strip():
+        if d.strip() and bounds is not None:
             items.append((d, x, role))
             gx0, gy0, gx1, gy1 = bounds
             add_ink(x + gx0, x + gx1, BASE - gy1, BASE - gy0)
         x += hmtx[name][0] + LS
 
-place("COMPTA", "compta")
-x += O_MARGIN; bracket_x = x
-add_ink(bracket_x, bracket_x + O_BOX, 0, 771)
-x += O_BOX + O_MARGIN + LS
-place("PEN", "open")
+place("rostand", "name")   # encre
+place(".dev", "tld")       # accent bleu (le point compris)
 
 VBX = minx - PAD; VBY = miny - PAD; VBW = (maxx - minx) + 2 * PAD; VBH = (maxy - miny) + 2 * PAD
 
-def build(compta_c, open_c):
+def build(name_c, tld_c):
     g = []
     for d, xx, role in items:
-        c = compta_c if role == "compta" else open_c
+        c = name_c if role == "name" else tld_c
         g.append(f'<g fill="{c}" transform="translate({xx:.2f},{BASE}) scale(1,-1)"><path d="{d}"/></g>')
-    g.append(f'<g transform="translate({bracket_x:.2f},0)">{BRACKET.format(c=open_c)}</g>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{VBX:.2f} {VBY:.2f} {VBW:.2f} {VBH:.2f}" '
-            f'width="{VBW:.0f}" height="{VBH:.0f}" role="img" aria-label="ComptaOpen">' + "".join(g) + "</svg>")
+            f'width="{VBW:.0f}" height="{VBH:.0f}" role="img" aria-label="rostand.dev">' + "".join(g) + "</svg>")
 
 variants = {
     "logo.svg": build(INK, BLUE),
@@ -77,7 +70,7 @@ variants = {
 for fn, svg in variants.items():
     (OUT / fn).write_text(svg, encoding="utf-8")
 
-def raster(svg_name, out, white=False, height=360):
+def raster(svg_name, out, white=False, height=240):
     # rendu a la taille NATIVE du viewBox (rien n'est rogne), puis downscale LANCZOS
     nw, nh = int(round(VBW)), int(round(VBH))
     img = render_svg(OUT / svg_name, nw, nh, nw, nh, white_bg=white)
