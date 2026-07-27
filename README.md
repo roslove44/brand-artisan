@@ -29,26 +29,9 @@ il n'y a ni `react-dom` ni rendu côté client.
 
 ## Prérequis
 
-- **Node.js ≥ 22** et **npm** : le moteur de rendu (TypeScript). C'est tout ce
-  qu'il faut pour composer des visuels. (Version testée en CI : 22 et 24, sur
-  Linux et Windows.)
-- **[uv](https://docs.astral.sh/uv/)** : uniquement pour la *toolchain de marque*
-  en Python (génération des logos/favicons, voir plus bas). Inutile si tu ne fais
-  que composer des visuels.
-
-Installer uv (si tu ne l'as pas déjà) :
-
-```bash
-# macOS / Linux
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Windows (PowerShell)
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-
-uv installe et gère lui-même la bonne version de Python (3.12) : rien d'autre à
-installer côté Python. Autres méthodes (Homebrew, pip…) :
-[docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/).
+**Node.js ≥ 22** et **npm**. C'est tout, et c'est volontaire : un seul
+environnement pour composer des visuels comme pour générer les assets de marque.
+Versions testées en CI : 22 et 24, sur Linux et Windows.
 
 ## Installation
 
@@ -84,10 +67,10 @@ http://localhost:4000/rostand-migan           → liste images + sous-projets
 http://localhost:4000/rostand-migan/linkedin-banner-fr     → page de preview
 http://localhost:4000/rostand-migan/linkedin-banner-fr?raw → PNG brut (utilisable comme src)
 http://localhost:4000/rostand-migan/linkedin-banner-fr?w=1245&h=527 → override de la taille
-http://localhost:4000/rostand-migan/withtool  → sortie de la toolchain Python
+http://localhost:4000/rostand-migan/withtool  → sortie de la toolchain de marque
 ```
 
-Un projet dont les scripts Python ont tourné expose un dossier **`withtool`** à
+Un projet dont les scripts de marque ont tourné expose un dossier **`withtool`** à
 côté de ses visuels : c'est `out/<projet>/withtool/`, la sortie brute de la
 toolchain (logos, favicons, `.ico`). Elle se navigue comme le reste, mais ces
 fichiers sont servis tels quels, sans repasser par Satori. Le dossier n'apparaît
@@ -138,7 +121,7 @@ sûres, contrat de template, discipline « rien hors charte ». Les principaux :
 | `/linkedin-page`, `/linkedin-post`, `/linkedin-carousel` | Visuels LinkedIn aux specs officielles |
 | `/x-page`, `/x-post`, `/x-carousel` | Visuels X / Twitter |
 | `/campagne` | Kit multi-plateformes cohérent à partir d'un seul brief |
-| `/brand-assets` | Génère logo/favicon et déclinaisons (toolchain Python) |
+| `/brand-assets` | Génère logo/favicon et déclinaisons (toolchain de marque) |
 
 Le flux type : `/new-project ma-marque` (pose la charte), puis
 `/og-image ma-marque` ou `/campagne ma-marque`. L'agent lit `brand.md` et
@@ -147,7 +130,7 @@ Le flux type : `/new-project ma-marque` (pose la charte), puis
 
 Si ta marque existe déjà en dehors du code (logo, site, anciens visuels),
 commence plutôt par `/import-reference` : l'agent mesure tes exemples (palette
-au pixel via Pillow, composition à l'œil) et en amorce la charte, au lieu de te
+au pixel, composition à l'œil) et en amorce la charte, au lieu de te
 faire tout décrire de mémoire.
 
 ## Projet d'exemple
@@ -170,22 +153,17 @@ Pour démarrer la tienne : `/new-project <ta-marque>`, ou imite cette structure 
 la main. La palette et les règles de chaque marque vivent dans sa `brand.md`,
 jamais ailleurs.
 
-## Toolchain de marque (Python)
+## Toolchain de marque
 
-À côté du moteur TS (qui **compose** des visuels), une toolchain Python **génère
-les assets de marque** d'un projet : logo, favicon et leurs déclinaisons, dans
-`tools/`. Elle existe pour produire ce que le moteur JS ne sait pas faire :
-des SVG à la géométrie exacte (logotype tracé depuis les glyphes de la police),
-des icônes multi-tailles, des `.ico`, des rasterisations contrôlées au pixel.
-
-Environnement géré par **uv** (Python épinglé à 3.12 pour `skia-python` ;
-installer uv : voir [Prérequis](#prérequis)). Commandes, depuis la racine :
+À côté du moteur qui **compose** des visuels, une toolchain **génère les assets
+de marque** d'un projet : logo, favicon et leurs déclinaisons, dans `tools/`.
+Elle produit ce qu'un template ne sait pas faire : des SVG à la géométrie exacte
+(logotype tracé depuis les glyphes de la police), des icônes multi-tailles, des
+`.ico`.
 
 ```bash
-uv sync                                                # une seule fois : env + deps
-
-uv run python tools/rostand-migan/build_logo.py    # -> out/rostand-migan/withtool/logo/
-uv run python tools/rostand-migan/build_favicon.py # -> out/rostand-migan/withtool/favicon/
+npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/withtool/logo/
+npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/withtool/favicon/
 ```
 
 La sortie va dans `out/<projet>/withtool/` (éphémère) ; promouvoir les fichiers
@@ -205,8 +183,9 @@ validés vers `brands/<projet>/`. Détails dans
 | `src/serve.ts` | Serveur de dev HTTP : routing récursif sur l'arbre, pages de listing + preview (`npm run dev`). |
 | `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/<projet>/<slug-du-titre>.png` (`npm run build`). |
 | `templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, title?, render }` par défaut et charge ses propres assets. |
-| `src/brandkit/` | Socle Python partagé de la toolchain de marque (skia SVG -> PNG, `.ico`, chargement de police). |
-| `tools/<projet>/` | Scripts Python d'une marque : géométrie et couleurs en dur, polices variables sources. |
+| `src/brandkit.ts` | Socle de la toolchain de marque : contours de glyphes (fontkit), SVG -> PNG (resvg), écriture de `.ico`. |
+| `src/colors.ts` | Mesure les couleurs d'une image (PNG, JPEG, SVG) : sert à relever une palette au lieu de la deviner. CLI : `npx tsx src/colors.ts <image>`. |
+| `tools/<projet>/` | Scripts d'une marque : géométrie et couleurs en dur, police source. |
 | `brands/<projet>/` | Référence d'une marque : `brand.md`, `project.md`, logo, favicon. |
 | `fonts/` | Polices fournies en dur (Satori n'accède à aucune police système), avec leurs licences : [`NOTICE.md`](fonts/NOTICE.md). |
 | `test/` | Tests : helpers purs et chaîne de rendu (`npm test`). |

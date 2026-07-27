@@ -1,54 +1,50 @@
-# tools : toolchain de marque (Python)
+# tools : toolchain de marque
 
 Génération des **assets de marque** d'un projet (logo, favicon et leurs
-déclinaisons). Monde séparé du moteur de composition TypeScript/Satori : ici on
-**produit** les fichiers de `brands/<projet>/logo` et `/favicon` ; le moteur les
-**consomme** via `brand()`.
+déclinaisons). Monde séparé du moteur de composition : ici on **produit** les
+fichiers de `brands/<projet>/logo` et `/favicon` ; le moteur les **consomme**
+via `brand()`.
 
 ## Organisation
 
 ```
-src/brandkit/          socle partagé réutilisable (skia SVG -> PNG, .ico, police)
+src/brandkit.ts        socle partagé (police -> contours, SVG -> PNG, .ico)
 tools/
   <projet>/            scripts propres à une marque (couleurs, géométrie en dur)
-    build_logo.py
-    build_favicon.py
-    _geist.ttf         police variable source, instanciée par le script
+    build-logo.ts
+    build-favicon.ts
+    _geist.ttf         police source, instanciée par le script
 ```
 
-Le socle `brandkit/` vit avec le moteur, dans `src/` : il est générique. Les
-scripts par marque sont du **contenu**, ils vivent ici. `brandkit` n'est **pas
-installé** : les scripts l'importent via `sys.path` (insertion de `src/`). Les
-constantes et la géométrie d'une marque vivent dans ses scripts, jamais dans
-`brandkit/`.
+Le socle vit avec le moteur, dans `src/` : il est générique. Les scripts par
+marque sont du **contenu**, ils vivent ici. Les constantes et la géométrie d'une
+marque vivent dans ses scripts, jamais dans `brandkit.ts`.
 
-## Environnement
+## Ce que fait le socle
 
-Géré par **uv**, épinglé à **Python 3.12** (`.python-version`) car `skia-python`
-n'a pas toujours de wheels pour les Python les plus récents. Dépendances dans
-`pyproject.toml` (`skia-python`, `pillow`, `fonttools`).
+| Fonction | Rôle |
+|---|---|
+| `loadInstanced(police, axes)` | Charge une police, instanciée sur ses axes si elle est variable, et donne accès aux glyphes : tracé SVG, chasse, encombrement. |
+| `renderSvg(svg, taille, fond?)` | Rasterise en PNG à la largeur ou à la hauteur voulue. Le vecteur est mis à l'échelle, rien n'est rogné. |
+| `renderPixels(svg, taille)` | Même rendu, en pixels RGBA bruts. Sert aux contrôles de couleur des scripts. |
+| `makeIco(images)` | Écrit un `.ico` multi-résolution : en-tête, répertoire, PNG collés. |
 
-```bash
-uv sync     # crée .venv (Python 3.12) et installe les deps
-```
+Ces quatre primitives suffisent à composer un logotype depuis les glyphes d'une
+police, une tuile d'icône, et toutes leurs déclinaisons.
 
 ## Lancer
 
-Toutes les commandes se lancent **depuis la racine du repo**.
+Toutes les commandes se lancent depuis n'importe quel dossier du projet.
 
 ```bash
-uv sync                                                # une seule fois : env + deps
-
-uv run python tools/rostand-migan/build_logo.py    # -> out/rostand-migan/withtool/logo/    (logotype + variantes + PNG)
-uv run python tools/rostand-migan/build_favicon.py # -> out/rostand-migan/withtool/favicon/ (icon*.svg, favicon, apple-icon, .ico)
+npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/withtool/logo/
+npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/withtool/favicon/
 ```
 
 Une marque peut avoir des scripts en plus des deux standards, propres à son
-besoin : `tools/comptaopen/build_oauth.py` produit par exemple les icônes 120 px
+besoin : `tools/comptaopen/build-oauth.ts` produit par exemple les icônes 120 px
 exigées par Google OAuth. Chaque `brand.md` liste les siens dans sa section
 « Régénération ».
-
-`uv run` utilise le venv géré automatiquement (pas besoin de l'activer).
 
 ## Sortie et promotion
 
@@ -62,22 +58,18 @@ Pour la revue, `npm run dev` expose cette sortie : le projet gagne un dossier
 les fichiers produits s'affichent tels quels. Plus besoin d'ouvrir l'explorateur.
 
 Pour écrire directement dans les assets (régénération en place), pointer la
-constante `OUT_BASE` d'un script vers `brands/<projet>` plutôt que
+constante `OUT` d'un script vers `brands/<projet>` plutôt que
 `out/<projet>/withtool`.
 
 ## Tests
 
-Le socle `src/brandkit/` est couvert par des tests, lancés en CI :
-
-```bash
-uv run python -m unittest discover -s test -p "test_*.py" -v
-```
-
-Ils ne testent **que le socle** : mise à l'échelle du rendu SVG, fond blanc
-optionnel, `.ico` multi-résolution, extraction de glyphes. Les scripts par marque
-n'y figurent pas, la CI ne doit pas dépendre du contenu présent dans le dépôt.
+Le socle est couvert par `test/brandkit.test.ts`, lancé par `npm test` et en CI :
+mise à l'échelle du rendu, fond optionnel, structure du `.ico`, extraction de
+glyphes. Les scripts par marque n'y figurent pas : la CI ne doit pas dépendre du
+contenu présent dans le dépôt.
 
 ## Ajouter une marque
 
 Créer `tools/<projet>/` avec ses scripts (s'inspirer de `rostand-migan/`),
-réutiliser `brandkit` pour la plomberie, et garder couleurs + géométrie locales.
+réutiliser `src/brandkit.ts` pour la plomberie, et garder couleurs et géométrie
+locales.

@@ -65,7 +65,7 @@ utilisent les contreparties Tailwind cohérentes : encre claire `#f8fafc`
 ### Logotype (`logo/`)
 
 Le wordmark **`rostand.dev`** en **Geist 700**, `rostand` en encre et `.dev` en
-bleu. Produit par `tools/rostand-migan/build_logo.py`.
+bleu. Produit par `tools/rostand-migan/build-logo.ts`.
 
 | Fichier | Quand l'utiliser |
 |---|---|
@@ -80,7 +80,7 @@ bleu. Produit par `tools/rostand-migan/build_logo.py`.
 
 Le mark est le monogramme **`RM`** en **Geist 700**, centré sur une **tuile à
 coins arrondis** (rayon 22 %). Couleur par défaut : **RM blanc sur tuile bleue
-`#2563eb`**. Produit par `tools/rostand-migan/build_favicon.py`.
+`#2563eb`**. Produit par `tools/rostand-migan/build-favicon.ts`.
 
 | Fichier | Détail |
 |---|---|
@@ -127,19 +127,18 @@ monogramme **RM** seul.
 
 ## 4. Régénération
 
-Le logo et le favicon sont générés par la toolchain Python
-`tools/rostand-migan/`, qui s'appuie sur le socle partagé
-`src/brandkit/`. Environnement géré par **uv** (voir `tools/README.md`).
+Le logo et le favicon sont générés par la toolchain
+`tools/rostand-migan/`, qui s'appuie sur le socle partagé `src/brandkit.ts`
+(voir `tools/README.md`).
 
 ```bash
-uv sync                                                  # une fois : env Python + deps
-uv run python tools/rostand-migan/build_logo.py    # -> out/rostand-migan/withtool/logo/    (wordmark + variantes + PNG)
-uv run python tools/rostand-migan/build_favicon.py # -> out/rostand-migan/withtool/favicon/ (icon*.svg + rasters)
+npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/withtool/logo/    (wordmark + variantes + PNG)
+npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/withtool/favicon/ (icon*.svg + rasters)
 ```
 
 Les deux scripts instancient Geist à `wght=700` et composent depuis les glyphes :
-`build_logo.py` aligne le wordmark et le découpe en deux couleurs ;
-`build_favicon.py` centre le monogramme `RM` dans la tuile et imprime une
+`build-logo.ts` aligne le wordmark et le découpe en deux couleurs ;
+`build-favicon.ts` centre le monogramme `RM` dans la tuile et imprime une
 validation pixel du favicon 32 px (coin = tuile bleue, centre = trait blanc).
 
 La sortie va dans `out/rostand-migan/withtool/` (artefacts éphémères, non

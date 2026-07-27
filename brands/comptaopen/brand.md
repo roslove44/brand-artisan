@@ -93,7 +93,7 @@ deviendrait illisible à 16 px ; le bracket-O reste reconnaissable.
 
 Le sous-dossier `favicon/oauth/` contient chaque variante d'icône rendue en
 **120 px** (taille recommandée par Google) pour les écrans de consentement OAuth,
-générées par `build_oauth.py`.
+générées par `build-oauth.ts`.
 
 ---
 
@@ -129,24 +129,20 @@ hauteur du bracket-O**. Rien (texte, bord, autre logo) n'entre dans cette zone.
 
 ## 4. Régénération
 
-Les fichiers de `logo/` et `favicon/` sont générés par les scripts Python de la
+Les fichiers de `logo/` et `favicon/` sont générés par les scripts de la
 toolchain `tools/comptaopen/`, qui s'appuient sur le socle partagé
-`src/brandkit/`. Environnement géré par **uv** (voir `tools/README.md`).
+`src/brandkit.ts` (voir `tools/README.md`).
 
 ```bash
-uv sync                                          # une fois : env Python + deps
-uv run python tools/comptaopen/build_logo.py    # -> out/comptaopen/withtool/logo/
-uv run python tools/comptaopen/build_favicon.py # -> out/comptaopen/withtool/favicon/ (icon*.svg + rasters)
-uv run python tools/comptaopen/build_oauth.py   # -> out/comptaopen/withtool/favicon/oauth/ (icones 120px Google OAuth)
+npx tsx tools/comptaopen/build-logo.ts     # -> out/comptaopen/withtool/logo/
+npx tsx tools/comptaopen/build-favicon.ts  # -> out/comptaopen/withtool/favicon/ (icon*.svg + rasters)
+npx tsx tools/comptaopen/build-oauth.ts    # -> out/comptaopen/withtool/favicon/oauth/ (icones 120px Google OAuth)
 ```
 
-`build_oauth.py` rend chaque `icon*.svg` en PNG 120 px (taille recommandée par
-Google) ; le lancer **après** `build_favicon.py`.
+`build-oauth.ts` rend chaque `icon*.svg` en PNG 120 px (taille recommandée par
+Google) ; le lancer **après** `build-favicon.ts`.
 
-La sortie va dans `out/comptaopen/withtool/` (artefacts éphémères, non commités).
-Après revue, **promouvoir** les fichiers validés vers `logo/` et `favicon/` ici.
-
-`build_logo.py` lit la police variable `_sora.ttf` (instanciée à `wght=700`) et
-dérive le logotype ; la géométrie du bracket-O est codée en dur dans les deux
-scripts. `build_favicon.py` imprime en fin de course une validation pixel du
+`build-logo.ts` lit la police `_sora.ttf` (instanciée à `wght=700`) et compose le
+logotype depuis ses glyphes ; les couleurs et la géométrie restent locales aux
+scripts. `build-favicon.ts` imprime en fin de course une validation pixel du
 favicon 32 px (coin transparent, arcs blancs, interstice bleu).

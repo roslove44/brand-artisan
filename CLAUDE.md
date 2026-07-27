@@ -50,9 +50,9 @@ Chaque projet de visuels vit dans `templates/<projet>/` et s'appuie sur deux ré
 
 Exemple de référence : `rostand-migan` (marque personnelle), complet de la charte aux visuels en passant par ses scripts. Le dépôt contient aussi `comptaopen` (marque produit), même schéma à plus grande échelle. Chacun a sa paire `brand.md` / `project.md` dans `brands/<projet>/`.
 
-## Toolchain Python
+## Toolchain de marque
 
-Le Python (`tools/`) sert à **générer les assets de marque** que le moteur JS ne sait pas produire : SVG à la géométrie exacte, icônes multi-tailles, `.ico`. Le moteur TS les **consomme** ensuite via `brand()`. Env et commandes : `tools/README.md` ; méthode : skill `brand-assets`.
+Les scripts de `tools/<projet>/` **génèrent les assets de marque** qu'un template ne sait pas produire : SVG à la géométrie exacte, icônes multi-tailles, `.ico`. Ils s'appuient sur le socle `src/brandkit.ts` ; le moteur **consomme** ensuite leur sortie via `brand()`. Commandes : `tools/README.md` ; méthode : skill `brand-assets`.
 
 ## Skills
 
@@ -60,7 +60,7 @@ Les skills (`.claude/skills/`) décrivent *comment faire*, pas le code. Ils enco
 
 **Créer un visuel → invoquer le skill plateforme** (`og-image`, `new-template`, `linkedin-*`, `facebook-*`, `x-*`…) : il encode déjà la recette du moteur. Ne pas reverse-engineer en relisant `render.ts`, `build.ts` ou d'autres templates : le skill + `brand.md` (+ `project.md` pour le texte) suffisent. Pas de fichier de référence dupliquant `brand.md` ou les skills.
 
-**L'utilisateur fournit des exemples visuels** (son logo, ses visuels existants, une image qui lui plaît) → invoquer `import-reference` : il encode comment mesurer (Pillow) plutôt que deviner, et le garde-fou composition-vient-de-l'exemple / habillage-vient-de-la-charte.
+**L'utilisateur fournit des exemples visuels** (son logo, ses visuels existants, une image qui lui plaît) → invoquer `import-reference` : il encode comment mesurer (`src/colors.ts`) plutôt que deviner, et le garde-fou composition-vient-de-l'exemple / habillage-vient-de-la-charte.
 
 ## Commands
 
