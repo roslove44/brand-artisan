@@ -12,6 +12,11 @@
   "engines": {
     "node": ">=22"
   },
+  "exports": {
+    ".": "./src/index.ts",
+    "./brandkit": "./src/brandkit.ts",
+    "./colors": "./src/colors.ts"
+  },
   "scripts": {
     "dev": "tsx watch src/serve.ts",
     "build": "tsx src/build.ts",

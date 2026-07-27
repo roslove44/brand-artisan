@@ -33,13 +33,17 @@ async function loadFonts(): Promise<Font[]> {
 	);
 }
 
-const fonts = await loadFonts();
+// Chargees au premier rendu, pas a l'import : importer le moteur ne doit pas
+// exiger un dossier fonts/ (un script de tools/ n'en a pas besoin). Memoise, la
+// lecture disque n'a lieu qu'une fois.
+let loading: Promise<Font[]> | undefined;
+const fonts = () => (loading ??= loadFonts());
 
 type RenderSize = { width: number; height: number; scale?: number };
 
 // JSX -> SVG (satori) -> PNG (resvg). scale = surechantillonnage (1 = taille exacte, 2 = retina).
 export async function toPng(node: ReactNode, { width, height, scale = 1 }: RenderSize): Promise<Buffer> {
-	const svg = await satori(node, { width, height, fonts });
+	const svg = await satori(node, { width, height, fonts: await fonts() });
 	return new Resvg(svg, { fitTo: { mode: "width", value: Math.round(width * scale) } }).render().asPng();
 }
 
