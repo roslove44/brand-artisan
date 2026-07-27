@@ -1,4 +1,4 @@
-import { readdir, stat } from "node:fs/promises";
+import { readdir, readFile, stat } from "node:fs/promises";
 import type { Template } from "./template";
 import { clean } from "./utils";
 
@@ -44,6 +44,48 @@ export async function modified(relPath: string): Promise<number> {
 	const s = await stat(new URL(`${clean(relPath)}.tsx`, TEMPLATES));
 	return s.mtimeMs;
 }
+
+// --- Sortie de la toolchain Python -----------------------------------------
+// out/<projet>/withtool/ contient des fichiers deja produits (SVG, PNG, .ico),
+// pas des templates : on les expose tels quels, comme un dossier "withtool" du
+// projet, pour les relire avant promotion vers brands/. Dossier ephemere et
+// souvent absent : tout ici renvoie null plutot que de lever.
+const OUT = new URL("../out/", import.meta.url);
+export const WITHTOOL = "withtool";
+
+// "<projet>/withtool/<reste>" -> URL dans out/. null si le chemin ne vise pas withtool.
+function outUrl(relPath: string): URL | null {
+	const [project, folder, ...rest] = clean(relPath).split("/");
+	if (!project || folder !== WITHTOOL) return null;
+	return new URL([project, WITHTOOL, ...rest].join("/"), OUT);
+}
+
+// "dir", "file", ou null si hors withtool / inexistant.
+export async function outResolve(relPath: string): Promise<"dir" | "file" | null> {
+	const url = outUrl(relPath);
+	if (!url) return null;
+	try {
+		return (await stat(url)).isDirectory() ? "dir" : "file";
+	} catch {
+		return null;
+	}
+}
+
+// Le projet a-t-il une sortie d'outil a montrer ?
+export const hasWithtool = async (project: string) => (await outResolve(`${project}/${WITHTOOL}`)) === "dir";
+
+// Enfants d'un dossier de withtool : sous-dossiers et fichiers, tries.
+export async function outList(relPath: string): Promise<{ dirs: string[]; files: string[] }> {
+	const url = outUrl(relPath);
+	const entries = url ? await readdir(url, { withFileTypes: true }) : [];
+	const dirs: string[] = [];
+	const files: string[] = [];
+	for (const e of entries) (e.isDirectory() ? dirs : files).push(e.name);
+	return { dirs: dirs.sort(), files: files.sort() };
+}
+
+// Octets bruts d'un fichier de withtool.
+export const outRead = (relPath: string) => readFile(outUrl(relPath)!);
 
 // Charge le default export de <relPath>.tsx. fresh = cache-bust (hot-reload en dev).
 export async function load(relPath: string, fresh = false): Promise<Template> {

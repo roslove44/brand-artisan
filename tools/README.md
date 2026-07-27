@@ -53,6 +53,10 @@ git : artefacts éphémères). C'est volontaire : on ne réécrit pas les assets
 commités à l'aveugle. Après revue, **promouvoir** les fichiers validés vers
 `brands/<projet>/logo/` et `brands/<projet>/favicon/`.
 
+Pour la revue, `npm run dev` expose cette sortie : le projet gagne un dossier
+`withtool` à côté de ses visuels (`http://localhost:4000/<projet>/withtool`), où
+les fichiers produits s'affichent tels quels. Plus besoin d'ouvrir l'explorateur.
+
 Pour écrire directement dans les assets (régénération en place), pointer la
 constante `OUT_BASE` d'un script vers `brands/<projet>` plutôt que
 `out/<projet>/withtool`.

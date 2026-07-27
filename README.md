@@ -80,7 +80,14 @@ http://localhost:4000/comptaopen           → liste images + sous-projets
 http://localhost:4000/comptaopen/cover     → page de preview (titre parlant)
 http://localhost:4000/comptaopen/cover?raw → PNG brut (utilisable comme src)
 http://localhost:4000/comptaopen/cover?w=1245&h=527 → override de la taille
+http://localhost:4000/comptaopen/withtool     → sortie de la toolchain Python
 ```
+
+Un projet dont les scripts Python ont tourné expose un dossier **`withtool`** à
+côté de ses visuels : c'est `out/<projet>/withtool/`, la sortie brute de la
+toolchain (logos, favicons, `.ico`). Elle se navigue comme le reste, mais ces
+fichiers sont servis tels quels, sans repasser par Satori. Le dossier n'apparaît
+pas tant qu'aucun script n'a tourné.
 
 Le `<title>` de la page vient du `title` du template (libellé humain), ou à
 défaut du nom de fichier capitalisé. Ce même libellé sert d'`alt` à l'`<img>`, et

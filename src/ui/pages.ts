@@ -10,16 +10,20 @@ export const VIEWS = ["icons", "list", "gallery"] as const;
 export type View = (typeof VIEWS)[number];
 
 // Un enfant d'un dossier : sous-projet, ou image (broken = template qui ne charge pas).
+// ext renseigne = fichier deja sur disque (sortie d'outil), servi tel quel plutot
+// que rendu par Satori : sa vignette est le fichier lui-meme.
 export type Entry =
 	| { kind: "dir"; name: string; rel: string }
-	| { kind: "image"; name: string; rel: string; title: string; width: number; height: number; broken?: boolean };
+	| { kind: "image"; name: string; rel: string; title: string; width: number; height: number; broken?: boolean; ext?: string };
 
 // Lien vers un nœud ; la vue courante est conservée pour les dossiers ("icons" = défaut, sans query).
 const dirHref = (rel: string, view: View) => `/${esc(rel)}${view === "icons" ? "" : `?view=${view}`}`;
 const imgHref = (rel: string) => `/${esc(rel)}`;
-const thumbSrc = (rel: string, w: number) => `/${esc(rel)}?thumb=${w}`;
+// Vignette : rendu a la largeur voulue pour un template, fichier brut sinon.
+const thumbSrc = (e: Entry & { kind: "image" }, w: number) =>
+	e.ext ? `/${esc(e.rel)}?raw` : `/${esc(e.rel)}?thumb=${w}`;
 
-const dims = (e: Entry) => (e.kind === "image" && !e.broken ? `${e.width}×${e.height}` : "");
+const dims = (e: Entry) => (e.kind === "image" && !e.broken && e.width ? `${e.width}×${e.height}` : "");
 
 // Petit JS partagé : lignes cliquables (vue liste) + sélection/clavier de la galerie.
 const SCRIPT = `
@@ -154,7 +158,7 @@ function viewSwitcher(relPath: string, view: View): string {
 function entryIcon(e: Entry, folderSize: number, thumbWidth: number): string {
 	if (e.kind === "dir") return folderIcon(folderSize);
 	if (e.broken) return imageMini(Math.round(folderSize * 0.55));
-	return `<img loading="lazy" src="${thumbSrc(e.rel, thumbWidth)}" alt="${esc(e.name)}" />`;
+	return `<img loading="lazy" src="${thumbSrc(e, thumbWidth)}" alt="${esc(e.name)}" />`;
 }
 
 function iconsView(entries: Entry[], view: View): string {
@@ -175,7 +179,7 @@ function listView(entries: Entry[], view: View): string {
 	const rows = entries.map((e) => {
 		const href = e.kind === "dir" ? dirHref(e.rel, view) : imgHref(e.rel);
 		const icon = e.kind === "dir" ? `<span class="mini-fld">${folderMini(16)}</span>` : entryIcon(e, 30, 64);
-		const type = e.kind === "dir" ? "Dossier" : "Image PNG";
+		const type = e.kind === "dir" ? "Dossier" : `Image ${(e.ext ?? "png").toUpperCase()}`;
 		return `
 			<tr data-href="${href}">
 				<td><span class="name-cell">${icon}<a href="${href}">${esc(e.name)}</a></span></td>
@@ -245,6 +249,7 @@ export function previewPage(opts: {
 	imgSrc: string;
 	favorites: string[];
 	nav: PreviewNav;
+	ext?: string;
 }): string {
 	const { relPath, title, width, height, imgSrc, favorites, nav } = opts;
 	const arrow = (dir: "left" | "right", href: string | null) =>
@@ -252,24 +257,28 @@ export function previewPage(opts: {
 	const position = nav.index >= 0 && nav.count > 1 ? `${nav.index + 1} sur ${nav.count} · ` : "";
 	// Largeur de fit : taille naturelle, plafonnée par le viewport du stage (marges
 	// comprises) en largeur comme en hauteur, ratio préservé via le ratio connu.
-	const fitWidth = `min(${width}px, 100cqw - 128px, calc((100cqh - 52px) * ${(width / height).toFixed(4)}))`;
+	// Dimensions inconnues (fichier au format non mesuré) -> on se contente du cadre.
+	const fitWidth = width && height
+		? `min(${width}px, 100cqw - 128px, calc((100cqh - 52px) * ${(width / height).toFixed(4)}))`
+		: `calc(100cqw - 128px)`;
+	const size = width && height ? `${width}×${height}` : (opts.ext ?? "").toUpperCase();
 	return windowShell({
-		pageTitle: `${title} | ${PROJECT_NAME} · ${width}×${height}`,
+		pageTitle: `${title} | ${PROJECT_NAME} · ${size}`,
 		heading: title,
 		relPath,
 		view: "icons",
 		favorites,
-		toolbarRight: `<a class="tool-link" href="${esc(imgSrc)}" download>${downloadIcon}<span>PNG</span></a>`,
+		toolbarRight: `<a class="tool-link" href="${esc(imgSrc)}" download>${downloadIcon}<span>${(opts.ext ?? "png").toUpperCase()}</span></a>`,
 		content: `
 			<style>.preview-stage img { width: ${fitWidth}; }</style>
 			<div class="preview">
 				<div class="preview-stage"${nav.prev ? ` data-prev="${esc(nav.prev)}"` : ""}${nav.next ? ` data-next="${esc(nav.next)}"` : ""}>
-					<img src="${esc(imgSrc)}" alt="${esc(title)}" width="${width}" height="${height}" />
+					<img src="${esc(imgSrc)}" alt="${esc(title)}"${width && height ? ` width="${width}" height="${height}"` : ""} />
 				</div>
 				${arrow("left", nav.prev)}
 				${arrow("right", nav.next)}
 			</div>`,
 		leafIsImage: true,
-		status: `${position}${title} · ${width}×${height}`,
+		status: `${position}${title}${size ? ` · ${size}` : ""}`,
 	});
 }
