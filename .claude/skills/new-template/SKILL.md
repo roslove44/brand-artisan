@@ -49,11 +49,11 @@ silence (principe #1 de CLAUDE.md).
 Respecter le contrat (`src/template.ts`) et les conventions du projet :
 
 - Couleurs en **constantes nommées tirées de la charte** : ne pas inventer de hex.
-- Polices : celles présentes dans `fonts/`, découvertes automatiquement
-  par `src/render.ts`. Le nom du fichier donne la famille et la graisse
-  (`GeistMono-600.ttf` -> famille `Geist Mono`, graisse 600). Si la charte
-  impose une autre police absente d'`fonts/`, suivre la procédure
-  **Police manquante** ci-dessous : ne jamais l'utiliser en silence.
+- Polices : celles présentes dans `fonts/`, découvertes automatiquement par
+  `src/render.ts`. Le nom du fichier donne la famille et la graisse
+  (`GeistMono-600.ttf` -> famille `Geist Mono`, graisse 600). Si la charte impose
+  une autre police absente de `fonts/`, suivre la procédure **Police manquante**
+  ci-dessous : ne jamais l'utiliser en silence.
 - Assets via `brand("<projet>/...")` (jamais de chemin relatif au cwd ni de
   `../../..`).
 - `scale` optionnel dans `size` si un rendu retina est voulu.

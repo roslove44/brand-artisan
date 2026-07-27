@@ -13,7 +13,7 @@ tools/
   <projet>/            scripts propres à une marque (couleurs, géométrie en dur)
     build_logo.py
     build_favicon.py
-    _sora.ttf          police variable source, instanciée par le script
+    _geist.ttf         police variable source, instanciée par le script
 ```
 
 Le socle `brandkit/` vit avec le moteur, dans `src/` : il est générique. Les
@@ -39,10 +39,14 @@ Toutes les commandes se lancent **depuis la racine du repo**.
 ```bash
 uv sync                                                # une seule fois : env + deps
 
-uv run python tools/comptaopen/build_logo.py    # -> out/comptaopen/withtool/logo/        (logotype + variantes + PNG)
-uv run python tools/comptaopen/build_favicon.py # -> out/comptaopen/withtool/favicon/     (icon*.svg, favicon, apple-icon, .ico)
-uv run python tools/comptaopen/build_oauth.py   # -> out/comptaopen/withtool/favicon/oauth/ (icones 120px Google OAuth ; apres build_favicon)
+uv run python tools/rostand-migan/build_logo.py    # -> out/rostand-migan/withtool/logo/    (logotype + variantes + PNG)
+uv run python tools/rostand-migan/build_favicon.py # -> out/rostand-migan/withtool/favicon/ (icon*.svg, favicon, apple-icon, .ico)
 ```
+
+Une marque peut avoir des scripts en plus des deux standards, propres à son
+besoin : `tools/comptaopen/build_oauth.py` produit par exemple les icônes 120 px
+exigées par Google OAuth. Chaque `brand.md` liste les siens dans sa section
+« Régénération ».
 
 `uv run` utilise le venv géré automatiquement (pas besoin de l'activer).
 
@@ -63,5 +67,5 @@ constante `OUT_BASE` d'un script vers `brands/<projet>` plutôt que
 
 ## Ajouter une marque
 
-Créer `tools/<projet>/` avec ses scripts (s'inspirer de `comptaopen/`),
+Créer `tools/<projet>/` avec ses scripts (s'inspirer de `rostand-migan/`),
 réutiliser `brandkit` pour la plomberie, et garder couleurs + géométrie locales.

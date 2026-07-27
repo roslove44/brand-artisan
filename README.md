@@ -75,12 +75,12 @@ npm run check      # typecheck + tests, ce que lance la CI
 `templates/` est navigable, comme des routes Next imbriquées :
 
 ```
-http://localhost:4000/                     → liste les projets
-http://localhost:4000/comptaopen           → liste images + sous-projets
-http://localhost:4000/comptaopen/cover     → page de preview (titre parlant)
-http://localhost:4000/comptaopen/cover?raw → PNG brut (utilisable comme src)
-http://localhost:4000/comptaopen/cover?w=1245&h=527 → override de la taille
-http://localhost:4000/comptaopen/withtool     → sortie de la toolchain Python
+http://localhost:4000/                        → liste les projets
+http://localhost:4000/rostand-migan           → liste images + sous-projets
+http://localhost:4000/rostand-migan/linkedin-banner-fr     → page de preview
+http://localhost:4000/rostand-migan/linkedin-banner-fr?raw → PNG brut (utilisable comme src)
+http://localhost:4000/rostand-migan/linkedin-banner-fr?w=1245&h=527 → override de la taille
+http://localhost:4000/rostand-migan/withtool  → sortie de la toolchain Python
 ```
 
 Un projet dont les scripts Python ont tourné expose un dossier **`withtool`** à
@@ -102,7 +102,7 @@ Modifie un template, sauvegarde, rafraîchis le navigateur : l'image est re-rend
 `npm run build` parcourt l'arborescence de `templates/` et écrit les PNG finaux
 (à la taille exacte du template) dans `out/`, sous le dossier du projet et nommés
 d'après le titre normalisé (même règle que le téléchargement du serveur) :
-`out/comptaopen/couverture-sociale-comptaopen.png`. Prêts à uploader.
+`out/rostand-migan/banner-linkedin-rostand-migan-fr.png`. Prêts à uploader.
 
 ## Un projet = une charte
 
@@ -146,20 +146,25 @@ commence plutôt par `/import-reference` : l'agent mesure tes exemples (palette
 au pixel via Pillow, composition à l'œil) et en amorce la charte, au lieu de te
 faire tout décrire de mémoire.
 
-## Projets d'exemple
+## Projet d'exemple
 
-Deux projets réels vivent dans le dépôt et servent de référence de style :
+**`rostand-migan`** est la marque de référence du dépôt : une marque
+personnelle, complète de bout en bout. Elle sert d'exemple à imiter, pas de
+gabarit à copier.
 
-- **`comptaopen`** : marque produit (SaaS). Charte :
-  [`brands/comptaopen/brand.md`](brands/comptaopen/brand.md). Le plus complet :
-  covers, OG, posts, carrousels Facebook et LinkedIn.
-- **`rostand-migan`** : marque personnelle. Charte :
-  [`brands/rostand-migan/brand.md`](brands/rostand-migan/brand.md). Bannières
-  LinkedIn FR/EN.
+| Où | Quoi |
+|---|---|
+| [`brands/rostand-migan/`](brands/rostand-migan/) | La charte : `brand.md`, `project.md`, logo et favicon |
+| [`templates/rostand-migan/`](templates/rostand-migan/) | Les visuels : bannières LinkedIn FR et EN |
+| [`tools/rostand-migan/`](tools/rostand-migan/) | Les scripts qui produisent son logotype et son monogramme |
 
-Pour démarrer ta propre marque : imite leur structure (ou lance
-`/new-project <ta-marque>`), puis remplace-les par tes projets. La palette et les
-règles de chaque marque vivent dans sa `brand.md`, jamais ailleurs.
+C'est le parcours complet d'une marque dans l'outil : une charte écrite, des
+assets générés, des visuels composés. Un second projet, `comptaopen` (marque
+produit), montre le même schéma à plus grande échelle : carrousels, OG, posts.
+
+Pour démarrer la tienne : `/new-project <ta-marque>`, ou imite cette structure à
+la main. La palette et les règles de chaque marque vivent dans sa `brand.md`,
+jamais ailleurs.
 
 ## Toolchain de marque (Python)
 
@@ -175,9 +180,8 @@ installer uv : voir [Prérequis](#prérequis)). Commandes, depuis la racine :
 ```bash
 uv sync                                                # une seule fois : env + deps
 
-uv run python tools/comptaopen/build_logo.py    # -> out/comptaopen/withtool/logo/
-uv run python tools/comptaopen/build_favicon.py # -> out/comptaopen/withtool/favicon/
-uv run python tools/comptaopen/build_oauth.py   # -> out/comptaopen/withtool/favicon/oauth/ (120px Google OAuth)
+uv run python tools/rostand-migan/build_logo.py    # -> out/rostand-migan/withtool/logo/
+uv run python tools/rostand-migan/build_favicon.py # -> out/rostand-migan/withtool/favicon/
 ```
 
 La sortie va dans `out/<projet>/withtool/` (éphémère) ; promouvoir les fichiers
@@ -205,7 +209,7 @@ validés vers `brands/<projet>/`. Détails dans
 
 ## Ajouter un nouveau visuel
 
-1. Créer le fichier sous le projet voulu, p.ex. `templates/comptaopen/og.tsx`
+1. Créer le fichier sous le projet voulu, p.ex. `templates/rostand-migan/og.tsx`
    (un nouveau dossier sous `templates/` = un nouveau projet, et il peut contenir
    des sous-dossiers).
 2. Exporter le template par défaut, qui charge lui-même ses assets :
@@ -220,8 +224,8 @@ validés vers `brands/<projet>/`. Détails dans
 
    export default { size: SIZE, title: "Nom lisible du visuel", render } satisfies Template;
    ```
-3. C'est tout : `http://localhost:4000/comptaopen/og` en dev, et `npm run build`
-   le sort dans `out/comptaopen/<slug-du-titre>.png`. Aucun registre à éditer, la
+3. C'est tout : `http://localhost:4000/rostand-migan/og` en dev, et `npm run build`
+   le sort dans `out/rostand-migan/<slug-du-titre>.png`. Aucun registre à éditer, la
    découverte est automatique.
 
 Avec Claude Code, `/new-template <projet> <nom>` fait la même chose en

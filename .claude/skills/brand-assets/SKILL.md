@@ -80,10 +80,9 @@ conformes), produits par un script qui réutilise `brandkit`, et promus dans
 
 ## Annexe : amorcer une nouvelle marque
 
-1. Créer `tools/<projet>/` ; s'inspirer de `tools/comptaopen/`
+1. Créer `tools/<projet>/` ; s'inspirer de `tools/rostand-migan/`
    (`build_logo.py`, `build_favicon.py`).
-2. Y déposer la police source si besoin (ex. `_sora.ttf`).
-3. Importer `brandkit` via `sys.path` (insertion de `tools/`, comme les
-   scripts comptaopen). Couleurs et géométrie tirées de `brand.md`, jamais
-   inventées.
+2. Y déposer la police source si besoin (ex. `_geist.ttf`).
+3. Importer `brandkit` via `sys.path` (insertion de `src/`, comme les scripts
+   existants). Couleurs et géométrie tirées de `brand.md`, jamais inventées.
 4. `OUT_BASE` -> `out/<projet>/withtool/`. Vérifier, valider, promouvoir.
