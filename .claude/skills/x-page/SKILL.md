@@ -13,7 +13,7 @@ charte. Deux visuels possibles, indépendants :
 - **header / bannière** : 1500×500 (3:1).
 
 C'est une spécialisation de `new-template` avec les contraintes X en dur. Mêmes
-conventions : contrat `Template`, assets via `asset()`, polices chargées dans
+conventions : contrat `Template`, assets via `brand()`, polices chargées dans
 `render.ts`, `export default ... satisfies Template`.
 
 ## 0. Prérequis (bloquant)
@@ -21,7 +21,7 @@ conventions : contrat `Template`, assets via `asset()`, polices chargées dans
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
 - Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
+- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
 - Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
   d'abord. Aucun visuel sans charte (règle CLAUDE.md).
 
@@ -30,7 +30,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 - **Quel(s) visuel(s) ?** Demander : profil, header, ou les deux.
 - Slugs par défaut : `x-profil` (400×400), `x-header` (1500×500). Vérifier que le
   `.tsx` cible n'existe pas.
-- Lire `assets/<projet>/brand.md` : palette, typo, **variantes de logo /
+- Lire `brands/<projet>/brand.md` : palette, typo, **variantes de logo /
   favicon** et leurs règles selon le fond, et les **à ne pas faire**.
 - S'il y a déjà un `.tsx` dans le projet, le lire comme référence de style.
 
@@ -56,20 +56,20 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 
 ## 3. Écrire le(s) template(s)
 
-`src/templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
+`templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
 (ne rien inventer). Choisir `SIZE` selon le visuel :
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark
 
 // Choisir selon le visuel :
 const SIZE = { width: 400, height: 400 };   // Profil 1:1 (scale:2 conseille)
 // const SIZE = { width: 1500, height: 500 };  // Header 3:1
 
-// Palette charte <Projet> (depuis assets/<projet>/brand.md).
+// Palette charte <Projet> (depuis brands/<projet>/brand.md).
 const INK = "#......";
 
 function render(): ReactNode {
@@ -83,7 +83,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "<Titre humain>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
+Conventions communes : assets via `brand("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
 manquante » de `new-template`, jamais en silence.
 
 ## 4. Vérifier

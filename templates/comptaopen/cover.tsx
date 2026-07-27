@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 
 const SIZE = { width: 1500, height: 500 };
 
@@ -35,7 +35,7 @@ const cornerBase: CSSProperties = { position: "absolute", width: 28, height: 28 
 const cornerStroke = "1.5px solid rgba(248,250,252,0.28)";
 
 // Le bracket-O est passe en data-URI (chemin eprouve : c'est ce que fait next/og).
-const markSvg = await readFile(asset("comptaopen/favicon/icon.svg"));
+const markSvg = await readFile(brand("comptaopen/favicon/icon.svg"));
 const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
 
 function render(): ReactNode {

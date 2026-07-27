@@ -72,7 +72,7 @@ npm run check      # typecheck + tests, ce que lance la CI
 ### Mode dev (URLs, comme Next)
 
 `npm run dev` lance un serveur sur `http://localhost:4000`. L'arborescence de
-`src/templates/` est navigable, comme des routes Next imbriquées :
+`templates/` est navigable, comme des routes Next imbriquées :
 
 ```
 http://localhost:4000/                     → liste les projets
@@ -102,10 +102,10 @@ d'après le titre normalisé (même règle que le téléchargement du serveur) :
 Chaque marque (un produit, un profil perso, un client) est un **projet**, avec
 deux emplacements jumeaux :
 
-- `assets/<projet>/` : la **référence**. `brand.md` (identité visuelle :
+- `brands/<projet>/` : la **référence**. `brand.md` (identité visuelle :
   palette, logotype, typographie, do/don't) et `project.md` (substance et voix :
   pitch, public, ton, claims autorisés), plus les fichiers logo/favicon.
-- `src/templates/<projet>/` : les **visuels** (`.tsx`), qui appliquent la charte.
+- `templates/<projet>/` : les **visuels** (`.tsx`), qui appliquent la charte.
 
 `brand.md` est **bloquant** : pas de visuel sans charte de référence. C'est ce
 qui empêche (humain comme IA) d'inventer des couleurs ou de recomposer un logo
@@ -144,10 +144,10 @@ faire tout décrire de mémoire.
 Deux projets réels vivent dans le dépôt et servent de référence de style :
 
 - **`comptaopen`** : marque produit (SaaS). Charte :
-  [`assets/comptaopen/brand.md`](assets/comptaopen/brand.md). Le plus complet :
+  [`brands/comptaopen/brand.md`](brands/comptaopen/brand.md). Le plus complet :
   covers, OG, posts, carrousels Facebook et LinkedIn.
 - **`rostand-migan`** : marque personnelle. Charte :
-  [`assets/rostand-migan/brand.md`](assets/rostand-migan/brand.md). Bannières
+  [`brands/rostand-migan/brand.md`](brands/rostand-migan/brand.md). Bannières
   LinkedIn FR/EN.
 
 Pour démarrer ta propre marque : imite leur structure (ou lance
@@ -174,30 +174,30 @@ uv run python src/tools/comptaopen/build_oauth.py      # -> out/comptaopen/witht
 ```
 
 La sortie va dans `out/<projet>/withtool/` (éphémère) ; promouvoir les fichiers
-validés vers `assets/<projet>/`. Détails dans
+validés vers `brands/<projet>/`. Détails dans
 [`src/tools/README.md`](src/tools/README.md).
 
 ## Structure
 
 | Chemin | Rôle |
 |---|---|
-| `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. Découvre aussi les polices de `assets/fonts/` par leur nom de fichier. |
+| `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. Découvre aussi les polices de `fonts/` par leur nom de fichier. |
 | `src/discover.ts` | Auto-découverte : scanne `templates/` (dossier = projet, `.tsx` = image), résout une URL en noeud, charge un template. |
 | `src/template.ts` | Le type `Template` : ce que chaque `.tsx` exporte par défaut (`{ size, title?, render }`). |
-| `src/assets.ts` | `asset("chemin/relatif")` : URL absolue vers `assets/`, indépendante du cwd et de la profondeur de l'appelant. |
+| `src/brand.ts` | `brand("<projet>/chemin")` : URL absolue vers `brands/`, indépendante du cwd et de la profondeur de l'appelant. |
 | `src/utils.ts` | Helpers purs partagés (échappement HTML, capitalize, slug, manipulation de chemin). |
 | `src/serve.ts` | Serveur de dev HTTP : routing récursif sur l'arbre, pages de listing + preview (`npm run dev`). |
 | `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/<projet>/<slug-du-titre>.png` (`npm run build`). |
-| `src/templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, title?, render }` par défaut et charge ses propres assets. |
+| `templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, title?, render }` par défaut et charge ses propres assets. |
 | `src/tools/` | Toolchain Python de marque : `brandkit/` (socle partagé) + un dossier de scripts par projet. |
-| `assets/<projet>/` | Référence d'une marque : `brand.md`, `project.md`, logo, favicon. |
-| `assets/fonts/` | Polices fournies en dur (Satori n'accède à aucune police système), avec leurs licences : [`NOTICE.md`](assets/fonts/NOTICE.md). |
+| `brands/<projet>/` | Référence d'une marque : `brand.md`, `project.md`, logo, favicon. |
+| `fonts/` | Polices fournies en dur (Satori n'accède à aucune police système), avec leurs licences : [`NOTICE.md`](fonts/NOTICE.md). |
 | `test/` | Tests : helpers purs et chaîne de rendu (`npm test`). |
 | `out/` | PNG générés. Ignoré par git (rien à versionner ici). |
 
 ## Ajouter un nouveau visuel
 
-1. Créer le fichier sous le projet voulu, p.ex. `src/templates/comptaopen/og.tsx`
+1. Créer le fichier sous le projet voulu, p.ex. `templates/comptaopen/og.tsx`
    (un nouveau dossier sous `templates/` = un nouveau projet, et il peut contenir
    des sous-dossiers).
 2. Exporter le template par défaut, qui charge lui-même ses assets :
@@ -236,7 +236,7 @@ skills correspondants (`.claude/skills/`).
 
 ## À savoir sur Satori
 
-- **Polices obligatoires et explicites** : aucune font système, d'où `assets/fonts/`.
+- **Polices obligatoires et explicites** : aucune font système, d'où `fonts/`.
 - **Tout élément avec plusieurs enfants doit être en `display: flex`** (Satori ne
   supporte pas le flux de blocs normal). C'est la cause n°1 d'erreur de rendu.
 - Une image s'inclut via `<img src="data:image/svg+xml;base64,...">` (chemin
@@ -250,11 +250,11 @@ Le code (moteur, outils, skills) est sous [licence MIT](LICENSE).
 
 Deux exceptions, qui ne sont pas couvertes par le MIT :
 
-- **Les polices** de `assets/fonts/` sont sous SIL Open Font License 1.1, avec
+- **Les polices** de `fonts/` sont sous SIL Open Font License 1.1, avec
   leur texte de licence à côté des fichiers :
-  [`assets/fonts/NOTICE.md`](assets/fonts/NOTICE.md). Y ajouter une police impose
+  [`fonts/NOTICE.md`](fonts/NOTICE.md). Y ajouter une police impose
   d'y déposer aussi sa licence, et de vérifier qu'elle autorise la
   redistribution.
-- **Les marques d'exemple** (logos, logotypes, chartes de `assets/<projet>/`)
+- **Les marques d'exemple** (logos, logotypes, chartes de `brands/<projet>/`)
   relèvent du droit des marques : elles illustrent la méthode, elles ne sont pas
   réutilisables.

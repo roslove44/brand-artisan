@@ -1,12 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 
 // Post X paysage 16:9 (convention ; X ne documente pas les dims des images de tweet).
 const SIZE = { width: 1600, height: 900 };
 
-// Palette charte ComptaOpen (assets/comptaopen/brand.md).
+// Palette charte ComptaOpen (brands/comptaopen/brand.md).
 const INK = "#0f172a"; // slate-900
 const BLUE = "#1d4ed8"; // blue-700
 const BLUE_LIGHT = "#60a5fa"; // blue-400
@@ -16,7 +16,7 @@ const MUTED = "#cbd5e1"; // slate-300
 const cornerBase: CSSProperties = { position: "absolute", width: 40, height: 40 };
 const cornerStroke = "2px solid rgba(248,250,252,0.28)";
 
-const markSvg = await readFile(asset("comptaopen/favicon/icon.svg"));
+const markSvg = await readFile(brand("comptaopen/favicon/icon.svg"));
 const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
 
 function render(): ReactNode {

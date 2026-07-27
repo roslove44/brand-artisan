@@ -1,14 +1,14 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 
 // Cover d'article 16:9 (1280x720) pour le site ComptaOpen.
 // Article : « La comptabilite n'est pas une discipline isolee.
 //            C'est le langage de toute l'entreprise. » (Rostand MIGAN).
 const SIZE = { width: 1280, height: 720 };
 
-// Palette charte ComptaOpen (assets/comptaopen/brand.md). Fond sombre.
+// Palette charte ComptaOpen (brands/comptaopen/brand.md). Fond sombre.
 const INK = "#0f172a"; // slate-900
 const BLUE = "#1d4ed8"; // blue-700
 const BLUE_LIGHT = "#60a5fa"; // blue-400 (payoff sur fond sombre)
@@ -38,7 +38,7 @@ const cornerBase: CSSProperties = { position: "absolute", width: 30, height: 30 
 const cornerStroke = "1.5px solid rgba(248,250,252,0.26)";
 
 // Bracket-O en data-URI (chemin eprouve, comme cover.tsx / next/og).
-const markSvg = await readFile(asset("comptaopen/favicon/icon.svg"));
+const markSvg = await readFile(brand("comptaopen/favicon/icon.svg"));
 const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
 
 function render(): ReactNode {

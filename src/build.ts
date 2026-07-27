@@ -12,8 +12,8 @@ async function walk(relPath: string): Promise<void> {
 		const path = [relPath, img].filter(Boolean).join("/");
 		const tpl = await load(path);
 		const out = [relPath, slug(resolveTitle(tpl, img))].filter(Boolean).join("/");
-		const file = await renderToFile(tpl.render(), { ...tpl.size, out });
-		console.log(`✓ ${file}`);
+		await renderToFile(tpl.render(), { ...tpl.size, out });
+		console.log(`✓ out/${out}.png`);
 	}
 	for (const proj of projects) {
 		await walk([relPath, proj].filter(Boolean).join("/"));

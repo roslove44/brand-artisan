@@ -1,12 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 
 // OG standard : 1200x630 (ratio 1.91:1), pas de scale (inutile a cette taille pour de l'OG).
 const SIZE = { width: 1200, height: 630 };
 
-// Palette charte ComptaOpen (assets/comptaopen/brand.md). Fond clair -> texte en encre.
+// Palette charte ComptaOpen (brands/comptaopen/brand.md). Fond clair -> texte en encre.
 const INK = "#0f172a"; // slate-900 (COMPTA + titre)
 const BLUE = "#1d4ed8"; // blue-700 (Open / accent)
 const SLATE_100 = "#f8fafc"; // slate-50 (haut du fond)
@@ -17,7 +17,7 @@ const cornerBase: CSSProperties = { position: "absolute", width: 30, height: 30 
 const cornerStroke = "1.5px solid rgba(15,23,42,0.18)";
 
 // Bracket-O (tuile bleue, bracket blanc) en data-URI (chemin eprouve, comme cover.tsx / next/og).
-const markSvg = await readFile(asset("comptaopen/favicon/icon.svg"));
+const markSvg = await readFile(brand("comptaopen/favicon/icon.svg"));
 const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
 
 function render(): ReactNode {

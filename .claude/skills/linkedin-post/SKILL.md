@@ -10,7 +10,7 @@ choisi, aligné sur la charte.
 
 C'est une spécialisation de `new-template` avec les contraintes LinkedIn en dur.
 Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
-`asset()`, polices chargées dans `render.ts`, `export default ... satisfies
+`brand()`, polices chargées dans `render.ts`, `export default ... satisfies
 Template`.
 
 > **Statut des dimensions.** LinkedIn ne documente officiellement qu'un visuel à
@@ -24,7 +24,7 @@ Template`.
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
 - Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
+- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
 - Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
   d'abord. Aucun visuel sans charte (règle CLAUDE.md).
 
@@ -34,9 +34,9 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
   hauteur dans le fil). Sinon carré (1:1) ou paysage (1.91:1).
 - Slug par défaut `linkedin-post` (ou `linkedin-post-<orientation>` si plusieurs).
   Vérifier que le `.tsx` cible n'existe pas.
-- Lire `assets/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
+- Lire `brands/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
   faire**.
-- Lire `assets/<projet>/project.md` s'il existe : caler le **ton** et les
+- Lire `brands/<projet>/project.md` s'il existe : caler le **ton** et les
   **claims** (ne pas inventer de chiffres ni de promesses). Absent -> demander
   le ton et le message plutôt que de deviner.
 - Demander le **message** : titre court + accroche (1 phrase). Pas de paragraphe.
@@ -60,13 +60,13 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
 
 ## 3. Écrire le template
 
-`src/templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte.
+`templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte.
 Choisir `SIZE` selon l'orientation. Squelette :
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark
 
 // Choisir selon l'orientation :
@@ -74,7 +74,7 @@ const SIZE = { width: 1080, height: 1350 }; // Portrait 4:5 (defaut)
 // const SIZE = { width: 1080, height: 1080 }; // Carre 1:1
 // const SIZE = { width: 1200, height: 627 };  // Paysage 1.91:1
 
-// Palette charte <Projet> (depuis assets/<projet>/brand.md).
+// Palette charte <Projet> (depuis brands/<projet>/brand.md).
 const INK = "#......";
 
 function render(): ReactNode {
@@ -98,7 +98,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "Post LinkedIn <Projet>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
+Conventions communes : assets via `brand("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
 manquante » de `new-template`, jamais en silence. Garder le code minimal.
 
 ## 4. Vérifier

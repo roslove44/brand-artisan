@@ -19,10 +19,10 @@ restent `og-image`, `facebook-*`, `linkedin-*`, `x-*`.
 ## 0. Prérequis (bloquant)
 
 - Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
+- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
   Manquant -> **STOP** : `/new-project <projet>` d'abord (règle CLAUDE.md).
-- Lire `assets/<projet>/brand.md` (identité visuelle) **et**
-  `assets/<projet>/project.md` (substance, voix, claims). `project.md` est le
+- Lire `brands/<projet>/brand.md` (identité visuelle) **et**
+  `brands/<projet>/project.md` (substance, voix, claims). `project.md` est le
   socle du brief : s'il manque, demander le ton et les claims plutôt que
   d'inventer.
 

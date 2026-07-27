@@ -1,15 +1,18 @@
 import satori, { type Font } from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
-import { join, dirname } from "node:path";
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { ReactNode } from "react";
-import { asset } from "./assets";
 
 // Satori n'accede a aucune police systeme : on charge celles deposees dans
-// assets/fonts/. Convention de nom : <Famille>-<graisse>.ttf, la famille en
+// fonts/. Convention de nom : <Famille>-<graisse>.ttf, la famille en
 // PascalCase donnant le nom cite par les templates ("GeistMono-600.ttf" ->
 // famille "Geist Mono", graisse 600). Deposer un fichier suffit a l'enregistrer.
-const FONTS = asset("fonts/");
+const FONTS = new URL("../fonts/", import.meta.url);
+
+// Sortie ancree sur le depot, pas sur le cwd : le build marche depuis n'importe ou.
+const OUT = new URL("../out/", import.meta.url);
 const FONT_FILE = /^(.+)-(\d{3})\.(?:ttf|otf)$/;
 
 async function loadFonts(): Promise<Font[]> {
@@ -17,7 +20,7 @@ async function loadFonts(): Promise<Font[]> {
 	return Promise.all(
 		files.map(async (file) => {
 			const match = file.match(FONT_FILE);
-			if (!match) throw new Error(`Police "${file}" hors convention <Famille>-<graisse>.ttf (voir assets/fonts/NOTICE.md).`);
+			if (!match) throw new Error(`Police "${file}" hors convention <Famille>-<graisse>.ttf (voir fonts/NOTICE.md).`);
 			return {
 				name: match[1].replace(/([a-z0-9])([A-Z])/g, "$1 $2"),
 				weight: Number(match[2]) as Font["weight"],
@@ -41,7 +44,7 @@ export async function toPng(node: ReactNode, { width, height, scale = 1 }: Rende
 // Variante qui ecrit le PNG sur disque (export final).
 export async function renderToFile(node: ReactNode, { out, ...size }: RenderSize & { out: string }): Promise<string> {
 	const png = await toPng(node, size);
-	const file = join("out", `${out}.png`);
+	const file = fileURLToPath(new URL(`${out}.png`, OUT));
 	await mkdir(dirname(file), { recursive: true });
 	await writeFile(file, png);
 	return file;

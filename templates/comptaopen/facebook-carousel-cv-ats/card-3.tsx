@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
-import type { Template } from "../../../template";
+import type { Template } from "../../../src/template";
 import { SIZE, frame, headerRow, wordmarkText, indexText, titleStyle, subStyle, markSrc, PAPER, BLUE_LIGHT } from "./theme";
 
-// Carte 2 : probleme. Fait avancer le recit : pourquoi un CV se fait recaler.
+// Carte 3 : solution. ComptaOpen resout le probleme pose en carte 2.
 function render(): ReactNode {
 	return (
 		<div style={frame}>
@@ -14,21 +14,21 @@ function render(): ReactNode {
 						<span style={{ color: BLUE_LIGHT }}>Open</span>
 					</div>
 				</div>
-				<div style={indexText}>02 / 04</div>
+				<div style={indexText}>03 / 04</div>
 			</div>
 
 			<div style={{ display: "flex", flexDirection: "column" }}>
 				<div style={titleStyle}>
-					<span style={{ display: "flex" }}>Avant l'humain,</span>
-					<span style={{ display: "flex" }}>le filtre ATS.</span>
+					<span style={{ display: "flex" }}>Un CV taillé</span>
+					<span style={{ display: "flex", color: BLUE_LIGHT }}>pour passer.</span>
 				</div>
 				<div style={subStyle}>
-					Les logiciels ATS trient les CV par mots-clés et format. Un CV mal structuré est écarté sans être lu.
+					ComptaOpen structure votre CV pour les ATS : sections lisibles, bons mots-clés, format propre.
 				</div>
 			</div>
 
 			<div style={{ display: "flex", width: "100%", height: 8, borderRadius: 999, backgroundColor: "rgba(248,250,252,0.16)" }}>
-				<div style={{ display: "flex", width: "50%", borderRadius: 999, backgroundColor: BLUE_LIGHT }} />
+				<div style={{ display: "flex", width: "75%", borderRadius: 999, backgroundColor: BLUE_LIGHT }} />
 			</div>
 		</div>
 	);

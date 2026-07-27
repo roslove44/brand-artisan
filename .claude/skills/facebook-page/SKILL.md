@@ -15,7 +15,7 @@ charte. Deux visuels possibles, indépendants :
 
 C'est une spécialisation de `new-template` avec les contraintes Facebook en dur.
 Mêmes conventions : contrat `Template` (`src/template.ts`), assets via
-`asset()`, polices chargées dans `render.ts`, `export default ... satisfies
+`brand()`, polices chargées dans `render.ts`, `export default ... satisfies
 Template`.
 
 ## 0. Prérequis (bloquant)
@@ -24,7 +24,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister avant de
 commencer :
 
 - Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
+- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
 - Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
   d'abord. Aucun visuel sans charte (règle CLAUDE.md).
 
@@ -34,7 +34,7 @@ commencer :
   deviner si l'utilisateur n'a pas précisé.
 - Slugs par défaut : `facebook-profil` (320x320) et `facebook-couverture`
   (851x315). Vérifier que le `.tsx` cible n'existe pas.
-- Lire `assets/<projet>/brand.md` : palette (hex), typo, **variantes de logo /
+- Lire `brands/<projet>/brand.md` : palette (hex), typo, **variantes de logo /
   favicon** et leurs règles selon le fond, et les **à ne pas faire**.
 - S'il y a déjà un `.tsx` dans le projet, le lire comme référence de style et
   matcher ses conventions (couleurs en constantes, effets de fond locaux).
@@ -76,7 +76,7 @@ Dimensions **officielles** Facebook (ne pas dévier) :
 
 ## 3. Écrire le(s) template(s)
 
-`src/templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
+`templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
 (ne rien inventer). Garder le code minimal (principe #2).
 
 ### Profil (squelette)
@@ -84,16 +84,16 @@ Dimensions **officielles** Facebook (ne pas dévier) :
 ```tsx
 import { readFile } from "node:fs/promises";
 import type { ReactNode } from "react";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 
 const SIZE = { width: 320, height: 320 }; // FB profil, rogne en cercle (scale:2 possible)
 
-// Palette charte <Projet> (depuis assets/<projet>/brand.md).
+// Palette charte <Projet> (depuis brands/<projet>/brand.md).
 const BRAND = "#......";
 
 // Marque adaptee a un petit affichage rond (favicon / bracket-O), pas le wordmark.
-const markSvg = await readFile(asset("<projet>/favicon/icon.svg"));
+const markSvg = await readFile(brand("<projet>/favicon/icon.svg"));
 const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
 
 function render(): ReactNode {
@@ -121,13 +121,13 @@ export default { size: SIZE, title: "Photo de profil Facebook <Projet>", render 
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark
 
 const SIZE = { width: 851, height: 315 }; // FB couverture (recommande)
 
-// Palette charte <Projet> (depuis assets/<projet>/brand.md).
+// Palette charte <Projet> (depuis brands/<projet>/brand.md).
 const INK = "#......";
 
 // Zone sure : marge laterale ~60px (crop mobile 2.4:1), coin bas-gauche libre
@@ -158,7 +158,7 @@ function render(): ReactNode {
 export default { size: SIZE, title: "Couverture Facebook <Projet>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente ->
+Conventions communes : assets via `brand("<projet>/...")`, les polices chargées dans `render.ts` ; police absente ->
 suivre l'annexe "police manquante" de `new-template`, jamais en silence.
 
 ## 4. Vérifier

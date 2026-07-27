@@ -11,7 +11,7 @@ charte. Un carrousel n'est pas N images indépendantes : c'est une **série** qu
 raconte quelque chose. La cohérence inter-cartes est le cœur du livrable.
 
 C'est une spécialisation de `new-template`. Mêmes conventions : contrat
-`Template` (`src/template.ts`), assets via `asset()`, polices chargées dans
+`Template` (`src/template.ts`), assets via `brand()`, polices chargées dans
 `render.ts`, `export default ... satisfies Template`.
 
 > **Statut des dimensions.** Les specs viennent du **Gestionnaire de publicités**
@@ -24,14 +24,14 @@ C'est une spécialisation de `new-template`. Mêmes conventions : contrat
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
 - Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
+- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
 - Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
   d'abord. Aucun visuel sans charte (règle CLAUDE.md).
 
 ## 1. Cadrer (demander, ne pas deviner)
 
 - **Nom du carrousel** : slug kebab-case, défaut `carousel`. C'est le
-  **sous-dossier** `src/templates/<projet>/<nom>/`. Vérifier qu'il n'existe pas.
+  **sous-dossier** `templates/<projet>/<nom>/`. Vérifier qu'il n'existe pas.
 - **Mécanique narrative** (voir §3) : story, une carte = un produit, top N,
   tuto, avant/après, ou seamless. Elle dicte tout le design.
 - **Nombre de cartes** : 2 à 10, **sweet spot 3-5**. Si une carte n'ajoute rien,
@@ -40,9 +40,9 @@ La chaîne **projet -> dossier de templates -> charte** doit exister :
   (1080×1920). **Le même pour toutes les cartes** (obligatoire).
 - **Contenu de chaque carte** : message court + rôle dans la série (hook,
   développement, CTA). Plus le **CTA** final.
-- Lire `assets/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
+- Lire `brands/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
   faire**. S'il y a déjà un `.tsx` dans le projet, le lire comme référence.
-- Lire `assets/<projet>/project.md` s'il existe : caler le **ton** et les
+- Lire `brands/<projet>/project.md` s'il existe : caler le **ton** et les
   **claims** des cartes (ne pas inventer de chiffres ni de promesses). Absent ->
   demander le ton et le message plutôt que de deviner.
 
@@ -110,7 +110,7 @@ Structure : **un sous-dossier par carrousel**, **un `.tsx` par carte**, plus un
 `theme.ts` partagé.
 
 ```
-src/templates/<projet>/<nom>/
+templates/<projet>/<nom>/
   theme.ts        <- palette + layout partages (TS pur, PAS de JSX)
   card-1.tsx      <- une carte = un PNG
   card-2.tsx
@@ -126,7 +126,7 @@ src/templates/<projet>/<nom>/
 - **Nommage et ordre** : la découverte trie les fichiers en ordre **lexical**,
   donc `card-10` passerait avant `card-2`. Dès qu'on atteint 10 cartes, **padder
   à deux chiffres** : `card-01` … `card-10`.
-- Couleurs en constantes (depuis `theme.ts`), assets via `asset("<projet>/...")`,
+- Couleurs en constantes (depuis `theme.ts`), assets via `brand("<projet>/...")`,
   les polices chargées dans `render.ts` ; police absente -> annexe
   « police manquante » de `new-template`, jamais en silence.
 
@@ -137,7 +137,7 @@ import type { CSSProperties } from "react";
 
 export const SIZE = { width: 1080, height: 1080 }; // carrousel 1:1
 
-// Palette charte <Projet> (depuis assets/<projet>/brand.md).
+// Palette charte <Projet> (depuis brands/<projet>/brand.md).
 export const INK = "#......";
 export const ACCENT = "#......";
 export const PAPER = "#......";
@@ -158,7 +158,7 @@ export const frame: CSSProperties = {
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../../template";
+import type { Template } from "../../../src/template";
 import { SIZE, frame, PAPER, ACCENT } from "./theme";
 
 function render(): ReactNode {

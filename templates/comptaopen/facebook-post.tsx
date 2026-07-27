@@ -1,12 +1,12 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 
 // Post Facebook portrait 4:5 (resolution cible Meta).
 const SIZE = { width: 1440, height: 1800 };
 
-// Palette charte ComptaOpen (assets/comptaopen/brand.md).
+// Palette charte ComptaOpen (brands/comptaopen/brand.md).
 const INK = "#0f172a"; // slate-900
 const BLUE = "#1d4ed8"; // blue-700
 const BLUE_LIGHT = "#60a5fa"; // blue-400 (Open / accent sur fond sombre)
@@ -17,7 +17,7 @@ const cornerBase: CSSProperties = { position: "absolute", width: 44, height: 44 
 const cornerStroke = "2px solid rgba(248,250,252,0.28)";
 
 // Bracket-O (tuile bleue, bracket blanc) en data-URI (chemin eprouve, comme cover.tsx).
-const markSvg = await readFile(asset("comptaopen/favicon/icon.svg"));
+const markSvg = await readFile(brand("comptaopen/favicon/icon.svg"));
 const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
 
 function render(): ReactNode {

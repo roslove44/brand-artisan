@@ -2,7 +2,7 @@
 
 Le wordmark est compose en Geist 700, decoupe en deux registres de couleur :
 "rostand" en encre, ".dev" en accent bleu (la TLD mise en avant). Sortie :
-out/rostand-migan/withtool/logo/ (a promouvoir vers assets/rostand-migan/logo/
+out/rostand-migan/withtool/logo/ (a promouvoir vers brands/rostand-migan/logo/
 apres revue). Pour ecrire directement dans les assets, changer OUT_BASE.
 """
 
@@ -15,7 +15,7 @@ sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
 from brandkit import load_instanced, glyph_path, render_svg
 
 ROOT = HERE.parents[2]  # src/tools/rostand-migan -> repo root
-OUT_BASE = ROOT / "out" / "rostand-migan" / "withtool"  # -> "assets" / "rostand-migan" pour ecrire en place
+OUT_BASE = ROOT / "out" / "rostand-migan" / "withtool"  # -> "brands" / "rostand-migan" pour ecrire en place
 OUT = OUT_BASE / "logo"
 OUT.mkdir(parents=True, exist_ok=True)
 FONT = HERE / "_geist.ttf"

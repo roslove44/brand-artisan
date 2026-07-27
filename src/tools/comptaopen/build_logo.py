@@ -1,7 +1,7 @@
 """Genere le logotype ComptaOpen (toutes variantes SVG + PNG) via brandkit.
 
 Sortie : out/comptaopen/withtool/logo/ (artefacts a promouvoir vers
-assets/comptaopen/logo/ apres revue). Pour ecrire directement dans les assets,
+brands/comptaopen/logo/ apres revue). Pour ecrire directement dans les assets,
 changer OUT_BASE ci-dessous.
 """
 
@@ -14,7 +14,7 @@ sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
 from brandkit import load_instanced, glyph_path, render_svg
 
 ROOT = HERE.parents[2]  # src/tools/comptaopen -> repo root
-OUT_BASE = ROOT / "out" / "comptaopen" / "withtool"  # -> "assets" / "comptaopen" pour ecrire en place
+OUT_BASE = ROOT / "out" / "comptaopen" / "withtool"  # -> "brands" / "comptaopen" pour ecrire en place
 OUT = OUT_BASE / "logo"
 OUT.mkdir(parents=True, exist_ok=True)
 FONT = HERE / "_sora.ttf"

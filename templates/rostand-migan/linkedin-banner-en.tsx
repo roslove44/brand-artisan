@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Template } from "../../template";
+import type { Template } from "../../src/template";
 
 // Banner de profil perso LinkedIn (EN) : 1584x396 (4:1). Compo : tout sombre,
 // SANS fenetre (juste le texte du terminal), bloc cale a droite. Le bas-gauche

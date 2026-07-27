@@ -11,7 +11,7 @@ pipeline du projet (Satori -> resvg), aligné sur la charte. BrandArtisan ne gé
 (voir annexe).
 
 C'est une spécialisation de `new-template` avec les contraintes OG en dur. Mêmes
-conventions : contrat `Template` (`src/template.ts`), assets via `asset()`,
+conventions : contrat `Template` (`src/template.ts`), assets via `brand()`,
 polices chargées dans `render.ts`, `export default ... satisfies Template`.
 
 ## 0. Prérequis (bloquant)
@@ -20,7 +20,7 @@ La chaîne **projet -> dossier de templates -> charte** doit exister avant de
 commencer. Ne pas débuter tant que ce n'est pas le cas :
 
 - Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
+- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
 - Si la charte ou le projet manque -> **STOP** : demander à l'utilisateur de
   lancer `/new-project <projet>` d'abord. Aucun visuel sans charte (règle
   CLAUDE.md).
@@ -28,10 +28,10 @@ commencer. Ne pas débuter tant que ce n'est pas le cas :
 ## 1. Cadrer
 
 - `<nom>` slug kebab-case, défaut `og` (ou `og-<page>` si plusieurs aperçus).
-  Vérifier que `src/templates/<projet>/<nom>.tsx` n'existe pas.
-- Lire `assets/<projet>/brand.md` : palette (hex), typo, variante de logo à
+  Vérifier que `templates/<projet>/<nom>.tsx` n'existe pas.
+- Lire `brands/<projet>/brand.md` : palette (hex), typo, variante de logo à
   utiliser selon le fond, et les **à ne pas faire**.
-- Lire `assets/<projet>/project.md` s'il existe : caler le **ton** et les
+- Lire `brands/<projet>/project.md` s'il existe : caler le **ton** et les
   **claims** (ne pas inventer de chiffres ni de promesses). Absent -> demander
   le ton et le message plutôt que de deviner.
 - Demander le **message** : titre court + tagline (1 phrase). Pas de paragraphe.
@@ -57,21 +57,21 @@ commencer. Ne pas débuter tant que ce n'est pas le cas :
 
 ## 3. Écrire le template
 
-`src/templates/<projet>/<nom>.tsx`, couleurs en constantes tirées de la charte
+`templates/<projet>/<nom>.tsx`, couleurs en constantes tirées de la charte
 (ne rien inventer). Squelette :
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 // import { readFile } from "node:fs/promises"; // si tu charges le mark (SVG/PNG)
 
 const SIZE = { width: 1200, height: 630 }; // OG standard, pas de scale
 
-// Palette charte <Projet> (depuis assets/<projet>/brand.md).
+// Palette charte <Projet> (depuis brands/<projet>/brand.md).
 const INK = "#......";
 
-// const markSvg = await readFile(asset("<projet>/favicon/icon.svg"));
+// const markSvg = await readFile(brand("<projet>/favicon/icon.svg"));
 
 function render(): ReactNode {
   return (

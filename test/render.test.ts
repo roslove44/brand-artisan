@@ -23,10 +23,10 @@ test("toPng : scale double la resolution de sortie sans changer le cadrage", asy
 	assert.deepEqual(pngSize(png), { width: 400, height: 200 });
 });
 
-// Les familles sont derivees du nom des fichiers de assets/fonts/. Si la
-// derivation cassait, Satori ne trouverait plus les familles citees et
-// retomberait sur la meme police de secours pour les deux : rendus identiques.
-test("les familles de polices sont bien resolues depuis assets/fonts/", async () => {
+// Les familles sont derivees du nom des fichiers de fonts/. Si la derivation
+// cassait, Satori ne trouverait plus les familles citees et retomberait sur la
+// meme police de secours pour les deux : rendus identiques.
+test("les familles de polices sont bien resolues depuis fonts/", async () => {
 	const label = (fontFamily: string) =>
 		createElement("div", { style: { width: "100%", height: "100%", fontSize: 40, fontFamily } }, "Aa Bb 123");
 	const [mono, sora] = await Promise.all([

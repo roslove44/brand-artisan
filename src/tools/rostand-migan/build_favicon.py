@@ -2,7 +2,7 @@
 
 Le mark est le monogramme RM en Geist 700, centre sur une tuile. Sortie :
 out/rostand-migan/withtool/favicon/ (a promouvoir vers
-assets/rostand-migan/favicon/ apres revue). Pour ecrire directement dans les
+brands/rostand-migan/favicon/ apres revue). Pour ecrire directement dans les
 assets, changer OUT_BASE ci-dessous.
 """
 
@@ -15,7 +15,7 @@ sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
 from brandkit import load_instanced, glyph_path, render_svg, make_ico
 
 ROOT = HERE.parents[2]  # src/tools/rostand-migan -> repo root
-OUT_BASE = ROOT / "out" / "rostand-migan" / "withtool"  # -> "assets" / "rostand-migan" pour ecrire en place
+OUT_BASE = ROOT / "out" / "rostand-migan" / "withtool"  # -> "brands" / "rostand-migan" pour ecrire en place
 OUT = OUT_BASE / "favicon"
 OUT.mkdir(parents=True, exist_ok=True)
 FONT = HERE / "_geist.ttf"

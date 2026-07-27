@@ -1,13 +1,13 @@
 import type { CSSProperties, ReactNode } from "react";
 import { readFile } from "node:fs/promises";
-import type { Template } from "../../template";
-import { asset } from "../../assets";
+import type { Template } from "../../src/template";
+import { brand } from "../../src/brand";
 
 // Couverture de partage social pour la page de don FedaPay (« Soutenir ComptaOpen »).
 // Taille imposee par FedaPay : 1024x512 (ratio 2:1), PNG.
 const SIZE = { width: 1024, height: 512 };
 
-// Palette charte ComptaOpen (assets/comptaopen/brand.md). Fond sombre.
+// Palette charte ComptaOpen (brands/comptaopen/brand.md). Fond sombre.
 const INK = "#0f172a"; // slate-900
 const BLUE = "#1d4ed8"; // blue-700
 const BLUE_LIGHT = "#60a5fa"; // blue-400 (accent sur fond sombre)
@@ -38,9 +38,9 @@ const cornerStroke = "1.5px solid rgba(248,250,252,0.26)";
 
 // Bracket-O en data-URI (chemin eprouve, comme cover.tsx / next/og).
 // Tuile bleue pour le wordmark, blanc seul pour le motif « ouverture » en fond.
-const markSvg = await readFile(asset("comptaopen/favicon/icon.svg"));
+const markSvg = await readFile(brand("comptaopen/favicon/icon.svg"));
 const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
-const whiteMarkSvg = await readFile(asset("comptaopen/favicon/icon-white-mark.svg"));
+const whiteMarkSvg = await readFile(brand("comptaopen/favicon/icon-white-mark.svg"));
 const whiteMarkSrc = `data:image/svg+xml;base64,${whiteMarkSvg.toString("base64")}`;
 
 function render(): ReactNode {

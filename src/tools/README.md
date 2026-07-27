@@ -2,8 +2,8 @@
 
 Génération des **assets de marque** d'un projet (logo, favicon et leurs
 déclinaisons). Monde séparé du moteur de composition TypeScript/Satori : ici on
-**produit** les fichiers de `assets/<projet>/logo` et `/favicon` ; le moteur les
-**consomme** via `asset()`.
+**produit** les fichiers de `brands/<projet>/logo` et `/favicon` ; le moteur les
+**consomme** via `brand()`.
 
 ## Organisation
 
@@ -49,10 +49,10 @@ uv run python src/tools/comptaopen/build_oauth.py      # -> out/comptaopen/witht
 Les scripts écrivent dans **`out/<projet>/withtool/`** (dossier `out/` ignoré par
 git : artefacts éphémères). C'est volontaire : on ne réécrit pas les assets
 commités à l'aveugle. Après revue, **promouvoir** les fichiers validés vers
-`assets/<projet>/logo/` et `assets/<projet>/favicon/`.
+`brands/<projet>/logo/` et `brands/<projet>/favicon/`.
 
 Pour écrire directement dans les assets (régénération en place), pointer la
-constante `OUT_BASE` d'un script vers `assets/<projet>` plutôt que
+constante `OUT_BASE` d'un script vers `brands/<projet>` plutôt que
 `out/<projet>/withtool`.
 
 ## Ajouter une marque

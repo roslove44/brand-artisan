@@ -1,13 +1,13 @@
 import { readFile } from "node:fs/promises";
 import type { CSSProperties } from "react";
-import { asset } from "../../../assets";
+import { brand } from "../../../src/brand";
 
 // Charte partagee par toutes les cartes du carrousel CV ATS. TS pur (pas de JSX) :
 // la decouverte ne charge que les .tsx, donc ce fichier est ignore comme template.
 export const SIZE = { width: 1080, height: 1080 }; // carrousel 1:1
 export const TOTAL = 4; // nombre de cartes (pour l'index et la progression)
 
-// Palette charte ComptaOpen (assets/comptaopen/brand.md).
+// Palette charte ComptaOpen (brands/comptaopen/brand.md).
 export const INK = "#0f172a"; // slate-900
 export const BLUE = "#1d4ed8"; // blue-700
 export const BLUE_LIGHT = "#60a5fa"; // blue-400 (accent sur fond sombre)
@@ -15,7 +15,7 @@ export const PAPER = "#f8fafc"; // slate-50
 export const MUTED = "#cbd5e1"; // slate-300
 
 // Bracket-O en data-URI, charge une seule fois et partage (cohérence du logo).
-export const markSvg = await readFile(asset("comptaopen/favicon/icon.svg"));
+export const markSvg = await readFile(brand("comptaopen/favicon/icon.svg"));
 export const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
 
 // Cadre commun : meme fond, meme zone de securite sur chaque carte.

@@ -1,6 +1,6 @@
 ---
 name: brand-assets
-description: Génère ou régénère les assets de marque d'un projet (logo, favicon et leurs déclinaisons) via la toolchain Python, fidèlement. À utiliser quand l'utilisateur veut "régénérer le logo / le favicon", "ajouter une déclinaison d'icône ou de logo", "une nouvelle variante de marque", ou "mettre en place la toolchain de marque d'un projet". Travaille dans src/tools/<projet>/ en réutilisant src/tools/brandkit/, sort dans out/<projet>/withtool/ puis promotion vers assets/<projet>/. Nécessite un projet avec sa brand.md en place.
+description: Génère ou régénère les assets de marque d'un projet (logo, favicon et leurs déclinaisons) via la toolchain Python, fidèlement. À utiliser quand l'utilisateur veut "régénérer le logo / le favicon", "ajouter une déclinaison d'icône ou de logo", "une nouvelle variante de marque", ou "mettre en place la toolchain de marque d'un projet". Travaille dans src/tools/<projet>/ en réutilisant src/tools/brandkit/, sort dans out/<projet>/withtool/ puis promotion vers brands/<projet>/. Nécessite un projet avec sa brand.md en place.
 ---
 
 # brand-assets : génération des assets de marque (Python)
@@ -8,8 +8,8 @@ description: Génère ou régénère les assets de marque d'un projet (logo, fav
 Objectif : produire ou faire évoluer les **fichiers de marque** d'un projet
 (logo, favicon, icônes, déclinaisons OAuth…) avec la **toolchain Python**, de
 façon **fidèle** à ce qui existe. Monde séparé du moteur TS/Satori : ici on
-**produit** les fichiers que `assets/<projet>/logo` et `/favicon` contiennent ;
-le moteur les consomme via `asset()`.
+**produit** les fichiers que `brands/<projet>/logo` et `/favicon` contiennent ;
+le moteur les consomme via `brand()`.
 
 > **Env et commandes : voir [`src/tools/README.md`](../../../src/tools/README.md).**
 > Cette skill ne duplique pas le setup (`uv sync`) ni les commandes de lancement
@@ -17,7 +17,7 @@ le moteur les consomme via `asset()`.
 
 ## 0. Prérequis (bloquant)
 
-- Résoudre `<projet>`. Vérifier `assets/<projet>/brand.md` (couleurs, géométrie,
+- Résoudre `<projet>`. Vérifier `brands/<projet>/brand.md` (couleurs, géométrie,
   règles). Charte manquante -> **STOP** : `/new-project <projet>` d'abord.
 - Env Python prêt (`uv sync`, voir README). Python épinglé à 3.12 (`skia-python`).
 
@@ -57,12 +57,12 @@ Dans `src/tools/<projet>/` (jamais ailleurs) :
 - Si une plomberie générique nouvelle est utile à toute marque, l'ajouter à
   `brandkit` (et **mettre à jour `src/tools/README.md` en miroir**).
 - La sortie va dans **`out/<projet>/withtool/`** via la constante `OUT_BASE` du
-  script. Ne pas écrire directement dans `assets/` (voir §5).
+  script. Ne pas écrire directement dans `brands/` (voir §5).
 
 ## 4. Valider
 
 Comparer chaque fichier régénéré (dans `out/<projet>/withtool/`) à sa référence
-(dans `assets/<projet>/`) : **dimensions**, **bbox** et **palette** doivent
+(dans `brands/<projet>/`) : **dimensions**, **bbox** et **palette** doivent
 correspondre (de légers écarts d'anticrénelage de bord sont acceptables ; une
 différence de couleur, de taille ou de cadrage ne l'est pas). Lancer aussi la
 validation pixel intégrée quand elle existe (le favicon imprime un contrôle 32 px).
@@ -71,12 +71,12 @@ validation pixel intégrée quand elle existe (le favicon imprime un contrôle 3
 
 `out/<projet>/withtool/` est **éphémère** (dossier `out/` gitignoré). Après revue
 visuelle et validation, **copier** les fichiers retenus vers
-`assets/<projet>/logo/` ou `/favicon/`, puis **mettre `brand.md` à jour** si la
+`brands/<projet>/logo/` ou `/favicon/`, puis **mettre `brand.md` à jour** si la
 liste des variantes change (placement, nouvelles déclinaisons).
 
 **Critère de succès** : les assets régénérés sont fidèles (dimensions/bbox/palette
 conformes), produits par un script qui réutilise `brandkit`, et promus dans
-`assets/<projet>/` avec une `brand.md` à jour.
+`brands/<projet>/` avec une `brand.md` à jour.
 
 ## Annexe : amorcer une nouvelle marque
 

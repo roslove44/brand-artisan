@@ -4,7 +4,8 @@ import { clean } from "./utils";
 
 // Auto-decouverte par le filesystem : un dossier = un projet/groupe, un .tsx = une image.
 // Pas de registre a maintenir : on depose un fichier, il apparait.
-const TEMPLATES = new URL("./templates/", import.meta.url);
+// templates/ vit a la racine du depot, hors de src/ : c'est du contenu, pas du moteur.
+const TEMPLATES = new URL("../templates/", import.meta.url);
 
 async function exists(url: URL): Promise<boolean> {
 	try {

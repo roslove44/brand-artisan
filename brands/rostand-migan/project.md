@@ -71,7 +71,7 @@ rédigent en français** (décision projet), sauf demande contraire.
 - **Stack à citer** : Symfony, Next.js, Go (et « whatever solves the problem
   best »).
 - **Projets réels** : ComptaOpen, Gestiloc.io, GoogleMapsScrape. Pour tout claim
-  sur **ComptaOpen**, respecter `assets/comptaopen/project.md` (ne pas vendre la
+  sur **ComptaOpen**, respecter `brands/comptaopen/project.md` (ne pas vendre la
   vision ERP comme si elle existait).
 - **Claims interdits** :
   - **aucun chiffre/statistique inventé** (années d'XP, nombre de projets,

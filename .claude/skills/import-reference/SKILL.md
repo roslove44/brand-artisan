@@ -10,7 +10,7 @@ matière exploitable par le moteur, selon deux flux distincts :
 
 - **Flux A : dériver une charte.** Les exemples sont la marque de l'utilisateur
   (son logo, son site, ses anciens visuels). On en extrait palette et règles
-  pour amorcer `assets/<projet>/brand.md`, au lieu de l'interview à froid de
+  pour amorcer `brands/<projet>/brand.md`, au lieu de l'interview à froid de
   `new-project`.
 - **Flux B : reproduire un visuel.** L'exemple est une image dont l'utilisateur
   aime le rendu (la sienne ou celle d'un tiers). On en extrait la
@@ -29,7 +29,7 @@ Ambigu -> demander, ne pas choisir en silence (principe #1 de CLAUDE.md).
 - Demander les **fichiers** (chemins locaux) : PNG, JPG ou SVG. Pour un site
   web, demander des screenshots plutôt que de scraper.
 - S'ils doivent rester consultables dans le repo (base d'une charte), proposer
-  de les déposer dans `assets/<projet>/reference/`. Pour une simple référence
+  de les déposer dans `brands/<projet>/reference/`. Pour une simple référence
   de composition (flux B), n'importe quel chemin local suffit, rien à
   versionner.
 - Ne jamais reproduire tel quel un visuel de marque tierce : on s'inspire de sa
@@ -55,13 +55,13 @@ Même discipline que `brand-assets` §2 : **mesurer avant d'affirmer**.
   l'utilisateur la police (ou le fichier). À défaut, proposer 2-3 candidates
   plausibles et faire **confirmer** ; ne jamais l'affirmer d'après l'image.
 
-## 3. Flux A : dériver `assets/<projet>/brand.md`
+## 3. Flux A : dériver `brands/<projet>/brand.md`
 
 C'est une variante de `new-project` où les mesures remplacent une partie de
 l'interview. Même sortie, mêmes règles.
 
 - Résoudre `<projet>` (slug kebab-case) ; s'il existe déjà une
-  `assets/<projet>/brand.md`, basculer en mise à jour, pas en création.
+  `brands/<projet>/brand.md`, basculer en mise à jour, pas en création.
 - Traduire les mesures en **rôles** : fond, encre, accent(s), en s'appuyant sur
   les proportions relevées. Arrondir les hex voisins issus de l'anticrénelage
   vers la couleur dominante du bloc.
@@ -76,14 +76,14 @@ l'interview. Même sortie, mêmes règles.
 
 ## 4. Flux B : reproduire un visuel dans la charte
 
-- **Prérequis bloquant** : `assets/<projet>/brand.md` existe. Sinon STOP :
+- **Prérequis bloquant** : `brands/<projet>/brand.md` existe. Sinon STOP :
   flux A ou `/new-project` d'abord (règle CLAUDE.md, aucun visuel sans charte).
 - Extraire de l'exemple la **composition seulement** : grille et placements,
   hiérarchie (point focal, contrastes d'échelle), proportion de vide, effets de
   fond (trame, dégradé, motif) décrits comme des principes.
 - **Transposer, ne pas copier** : chaque rôle observé dans l'exemple (fond,
   titre, accent) est remplacé par le rôle équivalent de la charte ; typographie
-  parmi celles présentes dans `assets/fonts/`. Aucun hex, logo ou élément de
+  parmi celles présentes dans `fonts/`. Aucun hex, logo ou élément de
   marque de l'exemple ne passe dans le template.
 - Produire le template via `new-template`, ou via le **skill plateforme** si le
   format en relève (`og-image`, `linkedin-post`, `facebook-post`…) : leur

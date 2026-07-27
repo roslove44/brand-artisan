@@ -12,7 +12,7 @@ alignés sur la charte. Un carrousel n'est pas N images indépendantes : c'est u
 livrable.
 
 C'est une spécialisation de `new-template`. Mêmes conventions : contrat
-`Template`, assets via `asset()`, polices chargées dans `render.ts`,
+`Template`, assets via `brand()`, polices chargées dans `render.ts`,
 `export default ... satisfies Template`. Même modèle que `facebook-carousel`.
 
 > **Carousel ad ≠ carrousel organique.** Ce que tu produis ici, ce sont les
@@ -26,21 +26,21 @@ C'est une spécialisation de `new-template`. Mêmes conventions : contrat
 La chaîne **projet -> dossier de templates -> charte** doit exister :
 
 - Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `src/templates/<projet>/` **et** `assets/<projet>/brand.md`.
+- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
 - Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
   d'abord. Aucun visuel sans charte (règle CLAUDE.md).
 
 ## 1. Cadrer (demander, ne pas deviner)
 
 - **Nom du carrousel** : slug kebab-case, défaut `linkedin-carousel`. C'est le
-  **sous-dossier** `src/templates/<projet>/<nom>/`. Vérifier qu'il n'existe pas.
+  **sous-dossier** `templates/<projet>/<nom>/`. Vérifier qu'il n'existe pas.
 - **Mécanique narrative** (voir §3) : story, une carte = un produit, top N, tuto,
   avant/après. Elle dicte le design.
 - **Nombre de cartes** : 2 à 10, **sweet spot 3-5**.
 - **Contenu de chaque carte** : message court + rôle (hook, développement, CTA).
-- Lire `assets/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
+- Lire `brands/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
   faire**. S'il y a déjà un `.tsx` dans le projet, le lire comme référence.
-- Lire `assets/<projet>/project.md` s'il existe : caler le **ton** et les
+- Lire `brands/<projet>/project.md` s'il existe : caler le **ton** et les
   **claims** des cartes (ne pas inventer de chiffres ni de promesses). Absent ->
   demander le ton et le message plutôt que de deviner.
 
@@ -94,7 +94,7 @@ Structure : **un sous-dossier par carrousel**, **un `.tsx` par carte**, plus un
 `theme.ts` partagé.
 
 ```
-src/templates/<projet>/<nom>/
+templates/<projet>/<nom>/
   theme.ts        <- palette + layout partages (TS pur, PAS de JSX)
   card-1.tsx      <- une carte = un PNG (1080x1080)
   card-2.tsx
@@ -108,7 +108,7 @@ src/templates/<projet>/<nom>/
   est répété dans chaque carte.
 - **Nommage et ordre** : tri **lexical** -> `card-10` passe avant `card-2`. Dès
   10 cartes, **padder** : `card-01` … `card-10`.
-- Couleurs depuis `theme.ts`, assets via `asset("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
+- Couleurs depuis `theme.ts`, assets via `brand("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
   manquante » de `new-template`, jamais en silence.
 
 ### `theme.ts` (squelette)
@@ -119,7 +119,7 @@ import type { CSSProperties } from "react";
 export const SIZE = { width: 1080, height: 1080 }; // carousel ad LinkedIn, 1:1
 export const TOTAL = 4; // nombre de cartes (index + progression)
 
-// Palette charte <Projet> (depuis assets/<projet>/brand.md).
+// Palette charte <Projet> (depuis brands/<projet>/brand.md).
 export const INK = "#......";
 export const ACCENT = "#......";
 export const PAPER = "#......";
@@ -140,7 +140,7 @@ export const frame: CSSProperties = {
 
 ```tsx
 import type { ReactNode } from "react";
-import type { Template } from "../../../template";
+import type { Template } from "../../../src/template";
 import { SIZE, frame, PAPER, ACCENT } from "./theme";
 
 function render(): ReactNode {

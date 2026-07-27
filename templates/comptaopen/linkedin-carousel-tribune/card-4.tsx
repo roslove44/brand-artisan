@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Template } from "../../../template";
+import type { Template } from "../../../src/template";
 import { SIZE, frame, headerRow, wordmarkText, indexText, titleStyle, markSrc, INK, PAPER, MUTED, BLUE_LIGHT } from "./theme";
 
 // Carte 4 : CTA. Conversion : l'appel a l'action le plus fort.

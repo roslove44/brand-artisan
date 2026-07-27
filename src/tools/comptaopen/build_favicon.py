@@ -1,7 +1,7 @@
 """Genere le favicon ComptaOpen (icones + apple-icon + favicon.ico) via brandkit.
 
 Sortie : out/comptaopen/withtool/favicon/ (artefacts a promouvoir vers
-assets/comptaopen/favicon/ apres revue). Pour ecrire directement dans les
+brands/comptaopen/favicon/ apres revue). Pour ecrire directement dans les
 assets, changer OUT_BASE ci-dessous.
 """
 
@@ -14,7 +14,7 @@ sys.path.insert(0, str(HERE.parent))  # src/tools -> import brandkit
 from brandkit import render_svg, make_ico
 
 ROOT = HERE.parents[2]  # src/tools/comptaopen -> repo root
-OUT_BASE = ROOT / "out" / "comptaopen" / "withtool"  # -> "assets" / "comptaopen" pour ecrire en place
+OUT_BASE = ROOT / "out" / "comptaopen" / "withtool"  # -> "brands" / "comptaopen" pour ecrire en place
 OUT = OUT_BASE / "favicon"
 OUT.mkdir(parents=True, exist_ok=True)
 
