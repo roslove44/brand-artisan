@@ -29,8 +29,9 @@ il n'y a ni `react-dom` ni rendu côté client.
 
 ## Prérequis
 
-- **Node.js ≥ 18** et **npm** : le moteur de rendu (TypeScript). C'est tout ce
-  qu'il faut pour composer des visuels.
+- **Node.js ≥ 22** et **npm** : le moteur de rendu (TypeScript). C'est tout ce
+  qu'il faut pour composer des visuels. (Version testée en CI : 22 et 24, sur
+  Linux et Windows.)
 - **[uv](https://docs.astral.sh/uv/)** : uniquement pour la *toolchain de marque*
   en Python (génération des logos/favicons, voir plus bas). Inutile si tu ne fais
   que composer des visuels.
@@ -64,7 +65,8 @@ Si une version refuse de s'installer, repinner les libs de rendu au dernier
 npm run dev        # serveur de rendu HTTP (arborescence navigable, comme Next)
 npm run build      # export fichier : rend toute l'arborescence dans out/
 npm run typecheck  # vérification TypeScript (tsc)
-npm test           # tests unitaires des helpers (node:test)
+npm test           # tests : helpers purs + chaîne de rendu (node:test)
+npm run check      # typecheck + tests, ce que lance la CI
 ```
 
 ### Mode dev (URLs, comme Next)
@@ -189,8 +191,8 @@ validés vers `assets/<projet>/`. Détails dans
 | `src/templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, title?, render }` par défaut et charge ses propres assets. |
 | `src/tools/` | Toolchain Python de marque : `brandkit/` (socle partagé) + un dossier de scripts par projet. |
 | `assets/<projet>/` | Référence d'une marque : `brand.md`, `project.md`, logo, favicon. |
-| `assets/fonts/` | Polices fournies en dur (Satori n'accède à aucune police système). |
-| `test/` | Tests unitaires des helpers (`npm test`). |
+| `assets/fonts/` | Polices fournies en dur (Satori n'accède à aucune police système), avec leurs licences : [`NOTICE.md`](assets/fonts/NOTICE.md). |
+| `test/` | Tests : helpers purs et chaîne de rendu (`npm test`). |
 | `out/` | PNG générés. Ignoré par git (rien à versionner ici). |
 
 ## Ajouter un nouveau visuel
@@ -241,3 +243,18 @@ skills correspondants (`.claude/skills/`).
   éprouvé), pas via un chemin de fichier.
 - Satori ne mesure pas finement le texte : pour un titre à longueur variable, on
   choisit la taille de police par paliers plutôt que de compter sur l'auto-fit.
+
+## Licence
+
+Le code (moteur, outils, skills) est sous [licence MIT](LICENSE).
+
+Deux exceptions, qui ne sont pas couvertes par le MIT :
+
+- **Les polices** de `assets/fonts/` sont sous SIL Open Font License 1.1, avec
+  leur texte de licence à côté des fichiers :
+  [`assets/fonts/NOTICE.md`](assets/fonts/NOTICE.md). Y ajouter une police impose
+  d'y déposer aussi sa licence, et de vérifier qu'elle autorise la
+  redistribution.
+- **Les marques d'exemple** (logos, logotypes, chartes de `assets/<projet>/`)
+  relèvent du droit des marques : elles illustrent la méthode, elles ne sont pas
+  réutilisables.

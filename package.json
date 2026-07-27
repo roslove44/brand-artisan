@@ -4,11 +4,20 @@
   "private": true,
   "type": "module",
   "description": "Fabrique des images (couvertures, OG, bannières) via Satori + resvg : le moteur next/og sorti de Next.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roslove44/brand-artisan.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "tsx watch src/serve.ts",
     "build": "tsx src/build.ts",
     "typecheck": "tsc",
-    "test": "node --import tsx --test test/**/*.test.ts"
+    "test": "node --import tsx --test test/**/*.test.ts",
+    "check": "npm run typecheck && npm test"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
