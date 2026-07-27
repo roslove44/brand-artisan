@@ -6,11 +6,10 @@
  * trier par effectif decroissant. Le premier bloc est le fond, les suivants les
  * encres et accents.
  *
- * En ligne de commande : npx tsx src/colors.ts <image> [nombre de couleurs]
+ * En ligne de commande : brand-artisan colors <image> [nombre de couleurs]
  */
 import { readFileSync } from "node:fs";
 import { basename, extname } from "node:path";
-import { pathToFileURL } from "node:url";
 import { PNG } from "pngjs";
 import { decode as decodeJpeg } from "jpeg-js";
 import { Resvg } from "@resvg/resvg-js";
@@ -66,15 +65,10 @@ export function palette({ data }: Pixels, top = 12): { unique: number; total: nu
 	return { unique: counts.size, total, colors };
 }
 
-// Execution directe : npx tsx src/colors.ts <image> [top]
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-	const [file, top] = process.argv.slice(2);
-	if (!file) {
-		console.error("Usage : npx tsx src/colors.ts <image.png|jpg|svg> [nombre de couleurs]");
-		process.exit(1);
-	}
+/** Releve lisible en console : dimensions puis palette triee. Sert a la CLI. */
+export function report(file: string, top = 12): void {
 	const px = decode(file);
-	const { unique, colors } = palette(px, Number(top) || 12);
+	const { unique, colors } = palette(px, top);
 	console.log(`${basename(file)} : ${px.width}x${px.height}, ${unique} couleurs distinctes`);
 	for (const c of colors) console.log(`  ${c.hex.padEnd(10)} ${(c.share * 100).toFixed(2).padStart(6)} %  (${c.count} px)`);
 }

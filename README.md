@@ -51,7 +51,12 @@ npm run typecheck  # vérification TypeScript (tsc)
 npm test           # tests : helpers purs + chaîne de rendu (node:test)
 npm run check      # typecheck + tests, ce que lance la CI
 npm run test:consumer  # installe le paquet dans un projet vierge et y rend un visuel
+
+npx brand-artisan colors <image>  # palette d'une image : relever plutôt que deviner
 ```
+
+`brand-artisan` est aussi la CLI du paquet (`dev`, `build`, `colors`) : c'est par
+elle qu'un projet qui installe BrandArtisan lance son rendu.
 
 Les commandes se lancent depuis n'importe quel sous-dossier du projet : les
 dossiers de contenu (`brands/`, `templates/`, `fonts/`, `out/`) sont résolus
@@ -186,7 +191,9 @@ validés vers `brands/<projet>/`. Détails dans
 | `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/<projet>/<slug-du-titre>.png` (`npm run build`). |
 | `templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, title?, render }` par défaut et charge ses propres assets. |
 | `src/brandkit.ts` | Socle de la toolchain de marque : contours de glyphes (fontkit), SVG -> PNG (resvg), écriture de `.ico`. |
-| `src/colors.ts` | Mesure les couleurs d'une image (PNG, JPEG, SVG) : sert à relever une palette au lieu de la deviner. CLI : `npx tsx src/colors.ts <image>`. |
+| `src/colors.ts` | Mesure les couleurs d'une image (PNG, JPEG, SVG) : sert à relever une palette au lieu de la deviner. CLI : `npx brand-artisan colors <image>`. |
+| `src/cli.ts` | Les commandes `dev`, `build` et `colors` de la CLI. |
+| `bin/brand-artisan.js` | Point d'entrée de la CLI, seul fichier en JavaScript pur : il enregistre tsx, puis passe la main à `src/cli.ts`. |
 | `tools/<projet>/` | Scripts d'une marque : géométrie et couleurs en dur, police source. |
 | `brands/<projet>/` | Référence d'une marque : `brand.md`, `project.md`, logo, favicon. |
 | `fonts/` | Polices fournies en dur (Satori n'accède à aucune police système), avec leurs licences : [`NOTICE.md`](fonts/NOTICE.md). |

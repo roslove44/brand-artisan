@@ -31,10 +31,10 @@ Trois cas :
 ## 2. Discipline de reproduction fidèle (le cœur)
 
 **Ne jamais deviner la géométrie d'un asset existant. L'inspecter d'abord.**
-Pour chaque fichier de référence, relever avec `src/colors.ts` :
+Pour chaque fichier de référence, relever la palette :
 
 ```bash
-npx tsx src/colors.ts brands/<projet>/logo/logo.png
+npx brand-artisan colors brands/<projet>/logo/logo.png
 ```
 
 Il donne les **dimensions** et la **palette** triée par effectif : le premier

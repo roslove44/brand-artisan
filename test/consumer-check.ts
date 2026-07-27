@@ -1,15 +1,19 @@
 /**
  * Preuve que le paquet est installable et utilisable : empaquette le depot,
- * l'installe dans un projet vierge, et y rend un visuel. C'est le seul controle
+ * l'installe dans un projet vierge, et y lance la CLI. C'est le seul controle
  * qui exerce le moteur depuis node_modules, la ou vivent les vraies erreurs de
- * packaging (chemins qui visent l'interieur du moteur, export manquant).
+ * packaging (chemins qui visent l'interieur du moteur, export ou fichier
+ * manquant du tarball, bin qui ne demarre pas).
+ *
+ * Le projet d'essai n'installe que le paquet : react doit arriver seul par la
+ * peer dependency, et tsx par les dependances du moteur.
  *
  * Hors de `npm test` (fichier sans .test.ts) : il installe depuis le reseau et
  * dure une minute. Lancer : npm run test:consumer
  */
 import assert from "node:assert/strict";
 import { execSync } from "node:child_process";
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -19,7 +23,7 @@ const REPO = fileURLToPath(root("."));
 const WORK = mkdtempSync(join(tmpdir(), "brand-artisan-consumer-"));
 const APP = join(WORK, "app");
 
-const run = (cmd: string, cwd: string) => execSync(cmd, { cwd, stdio: "pipe", encoding: "utf8" });
+const run = (cmd: string, cwd = APP) => execSync(cmd, { cwd, stdio: "pipe", encoding: "utf8" });
 const step = (msg: string) => console.log(`  ${msg}`);
 
 // Le projet genere devra porter ces deux reglages : sans "react-jsx" le JSX
@@ -35,7 +39,7 @@ const TSCONFIG = {
 		skipLibCheck: true,
 		noEmit: true,
 	},
-	include: ["templates", "build.ts"],
+	include: ["templates", "check.ts"],
 };
 
 const TEMPLATE = `import { brand, type Template } from "brand-artisan";
@@ -53,51 +57,57 @@ export default {
 } satisfies Template;
 `;
 
-const BUILD = `import { renderToFile } from "brand-artisan";
-import tpl, { MARK } from "./templates/demo/og";
-
-console.log(await renderToFile(tpl.render(), { ...tpl.size, out: "demo/og" }));
-console.log(MARK.href);
-`;
-
 try {
 	step("empaquetage du depot");
 	const tgz = run(`npm pack --pack-destination "${WORK}"`, REPO).trim().split(/\r?\n/).pop()!;
 
-	step(`projet vierge + installation de ${tgz}`);
+	step(`projet vierge + installation de ${tgz}, sans rien d'autre`);
 	mkdirSync(APP);
-	run("npm init -y", APP);
-	run("npm pkg set type=module", APP);
-	run(`npm i "${join(WORK, tgz)}" react tsx --no-audit --no-fund`, APP);
-	run("npm i -D @types/node @types/react --no-audit --no-fund", APP);
+	run("npm init -y");
+	run("npm pkg set type=module");
+	run(`npm i "${join(WORK, tgz)}" --no-audit --no-fund`);
+	assert.ok(existsSync(join(APP, "node_modules", "react")), "react doit arriver par la peer dependency");
+	assert.ok(existsSync(join(APP, "node_modules", "tsx")), "tsx doit arriver par les dependances du moteur");
 
-	step("contenu du projet : une police, un asset, un template, un build");
+	step("contenu du projet : une police, un asset, un template");
 	mkdirSync(join(APP, "fonts"), { recursive: true });
 	mkdirSync(join(APP, "brands", "demo"), { recursive: true });
 	mkdirSync(join(APP, "templates", "demo"), { recursive: true });
 	cpSync(join(REPO, "fonts", "Geist-700.ttf"), join(APP, "fonts", "Geist-700.ttf"));
 	writeFileSync(join(APP, "brands", "demo", "mark.svg"), '<svg xmlns="http://www.w3.org/2000/svg"/>');
 	writeFileSync(join(APP, "templates", "demo", "og.tsx"), TEMPLATE);
-	writeFileSync(join(APP, "build.ts"), BUILD);
+	writeFileSync(join(APP, "check.ts"), 'import { MARK } from "./templates/demo/og";\nconsole.log(MARK.href);\n');
 	writeFileSync(join(APP, "tsconfig.json"), `${JSON.stringify(TSCONFIG, null, 2)}\n`);
 
+	// Le paquet livrant du .ts, tsc suit les sources du moteur : le consommateur
+	// a donc besoin des types de ses dependances, pas seulement des siens. C'est
+	// le prix du .ts livre, et ce que le generateur devra mettre dans le projet.
 	step("typecheck du projet consommateur");
-	run("npx tsc --noEmit", APP);
+	run("npm i -D typescript @types/node @types/react --no-audit --no-fund");
+	run("npx tsc --noEmit");
 
-	step("rendu");
-	const [png, mark] = run("npx tsx build.ts", APP).trim().split(/\r?\n/);
+	step("brand-artisan build");
+	const lines = run("npx brand-artisan build").trim().split(/\r?\n/);
+	assert.equal(lines.length, 1, `un seul visuel attendu, obtenu : ${lines.join(" | ")}`);
+	const png = join(APP, ...lines[0].replace(/^\W+\s*/, "").split("/"));
 
-	// Le PNG sort chez le consommateur, a la taille demandee.
-	assert.equal(png, join(APP, "out", "demo", "og.png"), "le PNG doit sortir dans le out/ du projet");
+	// Le PNG sort chez le consommateur, a la taille du template.
 	const bytes = readFileSync(png);
 	assert.ok(bytes.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])), "en-tete PNG");
 	assert.deepEqual({ width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20) }, { width: 1200, height: 630 });
 
+	step("brand-artisan colors");
+	const palette = run(`npx brand-artisan colors "${png}" 3`);
+	assert.match(palette, /1200x630/);
+	assert.match(palette, /#[0-9a-f]{6}/, "au moins une couleur relevee");
+
 	// brand() vise la marque du consommateur, jamais l'interieur du moteur.
+	step("resolution de brand()");
+	const mark = run("npx tsx check.ts").trim();
 	assert.ok(mark.startsWith(pathToFileURL(APP).href), `brand() doit viser le projet, obtenu : ${mark}`);
 	assert.ok(!mark.includes("node_modules"), "brand() ne doit pas viser l'interieur du moteur");
 
-	console.log(`\nOK : paquet installable, ${bytes.length} octets de PNG rendus depuis node_modules.`);
+	console.log(`\nOK : installe depuis le seul tarball, CLI fonctionnelle, ${bytes.length} octets de PNG rendus.`);
 } finally {
 	rmSync(WORK, { recursive: true, force: true });
 }

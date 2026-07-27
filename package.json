@@ -17,6 +17,13 @@
     "./brandkit": "./src/brandkit.ts",
     "./colors": "./src/colors.ts"
   },
+  "bin": {
+    "brand-artisan": "./bin/brand-artisan.js"
+  },
+  "files": [
+    "src",
+    "bin"
+  ],
   "scripts": {
     "dev": "tsx watch src/serve.ts",
     "build": "tsx src/build.ts",
@@ -30,7 +37,11 @@
     "fontkit": "^2.0.4",
     "jpeg-js": "^0.4.4",
     "pngjs": "^7.0.0",
-    "satori": "^0.12.1"
+    "satori": "^0.12.1",
+    "tsx": "^4.19.2"
+  },
+  "peerDependencies": {
+    "react": ">=19"
   },
   "devDependencies": {
     "@types/fontkit": "^2.0.9",
@@ -38,7 +49,6 @@
     "@types/pngjs": "^6.0.5",
     "@types/react": "^19.0.0",
     "react": "^19.0.0",
-    "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   }
 }

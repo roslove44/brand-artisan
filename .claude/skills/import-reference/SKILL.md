@@ -39,12 +39,12 @@ Ambigu -> demander, ne pas choisir en silence (principe #1 de CLAUDE.md).
 
 Même discipline que `brand-assets` §2 : **mesurer avant d'affirmer**.
 
-- **Couleurs : à la machine.** `npx tsx src/colors.ts <image> [n]` accepte PNG,
+- **Couleurs : à la machine.** `npx brand-artisan colors <image> [n]` accepte PNG,
   JPEG et SVG, et sort les dimensions puis la palette triée par effectif
   décroissant : le premier bloc est le fond, les suivants les encres et accents.
   Le nombre de couleurs distinctes dit à quoi on a affaire : quelques dizaines,
   c'est un aplat et de l'anticrénelage ; des milliers, c'est une photo.
-- **Cadrage d'un élément :** importer `decode()` de `src/colors.ts` et parcourir
+- **Cadrage d'un élément :** importer `decode()` de `brand-artisan/colors` et parcourir
   les pixels ; la bounding box de ce qui est peint tient en quelques lignes.
 - **SVG : lire le source.** Les hex exacts sont dans le markup, aucune mesure
   nécessaire.
