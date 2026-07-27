@@ -68,8 +68,8 @@ const variants: Record<string, string> = {
 };
 for (const [name, svg] of Object.entries(variants)) writeFileSync(`${OUT}${name}`, svg, "utf8");
 
-// resvg met le vecteur a l'echelle : rendu direct a la hauteur voulue, la ou la
-// version Python rendait en taille native puis reduisait en LANCZOS.
+// resvg met le vecteur a l'echelle : rendu direct a la hauteur voulue, sans
+// passer par la reduction d'un rendu plus grand.
 const raster = (svgName: string, out: string, { white = false, height = 240 } = {}) =>
 	writeFileSync(`${OUT}${out}`, renderSvg(variants[svgName], { height }, white ? "#ffffff" : undefined));
 

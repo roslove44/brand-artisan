@@ -1,10 +1,10 @@
 /**
- * brandkit : socle partage de la toolchain de marque, version TypeScript.
+ * brandkit : socle partage de la toolchain de marque.
  *
- * Miroir de src/brandkit/ (Python), meme plomberie et memes noms :
- *   fontTools -> fontkit  (instanciation d'une variable, contours, chasse)
- *   skia      -> resvg    (rasterisation, deja utilise par le moteur de rendu)
- *   Pillow    -> makeIco  (ecriture du conteneur .ico, ci-dessous)
+ * Trois briques portent toute la plomberie :
+ *   fontkit  instanciation d'une variable, contours, chasse
+ *   resvg    rasterisation, deja utilise par le moteur de rendu
+ *   makeIco  ecriture du conteneur .ico, ci-dessous
  *
  * La geometrie et les couleurs propres a une marque vivent dans ses scripts
  * (tools/<projet>/), pas ici.
@@ -17,8 +17,7 @@ export type Ink = { d: string; advance: number; bbox: BBOX };
 
 /**
  * Charge une police instanciee a `axes` (ex. { wght: 700 }) et renvoie un
- * accesseur de glyphe par caractere. Remplace a lui seul le triplet
- * (glyphset, cmap, hmtx) de la version Python.
+ * accesseur de glyphe par caractere.
  *
  * Une police **statique** est prise telle quelle, `axes` etant alors sans objet :
  * toutes les marques n'ont pas une variable sous la main.
@@ -48,8 +47,8 @@ const options = (fit: Fit, background?: string) => ({
 
 /**
  * Rend un SVG a la taille voulue. resvg met le vecteur a l'echelle avant de
- * rasteriser : contrairement a la version Python, pas de rendu en taille native
- * suivi d'un downscale LANCZOS.
+ * rasteriser : le trace reste net a toutes les tailles, sans passer par la
+ * reduction d'un rendu plus grand.
  */
 export const renderSvg = (svg: string, fit: Fit, background?: string): Buffer =>
 	new Resvg(svg, options(fit, background)).render().asPng();

@@ -7,7 +7,7 @@ import { listingPage, previewPage, VIEWS, type Entry, type View } from "./ui/pag
 
 const PORT = 4000;
 
-// Types servis depuis la sortie d'outil (ce que produit la toolchain Python).
+// Types servis depuis la sortie d'outil (ce que produit la toolchain de marque).
 const MIME: Record<string, string> = {
 	svg: "image/svg+xml",
 	png: "image/png",
@@ -54,14 +54,14 @@ async function imageEntry(rel: string, name: string): Promise<Entry> {
 //   /comptaopen/cover?raw  -> PNG brut (utilisable comme src)
 //   /comptaopen/cover?thumb=280 -> vignette PNG (cache mémoire)
 //   ?w=1245&h=527          -> override de la taille sur l'aperçu
-//   /comptaopen/withtool/… -> sortie de la toolchain Python (out/<projet>/withtool/),
+//   /comptaopen/withtool/… -> sortie de la toolchain de marque (out/<projet>/withtool/),
 //                             fichiers servis tels quels ; dossier masqué s'il n'existe pas
 const server = createServer(async (req, res) => {
 	try {
 		const url = new URL(req.url ?? "/", `http://localhost:${PORT}`);
 		const relPath = clean(decodeURIComponent(url.pathname));
 		const kind = await resolve(relPath);
-		// Hors templates : le chemin vise peut-être la sortie de la toolchain Python.
+		// Hors templates : le chemin vise peut-être la sortie de la toolchain de marque.
 		const outKind = kind === null ? await outResolve(relPath) : null;
 
 		if (kind === null && outKind === null) {

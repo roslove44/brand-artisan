@@ -46,7 +46,7 @@ export async function modified(relPath: string): Promise<number> {
 	return s.mtimeMs;
 }
 
-// --- Sortie de la toolchain Python -----------------------------------------
+// --- Sortie de la toolchain de marque ---------------------------------------
 // out/<projet>/withtool/ contient des fichiers deja produits (SVG, PNG, .ico),
 // pas des templates : on les expose tels quels, comme un dossier "withtool" du
 // projet, pour les relire avant promotion vers brands/. Dossier ephemere et
