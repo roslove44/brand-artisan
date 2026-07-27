@@ -16,13 +16,21 @@ le nom réservé de la police pour une version modifiée distribuée sous ce nom
 
 ## Ajouter une police
 
-Trois conditions, dans cet ordre :
+Déposer le fichier ici suffit : `src/render.ts` scanne ce dossier au démarrage,
+il n'y a aucune déclaration à écrire dans le code. Quatre conditions :
 
 1. **Licence compatible avec la redistribution** (OFL, Apache 2.0, domaine
    public). Une police achetée sous licence propriétaire ne se commite pas dans
    un dépôt public : la garder hors dépôt.
 2. **Format `.ttf` ou `.otf`.** Satori ne lit pas le `woff2`.
-3. **Déposer le texte de licence ici** (`OFL-<Police>.txt` ou équivalent) et
+3. **Nom du fichier : `<Famille>-<graisse>.ttf`.** C'est lui qui fait foi, un
+   fichier hors convention fait échouer le rendu au démarrage avec un message
+   explicite. La famille s'écrit en PascalCase et les mots sont séparés à la
+   lecture : `GeistMono-600.ttf` donne la famille `Geist Mono` en graisse 600,
+   c'est-à-dire le nom exact à citer dans le `fontFamily` d'un template. Un nom
+   qui contient déjà une espace est repris tel quel (`DM Sans-400.ttf`).
+4. **Déposer le texte de licence ici** (`OFL-<Police>.txt` ou équivalent) et
    ajouter une ligne au tableau ci-dessus.
 
-Enregistrer ensuite la police dans le tableau `fonts` de `src/render.ts`.
+Seuls les `.ttf` et `.otf` sont lus : les fichiers de licence de ce dossier sont
+ignorés par le scan.

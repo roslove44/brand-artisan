@@ -83,7 +83,7 @@ l'interview. Même sortie, mêmes règles.
   fond (trame, dégradé, motif) décrits comme des principes.
 - **Transposer, ne pas copier** : chaque rôle observé dans l'exemple (fond,
   titre, accent) est remplacé par le rôle équivalent de la charte ; typographie
-  parmi celles chargées dans `src/render.ts`. Aucun hex, logo ou élément de
+  parmi celles présentes dans `assets/fonts/`. Aucun hex, logo ou élément de
   marque de l'exemple ne passe dans le template.
 - Produire le template via `new-template`, ou via le **skill plateforme** si le
   format en relève (`og-image`, `linkedin-post`, `facebook-post`…) : leur

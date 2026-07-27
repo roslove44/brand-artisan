@@ -181,7 +181,7 @@ validés vers `assets/<projet>/`. Détails dans
 
 | Chemin | Rôle |
 |---|---|
-| `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. Charge aussi les polices (tableau `fonts`). |
+| `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. Découvre aussi les polices de `assets/fonts/` par leur nom de fichier. |
 | `src/discover.ts` | Auto-découverte : scanne `templates/` (dossier = projet, `.tsx` = image), résout une URL en noeud, charge un template. |
 | `src/template.ts` | Le type `Template` : ce que chaque `.tsx` exporte par défaut (`{ size, title?, render }`). |
 | `src/assets.ts` | `asset("chemin/relatif")` : URL absolue vers `assets/`, indépendante du cwd et de la profondeur de l'appelant. |

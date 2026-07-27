@@ -1,20 +1,34 @@
-import satori from "satori";
+import satori, { type Font } from "satori";
 import { Resvg } from "@resvg/resvg-js";
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import type { ReactNode } from "react";
 import { asset } from "./assets";
 
-// Satori n'accede a aucune police systeme : on les fournit explicitement.
-const fonts = [
-	{ name: "Sora", weight: 700 as const, style: "normal" as const, data: await readFile(asset("fonts/Sora-700.ttf")) },
-	{ name: "Sora", weight: 500 as const, style: "normal" as const, data: await readFile(asset("fonts/Sora-500.ttf")) },
-	{ name: "Geist", weight: 700 as const, style: "normal" as const, data: await readFile(asset("fonts/Geist-700.ttf")) },
-	{ name: "Geist", weight: 600 as const, style: "normal" as const, data: await readFile(asset("fonts/Geist-600.ttf")) },
-	{ name: "Geist", weight: 400 as const, style: "normal" as const, data: await readFile(asset("fonts/Geist-400.ttf")) },
-	{ name: "Geist Mono", weight: 600 as const, style: "normal" as const, data: await readFile(asset("fonts/GeistMono-600.ttf")) },
-	{ name: "Geist Mono", weight: 400 as const, style: "normal" as const, data: await readFile(asset("fonts/GeistMono-400.ttf")) },
-];
+// Satori n'accede a aucune police systeme : on charge celles deposees dans
+// assets/fonts/. Convention de nom : <Famille>-<graisse>.ttf, la famille en
+// PascalCase donnant le nom cite par les templates ("GeistMono-600.ttf" ->
+// famille "Geist Mono", graisse 600). Deposer un fichier suffit a l'enregistrer.
+const FONTS = asset("fonts/");
+const FONT_FILE = /^(.+)-(\d{3})\.(?:ttf|otf)$/;
+
+async function loadFonts(): Promise<Font[]> {
+	const files = (await readdir(FONTS)).filter((f) => /\.(ttf|otf)$/.test(f));
+	return Promise.all(
+		files.map(async (file) => {
+			const match = file.match(FONT_FILE);
+			if (!match) throw new Error(`Police "${file}" hors convention <Famille>-<graisse>.ttf (voir assets/fonts/NOTICE.md).`);
+			return {
+				name: match[1].replace(/([a-z0-9])([A-Z])/g, "$1 $2"),
+				weight: Number(match[2]) as Font["weight"],
+				style: "normal" as const,
+				data: await readFile(new URL(file, FONTS)),
+			};
+		}),
+	);
+}
+
+const fonts = await loadFonts();
 
 type RenderSize = { width: number; height: number; scale?: number };
 

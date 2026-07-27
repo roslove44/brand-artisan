@@ -23,8 +23,8 @@ c'est le cœur de la règle projet. Recueillir au minimum :
 
 - **Concept / signification** du logo et du nom.
 - **Typographie** : police, graisse, source. Note : les familles et graisses
-  disponibles sont celles chargées dans `src/render.ts` (tableau `fonts` ;
-  fichiers dans `assets/fonts/`). Si la charte impose
+  disponibles sont celles présentes dans `assets/fonts/`, découvertes
+  automatiquement par `src/render.ts`. Si la charte impose
   une autre police absente d'`assets/fonts/`, suivre la procédure **Police
   manquante** ci-dessous : proposer de la pré-installer maintenant, ou laisser
   `/new-template` la récupérer au premier visuel qui en a besoin.
@@ -95,14 +95,17 @@ Si la charte impose une police qui n'est pas dans `assets/fonts/` :
    `@fontsource/<police>`. La plupart des Google Fonts sont en OFL/Apache -> OK.
    Police propriétaire ou licence ambiguë -> **refuser** et demander à
    l'utilisateur de fournir le fichier lui-même.
-3. **Télécharger** vers `assets/fonts/<Police>-<graisse>.ttf`, via
+3. **Télécharger** vers `assets/fonts/<Famille>-<graisse>.ttf`, via
    `curl -L <url> -o ...` ou `Invoke-WebRequest -OutFile`. WebFetch ne convient
-   pas (binaire).
+   pas (binaire). Le nom du fichier **fait foi** : il détermine la famille citée
+   par les templates, en PascalCase (`GeistMono-600.ttf` -> `Geist Mono`, 600).
 4. **Vérifier le fichier** : taille non nulle et en-tête de vraie police
    (`.ttf` commence par `00 01 00 00`, OpenType par `OTTO`), pas une page
    d'erreur HTML déguisée.
-5. **Enregistrer dans `src/render.ts`** : ajouter au tableau `fonts` une entrée
-   `{ name, weight, style, data: await readFile(asset("fonts/<fichier>")) }`.
+5. **Documenter la licence** : déposer son texte dans `assets/fonts/` et ajouter
+   la ligne correspondante au tableau de `assets/fonts/NOTICE.md`. Aucune
+   déclaration de code : `src/render.ts` découvre le fichier au démarrage, si
+   son nom suit la convention `<Famille>-<graisse>.ttf` de l'étape 3.
 6. **Confirmer avant de commit** le `.ttf` (binaire) avec l'utilisateur.
 
 Si l'utilisateur refuse -> ne pas pré-installer ; noter dans la charte que la

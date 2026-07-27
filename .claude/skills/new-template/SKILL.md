@@ -49,11 +49,11 @@ silence (principe #1 de CLAUDE.md).
 Respecter le contrat (`src/template.ts`) et les conventions du projet :
 
 - Couleurs en **constantes nommées tirées de la charte** : ne pas inventer de hex.
-- Polices : celles chargées dans `src/render.ts` : consulter le tableau `fonts`
-  pour les familles et graisses disponibles (fichiers dans `assets/fonts/`). Si la
-  charte impose une autre police absente d'`assets/fonts/`,
-  suivre la procédure **Police manquante** ci-dessous : ne jamais l'utiliser en
-  silence.
+- Polices : celles présentes dans `assets/fonts/`, découvertes automatiquement
+  par `src/render.ts`. Le nom du fichier donne la famille et la graisse
+  (`GeistMono-600.ttf` -> famille `Geist Mono`, graisse 600). Si la charte
+  impose une autre police absente d'`assets/fonts/`, suivre la procédure
+  **Police manquante** ci-dessous : ne jamais l'utiliser en silence.
 - Assets via `asset("<projet>/...")` (jamais de chemin relatif au cwd ni de
   `../../..`).
 - `scale` optionnel dans `size` si un rendu retina est voulu.
@@ -126,17 +126,19 @@ Si la charte impose une police qui n'est pas dans `assets/fonts/` :
    `@fontsource/<police>`. La plupart des Google Fonts sont en OFL/Apache -> OK.
    Police propriétaire ou licence ambiguë -> **refuser** et demander à
    l'utilisateur de fournir le fichier lui-même.
-3. **Télécharger** vers `assets/fonts/<Police>-<graisse>.ttf` (convention de
-   nommage existante), via `curl -L <url> -o ...` ou `Invoke-WebRequest -OutFile`.
-   WebFetch ne convient pas (binaire).
+3. **Télécharger** vers `assets/fonts/<Famille>-<graisse>.ttf`, via
+   `curl -L <url> -o ...` ou `Invoke-WebRequest -OutFile`. WebFetch ne convient
+   pas (binaire). Le nom du fichier **fait foi** : il détermine la famille citée
+   par les templates, en PascalCase (`GeistMono-600.ttf` -> `Geist Mono`, 600).
 4. **Vérifier le fichier** : taille non nulle et en-tête de vraie police
    (`.ttf` commence par `00 01 00 00`, OpenType par `OTTO`), pas une page
    d'erreur HTML déguisée, qui ferait planter Satori à l'exécution.
-5. **Enregistrer dans `src/render.ts`** : ajouter au tableau `fonts` une entrée
-   `{ name, weight, style, data: await readFile(asset("fonts/<fichier>")) }`.
-   Sans cette déclaration, le fichier sur disque est inutile.
+5. **Documenter la licence** : déposer son texte dans `assets/fonts/` et ajouter
+   la ligne correspondante au tableau de `assets/fonts/NOTICE.md`. Aucune
+   déclaration de code n'est nécessaire : `src/render.ts` découvre le fichier au
+   démarrage, à condition que son nom suive la convention de l'étape 3.
 6. **Confirmer avant de commit** le `.ttf` (binaire) avec l'utilisateur.
 
 Si l'utilisateur refuse le téléchargement -> ne pas utiliser la police ; lui
 demander de déposer le fichier dans `assets/fonts/`, ou rester sur une police
-déjà chargée dans `render.ts`.
+déjà présente dans `assets/fonts/`.

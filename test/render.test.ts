@@ -22,3 +22,16 @@ test("toPng : scale double la resolution de sortie sans changer le cadrage", asy
 	const png = await toPng(square(), { width: 200, height: 100, scale: 2 });
 	assert.deepEqual(pngSize(png), { width: 400, height: 200 });
 });
+
+// Les familles sont derivees du nom des fichiers de assets/fonts/. Si la
+// derivation cassait, Satori ne trouverait plus les familles citees et
+// retomberait sur la meme police de secours pour les deux : rendus identiques.
+test("les familles de polices sont bien resolues depuis assets/fonts/", async () => {
+	const label = (fontFamily: string) =>
+		createElement("div", { style: { width: "100%", height: "100%", fontSize: 40, fontFamily } }, "Aa Bb 123");
+	const [mono, sora] = await Promise.all([
+		toPng(label("Geist Mono"), { width: 400, height: 120 }),
+		toPng(label("Sora"), { width: 400, height: 120 }),
+	]);
+	assert.ok(!mono.equals(sora), '"Geist Mono" et "Sora" doivent produire des rendus differents');
+});
