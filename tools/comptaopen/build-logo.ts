@@ -3,7 +3,7 @@
  *
  * Particularite de cette marque : le "O" n'est pas un glyphe mais deux arcs
  * traces a la main (bracket), inseres entre "COMPTA" et "PEN".
- * Sortie : out/comptaopen/withtool/logo/, a promouvoir vers
+ * Sortie : out/comptaopen/brand/logo/, a promouvoir vers
  * brands/comptaopen/logo/ apres revue.
  * Lancer : npx tsx tools/comptaopen/build-logo.ts
  */
@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 import { loadInstanced, renderSvg } from "../../src/brandkit";
 import { root } from "../../src/root";
 
-const OUT = fileURLToPath(root("out/comptaopen/withtool/logo/"));
+const OUT = fileURLToPath(root("out/comptaopen/brand/logo/"));
 const FONT = fileURLToPath(root("tools/comptaopen/_sora.ttf"));
 mkdirSync(OUT, { recursive: true });
 

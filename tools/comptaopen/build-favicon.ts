@@ -2,7 +2,7 @@
  * Genere le favicon ComptaOpen (icones + apple-icon + favicon.ico).
  *
  * Aucune police ici : le mark est le bracket-O, deux arcs traces a la main.
- * Sortie : out/comptaopen/withtool/favicon/, a promouvoir vers
+ * Sortie : out/comptaopen/brand/favicon/, a promouvoir vers
  * brands/comptaopen/favicon/ apres revue.
  * Lancer : npx tsx tools/comptaopen/build-favicon.ts
  */
@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 import { makeIco, renderPixels, renderSvg } from "../../src/brandkit";
 import { root } from "../../src/root";
 
-const OUT = fileURLToPath(root("out/comptaopen/withtool/favicon/"));
+const OUT = fileURLToPath(root("out/comptaopen/brand/favicon/"));
 mkdirSync(OUT, { recursive: true });
 
 // Les deux arcs du bracket-O, couleur parametrable (blanc sur tuile, bleu en mark).

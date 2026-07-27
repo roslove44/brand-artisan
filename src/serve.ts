@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import { toPng } from "./render";
-import { resolve, list, load, modified, outResolve, outList, outRead, hasWithtool, WITHTOOL } from "./discover";
+import { resolve, list, load, modified, outResolve, outList, outRead, hasBrandOut, BRAND_OUT } from "./discover";
 import { resolveTitle } from "./template";
 import { capitalize, last, slug, clean, ext, pixelSize } from "./utils";
 import { listingPage, previewPage, VIEWS, type Entry, type View } from "./ui/pages";
@@ -54,7 +54,7 @@ async function imageEntry(rel: string, name: string): Promise<Entry> {
 //   /comptaopen/cover?raw  -> PNG brut (utilisable comme src)
 //   /comptaopen/cover?thumb=280 -> vignette PNG (cache mémoire)
 //   ?w=1245&h=527          -> override de la taille sur l'aperçu
-//   /comptaopen/withtool/… -> sortie de la toolchain de marque (out/<projet>/withtool/),
+//   /comptaopen/brand/…    -> sortie de la toolchain de marque (out/<projet>/brand/),
 //                             fichiers servis tels quels ; dossier masqué s'il n'existe pas
 const server = createServer(async (req, res) => {
 	try {
@@ -80,7 +80,7 @@ const server = createServer(async (req, res) => {
 			const { dirs, files } = outKind === "dir" ? await outList(relPath) : { dirs: [], files: [] };
 			// Un projet montre aussi la sortie de sa toolchain, quand elle existe.
 			const isProject = kind === "dir" && relPath !== "" && !relPath.includes("/");
-			const tool = isProject && (await hasWithtool(relPath)) ? [WITHTOOL] : [];
+			const tool = isProject && (await hasBrandOut(relPath)) ? [BRAND_OUT] : [];
 			const favorites = relPath === "" ? projects : (await list("")).projects;
 			const entries: Entry[] = [
 				...[...projects, ...tool, ...dirs].map((p): Entry => ({ kind: "dir", name: p, rel: join(p) })),

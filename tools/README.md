@@ -37,8 +37,8 @@ police, une tuile d'icône, et toutes leurs déclinaisons.
 Toutes les commandes se lancent depuis n'importe quel dossier du projet.
 
 ```bash
-npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/withtool/logo/
-npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/withtool/favicon/
+npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/brand/logo/
+npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/brand/favicon/
 ```
 
 Une marque peut avoir des scripts en plus des deux standards, propres à son
@@ -48,18 +48,19 @@ exigées par Google OAuth. Chaque `brand.md` liste les siens dans sa section
 
 ## Sortie et promotion
 
-Les scripts écrivent dans **`out/<projet>/withtool/`** (dossier `out/` ignoré par
+Les scripts écrivent dans **`out/<projet>/brand/`** (dossier `out/` ignoré par
 git : artefacts éphémères). C'est volontaire : on ne réécrit pas les assets
-commités à l'aveugle. Après revue, **promouvoir** les fichiers validés vers
-`brands/<projet>/logo/` et `brands/<projet>/favicon/`.
+commités à l'aveugle. L'arborescence y est le miroir exact de
+`brands/<projet>/`, si bien que la **promotion** des fichiers validés vers
+`brands/<projet>/logo/` et `brands/<projet>/favicon/` est une simple copie.
 
 Pour la revue, `npm run dev` expose cette sortie : le projet gagne un dossier
-`withtool` à côté de ses visuels (`http://localhost:4000/<projet>/withtool`), où
+`brand` à côté de ses visuels (`http://localhost:4000/<projet>/brand`), où
 les fichiers produits s'affichent tels quels. Plus besoin d'ouvrir l'explorateur.
 
 Pour écrire directement dans les assets (régénération en place), pointer la
 constante `OUT` d'un script vers `brands/<projet>` plutôt que
-`out/<projet>/withtool`.
+`out/<projet>/brand`.
 
 ## Tests
 

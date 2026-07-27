@@ -47,21 +47,21 @@ export async function modified(relPath: string): Promise<number> {
 }
 
 // --- Sortie de la toolchain de marque ---------------------------------------
-// out/<projet>/withtool/ contient des fichiers deja produits (SVG, PNG, .ico),
-// pas des templates : on les expose tels quels, comme un dossier "withtool" du
+// out/<projet>/brand/ contient des fichiers deja produits (SVG, PNG, .ico),
+// pas des templates : on les expose tels quels, comme un dossier "brand" du
 // projet, pour les relire avant promotion vers brands/. Dossier ephemere et
 // souvent absent : tout ici renvoie null plutot que de lever.
 const OUT = root("out/");
-export const WITHTOOL = "withtool";
+export const BRAND_OUT = "brand";
 
-// "<projet>/withtool/<reste>" -> URL dans out/. null si le chemin ne vise pas withtool.
+// "<projet>/brand/<reste>" -> URL dans out/. null si le chemin ne vise pas brand.
 function outUrl(relPath: string): URL | null {
 	const [project, folder, ...rest] = clean(relPath).split("/");
-	if (!project || folder !== WITHTOOL) return null;
-	return new URL([project, WITHTOOL, ...rest].join("/"), OUT);
+	if (!project || folder !== BRAND_OUT) return null;
+	return new URL([project, BRAND_OUT, ...rest].join("/"), OUT);
 }
 
-// "dir", "file", ou null si hors withtool / inexistant.
+// "dir", "file", ou null si hors brand / inexistant.
 export async function outResolve(relPath: string): Promise<"dir" | "file" | null> {
 	const url = outUrl(relPath);
 	if (!url) return null;
@@ -73,9 +73,9 @@ export async function outResolve(relPath: string): Promise<"dir" | "file" | null
 }
 
 // Le projet a-t-il une sortie d'outil a montrer ?
-export const hasWithtool = async (project: string) => (await outResolve(`${project}/${WITHTOOL}`)) === "dir";
+export const hasBrandOut = async (project: string) => (await outResolve(`${project}/${BRAND_OUT}`)) === "dir";
 
-// Enfants d'un dossier de withtool : sous-dossiers et fichiers, tries.
+// Enfants d'un dossier de sortie de marque : sous-dossiers et fichiers, tries.
 export async function outList(relPath: string): Promise<{ dirs: string[]; files: string[] }> {
 	const url = outUrl(relPath);
 	const entries = url ? await readdir(url, { withFileTypes: true }) : [];
@@ -85,7 +85,7 @@ export async function outList(relPath: string): Promise<{ dirs: string[]; files:
 	return { dirs: dirs.sort(), files: files.sort() };
 }
 
-// Octets bruts d'un fichier de withtool.
+// Octets bruts d'un fichier de la sortie de marque.
 export const outRead = (relPath: string) => readFile(outUrl(relPath)!);
 
 // Charge le default export de <relPath>.tsx. fresh = cache-bust (hot-reload en dev).

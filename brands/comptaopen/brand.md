@@ -134,9 +134,9 @@ toolchain `tools/comptaopen/`, qui s'appuient sur le socle partagé
 `src/brandkit.ts` (voir `tools/README.md`).
 
 ```bash
-npx tsx tools/comptaopen/build-logo.ts     # -> out/comptaopen/withtool/logo/
-npx tsx tools/comptaopen/build-favicon.ts  # -> out/comptaopen/withtool/favicon/ (icon*.svg + rasters)
-npx tsx tools/comptaopen/build-oauth.ts    # -> out/comptaopen/withtool/favicon/oauth/ (icones 120px Google OAuth)
+npx tsx tools/comptaopen/build-logo.ts     # -> out/comptaopen/brand/logo/
+npx tsx tools/comptaopen/build-favicon.ts  # -> out/comptaopen/brand/favicon/ (icon*.svg + rasters)
+npx tsx tools/comptaopen/build-oauth.ts    # -> out/comptaopen/brand/favicon/oauth/ (icones 120px Google OAuth)
 ```
 
 `build-oauth.ts` rend chaque `icon*.svg` en PNG 120 px (taille recommandée par

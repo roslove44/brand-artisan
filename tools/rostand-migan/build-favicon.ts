@@ -2,7 +2,7 @@
  * Genere le favicon Rostand Migan : monogramme RM (icones + apple-icon + .ico).
  *
  * Le mark est le monogramme RM en Geist 700, centre sur une tuile.
- * Sortie : out/rostand-migan/withtool/favicon/, a promouvoir vers
+ * Sortie : out/rostand-migan/brand/favicon/, a promouvoir vers
  * brands/rostand-migan/favicon/ apres revue.
  * Lancer : npx tsx tools/rostand-migan/build-favicon.ts
  */
@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 import { loadInstanced, makeIco, renderPixels, renderSvg } from "../../src/brandkit";
 import { root } from "../../src/root";
 
-const OUT = fileURLToPath(root("out/rostand-migan/withtool/favicon/"));
+const OUT = fileURLToPath(root("out/rostand-migan/brand/favicon/"));
 const FONT = fileURLToPath(root("tools/rostand-migan/_geist.ttf"));
 mkdirSync(OUT, { recursive: true });
 

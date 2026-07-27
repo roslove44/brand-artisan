@@ -1,6 +1,6 @@
 ---
 name: brand-assets
-description: Génère ou régénère les assets de marque d'un projet (logo, favicon et leurs déclinaisons) via la toolchain de marque, fidèlement. À utiliser quand l'utilisateur veut "régénérer le logo / le favicon", "ajouter une déclinaison d'icône ou de logo", "une nouvelle variante de marque", ou "mettre en place la toolchain de marque d'un projet". Travaille dans tools/<projet>/ en réutilisant src/brandkit.ts, sort dans out/<projet>/withtool/ puis promotion vers brands/<projet>/. Nécessite un projet avec sa brand.md en place.
+description: Génère ou régénère les assets de marque d'un projet (logo, favicon et leurs déclinaisons) via la toolchain de marque, fidèlement. À utiliser quand l'utilisateur veut "régénérer le logo / le favicon", "ajouter une déclinaison d'icône ou de logo", "une nouvelle variante de marque", ou "mettre en place la toolchain de marque d'un projet". Travaille dans tools/<projet>/ en réutilisant src/brandkit.ts, sort dans out/<projet>/brand/ puis promotion vers brands/<projet>/. Nécessite un projet avec sa brand.md en place.
 ---
 
 # brand-assets : génération des assets de marque
@@ -60,12 +60,12 @@ Dans `tools/<projet>/` (jamais ailleurs) :
   **géométrie** (paths, viewBox) et le **layout**, jamais dans `brandkit.ts`.
 - Si une plomberie générique nouvelle est utile à toute marque, l'ajouter à
   `brandkit.ts` (et **mettre à jour `tools/README.md` en miroir**).
-- La sortie va dans **`out/<projet>/withtool/`** via la constante `OUT` du
+- La sortie va dans **`out/<projet>/brand/`** via la constante `OUT` du
   script. Ne pas écrire directement dans `brands/` (voir §5).
 
 ## 4. Valider
 
-Comparer chaque fichier régénéré (dans `out/<projet>/withtool/`) à sa référence
+Comparer chaque fichier régénéré (dans `out/<projet>/brand/`) à sa référence
 (dans `brands/<projet>/`) : **dimensions**, **bbox** et **palette** doivent
 correspondre (de légers écarts d'anticrénelage de bord sont acceptables ; une
 différence de couleur, de taille ou de cadrage ne l'est pas). Lancer aussi la
@@ -73,7 +73,7 @@ validation pixel intégrée quand elle existe (le favicon imprime un contrôle 3
 
 ## 5. Promouvoir
 
-`out/<projet>/withtool/` est **éphémère** (dossier `out/` gitignoré). Après revue
+`out/<projet>/brand/` est **éphémère** (dossier `out/` gitignoré). Après revue
 visuelle et validation, **copier** les fichiers retenus vers
 `brands/<projet>/logo/` ou `/favicon/`, puis **mettre `brand.md` à jour** si la
 liste des variantes change (placement, nouvelles déclinaisons).
@@ -89,4 +89,4 @@ conformes), produits par un script qui réutilise `brandkit.ts`, et promus dans
 2. Y déposer la police source si besoin (ex. `_geist.ttf`).
 3. Importer le socle : `import { … } from "../../src/brandkit"`. Couleurs et
    géométrie tirées de `brand.md`, jamais inventées.
-4. `OUT` -> `out/<projet>/withtool/`. Vérifier, valider, promouvoir.
+4. `OUT` -> `out/<projet>/brand/`. Vérifier, valider, promouvoir.

@@ -2,7 +2,7 @@
  * Rend les icones ComptaOpen en PNG 120px pour les ecrans de consentement Google OAuth.
  *
  * Source : les icon*.svg produits par build-favicon.ts -> le lancer d'abord.
- * Sortie : out/comptaopen/withtool/favicon/oauth/ (120x120, taille recommandee
+ * Sortie : out/comptaopen/brand/favicon/oauth/ (120x120, taille recommandee
  * par Google).
  * Lancer : npx tsx tools/comptaopen/build-oauth.ts
  */
@@ -11,7 +11,7 @@ import { fileURLToPath } from "node:url";
 import { renderSvg } from "../../src/brandkit";
 import { root } from "../../src/root";
 
-const SRC = fileURLToPath(root("out/comptaopen/withtool/favicon/"));
+const SRC = fileURLToPath(root("out/comptaopen/brand/favicon/"));
 const OUT = `${SRC}oauth/`;
 
 const SIZE = 120; // taille recommandee par Google pour le logo OAuth

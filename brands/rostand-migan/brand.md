@@ -132,8 +132,8 @@ Le logo et le favicon sont générés par la toolchain
 (voir `tools/README.md`).
 
 ```bash
-npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/withtool/logo/    (wordmark + variantes + PNG)
-npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/withtool/favicon/ (icon*.svg + rasters)
+npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/brand/logo/    (wordmark + variantes + PNG)
+npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/brand/favicon/ (icon*.svg + rasters)
 ```
 
 Les deux scripts instancient Geist à `wght=700` et composent depuis les glyphes :
@@ -141,6 +141,6 @@ Les deux scripts instancient Geist à `wght=700` et composent depuis les glyphes
 `build-favicon.ts` centre le monogramme `RM` dans la tuile et imprime une
 validation pixel du favicon 32 px (coin = tuile bleue, centre = trait blanc).
 
-La sortie va dans `out/rostand-migan/withtool/` (artefacts éphémères, non
+La sortie va dans `out/rostand-migan/brand/` (artefacts éphémères, non
 commités). Après revue, **promouvoir** les fichiers validés vers `logo/` et
 `favicon/` ici.

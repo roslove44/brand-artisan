@@ -3,7 +3,7 @@
  *
  * Le wordmark est compose en Geist 700, decoupe en deux registres de couleur :
  * "rostand" en encre, ".dev" en accent bleu (la TLD mise en avant).
- * Sortie : out/rostand-migan/withtool/logo/, a promouvoir vers
+ * Sortie : out/rostand-migan/brand/logo/, a promouvoir vers
  * brands/rostand-migan/logo/ apres revue.
  * Lancer : npx tsx tools/rostand-migan/build-logo.ts
  */
@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 import { loadInstanced, renderSvg } from "../../src/brandkit";
 import { root } from "../../src/root";
 
-const OUT = fileURLToPath(root("out/rostand-migan/withtool/logo/"));
+const OUT = fileURLToPath(root("out/rostand-migan/brand/logo/"));
 const FONT = fileURLToPath(root("tools/rostand-migan/_geist.ttf"));
 mkdirSync(OUT, { recursive: true });
 

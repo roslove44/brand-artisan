@@ -67,11 +67,11 @@ http://localhost:4000/rostand-migan           → liste images + sous-projets
 http://localhost:4000/rostand-migan/linkedin-banner-fr     → page de preview
 http://localhost:4000/rostand-migan/linkedin-banner-fr?raw → PNG brut (utilisable comme src)
 http://localhost:4000/rostand-migan/linkedin-banner-fr?w=1245&h=527 → override de la taille
-http://localhost:4000/rostand-migan/withtool  → sortie de la toolchain de marque
+http://localhost:4000/rostand-migan/brand     → sortie de la toolchain de marque
 ```
 
-Un projet dont les scripts de marque ont tourné expose un dossier **`withtool`** à
-côté de ses visuels : c'est `out/<projet>/withtool/`, la sortie brute de la
+Un projet dont les scripts de marque ont tourné expose un dossier **`brand`** à
+côté de ses visuels : c'est `out/<projet>/brand/`, la sortie brute de la
 toolchain (logos, favicons, `.ico`). Elle se navigue comme le reste, mais ces
 fichiers sont servis tels quels, sans repasser par Satori. Le dossier n'apparaît
 pas tant qu'aucun script n'a tourné.
@@ -162,11 +162,11 @@ Elle produit ce qu'un template ne sait pas faire : des SVG à la géométrie exa
 `.ico`.
 
 ```bash
-npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/withtool/logo/
-npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/withtool/favicon/
+npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/brand/logo/
+npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/brand/favicon/
 ```
 
-La sortie va dans `out/<projet>/withtool/` (éphémère) ; promouvoir les fichiers
+La sortie va dans `out/<projet>/brand/` (éphémère) ; promouvoir les fichiers
 validés vers `brands/<projet>/`. Détails dans
 [`tools/README.md`](tools/README.md).
 
