@@ -28,7 +28,15 @@ const run = (cmd: string, cwd: string) => execSync(cmd, { cwd, stdio: "pipe", en
 const step = (msg: string) => console.log(`  ${msg}`);
 const pack = (dir: string) => join(WORK, run(`npm pack --pack-destination "${WORK}"`, dir).trim().split(/\r?\n/).pop()!);
 
+const version = (dir: string): string => JSON.parse(readFileSync(join(REPO, dir, "package.json"), "utf8")).version;
+
 try {
+	// Le generateur ecrit la dependance au moteur depuis SA propre version. Deux
+	// versions qui divergent, et un projet genere reclame un moteur qui n'existe
+	// pas sur le registre : panne chez l'utilisateur, invisible ici.
+	const ENGINE_VERSION = version(".");
+	assert.equal(version("create"), ENGINE_VERSION, "create/package.json doit porter la meme version que le moteur");
+
 	step("empaquetage du moteur et du generateur");
 	const engine = pack(REPO);
 	const generator = pack(join(REPO, "create"));
@@ -44,7 +52,9 @@ try {
 	// Le squelette est complet et ses placeholders sont substitues.
 	const pkg = JSON.parse(readFileSync(join(APP, "package.json"), "utf8"));
 	assert.equal(pkg.name, "mes-visuels", "le nom du projet vient du dossier");
-	assert.match(pkg.dependencies["brand-artisan"], /^\^\d+\.\d+\.\d+$/, "la version du moteur doit etre substituee");
+	// Comparaison a la version reelle, pas a une forme : un `^0.1.0-rc.0` est
+	// legitime pendant la release candidate, et couvre bien la 0.1.0 finale.
+	assert.equal(pkg.dependencies["brand-artisan"], `^${ENGINE_VERSION}`, "la dependance doit viser la version publiee du moteur");
 	assert.ok(existsSync(join(APP, ".gitignore")), "gitignore doit retrouver son point");
 	assert.ok(existsSync(join(APP, "tsconfig.json")), "_tsconfig.json doit retrouver son nom");
 	assert.ok(!existsSync(join(APP, "_tsconfig.json")), "le nom de voyage ne doit pas rester");
