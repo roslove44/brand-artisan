@@ -1,11 +1,12 @@
 import { readdir, readFile, stat } from "node:fs/promises";
 import type { Template } from "./template";
+import { root } from "./root";
 import { clean } from "./utils";
 
 // Auto-decouverte par le filesystem : un dossier = un projet/groupe, un .tsx = une image.
 // Pas de registre a maintenir : on depose un fichier, il apparait.
-// templates/ vit a la racine du depot, hors de src/ : c'est du contenu, pas du moteur.
-const TEMPLATES = new URL("../templates/", import.meta.url);
+// templates/ vit a la racine du projet, hors de src/ : c'est du contenu, pas du moteur.
+const TEMPLATES = root("templates/");
 
 async function exists(url: URL): Promise<boolean> {
 	try {
@@ -50,7 +51,7 @@ export async function modified(relPath: string): Promise<number> {
 // pas des templates : on les expose tels quels, comme un dossier "withtool" du
 // projet, pour les relire avant promotion vers brands/. Dossier ephemere et
 // souvent absent : tout ici renvoie null plutot que de lever.
-const OUT = new URL("../out/", import.meta.url);
+const OUT = root("out/");
 export const WITHTOOL = "withtool";
 
 // "<projet>/withtool/<reste>" -> URL dans out/. null si le chemin ne vise pas withtool.

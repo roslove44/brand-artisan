@@ -4,15 +4,17 @@ import { readdir, readFile, writeFile, mkdir } from "node:fs/promises";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ReactNode } from "react";
+import { root } from "./root";
 
 // Satori n'accede a aucune police systeme : on charge celles deposees dans
 // fonts/. Convention de nom : <Famille>-<graisse>.ttf, la famille en
 // PascalCase donnant le nom cite par les templates ("GeistMono-600.ttf" ->
 // famille "Geist Mono", graisse 600). Deposer un fichier suffit a l'enregistrer.
-const FONTS = new URL("../fonts/", import.meta.url);
+const FONTS = root("fonts/");
 
-// Sortie ancree sur le depot, pas sur le cwd : le build marche depuis n'importe ou.
-const OUT = new URL("../out/", import.meta.url);
+// Sortie ancree sur la racine du projet : le build marche depuis n'importe quel
+// sous-dossier, et vise le projet de l'utilisateur, pas l'interieur du moteur.
+const OUT = root("out/");
 const FONT_FILE = /^(.+)-(\d{3})\.(?:ttf|otf)$/;
 
 async function loadFonts(): Promise<Font[]> {

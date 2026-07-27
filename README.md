@@ -69,6 +69,10 @@ npm test           # tests : helpers purs + chaîne de rendu (node:test)
 npm run check      # typecheck + tests, ce que lance la CI
 ```
 
+Les commandes se lancent depuis n'importe quel sous-dossier du projet : les
+dossiers de contenu (`brands/`, `templates/`, `fonts/`, `out/`) sont résolus
+depuis la racine, celle qui porte le `package.json`.
+
 ### Mode dev (URLs, comme Next)
 
 `npm run dev` lance un serveur sur `http://localhost:4000`. L'arborescence de
@@ -195,7 +199,8 @@ validés vers `brands/<projet>/`. Détails dans
 | `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. Découvre aussi les polices de `fonts/` par leur nom de fichier. |
 | `src/discover.ts` | Auto-découverte : scanne `templates/` (dossier = projet, `.tsx` = image), résout une URL en noeud, charge un template. |
 | `src/template.ts` | Le type `Template` : ce que chaque `.tsx` exporte par défaut (`{ size, title?, render }`). |
-| `src/brand.ts` | `brand("<projet>/chemin")` : URL absolue vers `brands/`, indépendante du cwd et de la profondeur de l'appelant. |
+| `src/root.ts` | `root("templates/")` : résout un dossier de contenu depuis la **racine du projet** (le dossier qui porte le `package.json`, trouvé en remontant depuis le répertoire courant). |
+| `src/brand.ts` | `brand("<projet>/chemin")` : URL absolue vers `brands/`, indépendante de la profondeur de l'appelant. |
 | `src/utils.ts` | Helpers purs partagés (échappement HTML, capitalize, slug, manipulation de chemin). |
 | `src/serve.ts` | Serveur de dev HTTP : routing récursif sur l'arbre, pages de listing + preview (`npm run dev`). |
 | `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/<projet>/<slug-du-titre>.png` (`npm run build`). |
