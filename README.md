@@ -1,267 +1,146 @@
 # BrandArtisan
 
-Atelier dédié à la **fabrication d'images à partir de code** : couvertures
-sociales, images Open Graph, bannières, carrousels, visuels de partage. Tu écris
-une mise en page en JSX, tu obtiens un PNG. Aucun serveur, aucun navigateur,
-aucune dépendance applicative.
+[![npm](https://img.shields.io/npm/v/brand-artisan)](https://www.npmjs.com/package/brand-artisan)
+[![CI](https://github.com/roslove44/brand-artisan/actions/workflows/ci.yml/badge.svg)](https://github.com/roslove44/brand-artisan/actions/workflows/ci.yml)
+[![licence MIT](https://img.shields.io/badge/licence-MIT-blue)](https://github.com/roslove44/brand-artisan/blob/main/LICENSE)
 
-C'est aussi un atelier pensé pour être **piloté par un agent IA** (Claude Code ou
-autre) : les conventions du dépôt (charte par projet, skills, contrat de
-template) sont écrites pour qu'un agent produise des visuels justes, dans ta
-marque, sans rien inventer. Tu peux tout faire à la main ; l'IA est là comme
-accélérateur, pas comme prérequis.
+**Tu sais écrire un composant React ? Alors tu sais déjà produire tes visuels.**
+BrandArtisan transforme du JSX en PNG : images Open Graph pour ton site, posts
+et bannières LinkedIn, Facebook, X, carrousels. Pas de Figma, pas de navigateur,
+pas de serveur : tes visuels sont du code, versionnés avec le reste.
 
-## Comment ça marche
+```tsx
+import type { Template } from "brand-artisan";
 
-Une image est juste du **JSX** (le même que tu écris dans un composant React),
-transformé en PNG par deux librairies :
+function render() {
+  return (
+    <div style={{ display: "flex", width: "100%", height: "100%", background: "#0e1a2b" }}>
+      {/* ta mise en page, en flexbox */}
+    </div>
+  );
+}
 
+export default { size: { width: 1200, height: 630 }, title: "OG du site", render } satisfies Template;
 ```
-   ton JSX  ──►  Satori  ──►  SVG  ──►  resvg  ──►  PNG
-                (layout)              (rasterisation)
-```
 
-C'est exactement le moteur interne de `next/og` / `ImageResponse`, mais sorti de
-son emballage Next. Tu écris une mise en page en flexbox, tu obtiens un fichier.
+Sous le capot, c'est le moteur de `next/og` (Satori + resvg) sorti de son
+emballage Next : JSX → SVG → PNG. `react` ne fournit que le runtime JSX, il n'y
+a ni `react-dom` ni rendu côté client.
 
-`react` n'est présent que pour fournir le runtime JSX (`react/jsx-runtime`) ;
-il n'y a ni `react-dom` ni rendu côté client.
+## Démarrer
 
-## Prérequis
-
-**Node.js ≥ 22** et **npm**. C'est tout, et c'est volontaire : un seul
-environnement pour composer des visuels comme pour générer les assets de marque.
-Versions testées en CI : 22 et 24, sur Linux et Windows.
-
-## Installation
+Prérequis : **Node.js ≥ 22**. Rien d'autre.
 
 ```bash
-npm install
+npx create-brand-artisan mes-visuels
+cd mes-visuels
+npm run dev      # aperçu navigable sur http://localhost:4000
+npm run build    # exporte les PNG dans out/
 ```
 
-Si une version refuse de s'installer, repinner les libs de rendu au dernier
-état : `npm install satori @resvg/resvg-js`.
+Le projet créé ne contient **que ta marque** : chartes (`brands/`), visuels
+(`templates/`), scripts d'assets (`tools/`), polices (`fonts/`). Le moteur vit dans `node_modules` et se met
+à jour par `npm update`. Un exemple complet est livré (Calame, une marque
+fictive) : la première commande produit une image, avant que tu aies écrit quoi
+que ce soit.
 
-## Usage
+## Écrire un visuel
 
-```bash
-npm run dev        # serveur de rendu HTTP (arborescence navigable, comme Next)
-npm run build      # export fichier : rend toute l'arborescence dans out/
-npm run typecheck  # vérification TypeScript (tsc)
-npm test           # tests : helpers purs + chaîne de rendu (node:test)
-npm run check      # typecheck + tests, ce que lance la CI
-npm run test:consumer   # installe le paquet dans un projet vierge et y rend un visuel
-npm run test:generator  # génère un projet avec create-brand-artisan et le rend
+Un fichier `.tsx` sous `templates/<projet>/` = une image. Il exporte un
+`Template` par défaut (voir ci-dessus) ; la découverte est automatique, aucun
+registre à éditer. En dev, chaque visuel a son URL, comme des routes Next :
 
-npx brand-artisan colors <image>  # palette d'une image : relever plutôt que deviner
+```text
+http://localhost:4000/                   → liste les projets
+http://localhost:4000/calame/og          → page d'aperçu (re-rendue à chaque refresh)
+http://localhost:4000/calame/og?raw      → le PNG brut
 ```
 
-`brand-artisan` est aussi la CLI du paquet (`dev`, `build`, `colors`) : c'est par
-elle qu'un projet qui installe BrandArtisan lance son rendu.
+`npm run build` exporte le tout dans `out/<projet>/`, prêt à uploader.
 
-Les commandes se lancent depuis n'importe quel sous-dossier du projet : les
-dossiers de contenu (`brands/`, `templates/`, `fonts/`, `out/`) sont résolus
-depuis la racine, celle qui porte le `package.json`.
+Trois règles Satori à connaître :
 
-### Mode dev (URLs, comme Next)
+- **Tout élément à plusieurs enfants doit être en `display: flex`** : c'est la
+  cause n°1 d'erreur de rendu.
+- **Les polices sont explicites** : dépose `<Famille>-<graisse>.ttf` dans
+  `fonts/` (ex. `Sora-700.ttf`), c'est tout ce qu'il faut pour l'enregistrer.
+- Une image s'inclut en data URI (`<img src="data:image/svg+xml;base64,…">`),
+  pas par chemin de fichier.
 
-`npm run dev` lance un serveur sur `http://localhost:4000`. L'arborescence de
-`templates/` est navigable, comme des routes Next imbriquées :
+## Avec un agent IA
 
+BrandArtisan est pensé pour être piloté par Claude Code : le générateur pose des
+**skills** dans `.claude/skills/`, qui encodent les dimensions officielles des
+plateformes, les zones sûres et la discipline « rien hors charte ».
+
+```text
+/new-project ma-marque       pose la charte (brand.md) par interview
+/import-reference            dérive la charte de tes visuels existants, mesurés au pixel
+/og-image ma-marque          image Open Graph 1200×630
+/linkedin-post, /facebook-post, /x-post…    visuels aux specs de chaque plateforme
+/campagne ma-marque          kit multi-plateformes à partir d'un seul brief
+/brand-assets ma-marque      génère logo, favicon et déclinaisons
 ```
-http://localhost:4000/                        → liste les projets
-http://localhost:4000/rostand-migan           → liste images + sous-projets
-http://localhost:4000/rostand-migan/linkedin-banner-fr     → page de preview
-http://localhost:4000/rostand-migan/linkedin-banner-fr?raw → PNG brut (utilisable comme src)
-http://localhost:4000/rostand-migan/linkedin-banner-fr?w=1245&h=527 → override de la taille
-http://localhost:4000/rostand-migan/brand     → sortie de la toolchain de marque
-```
 
-Un projet dont les scripts de marque ont tourné expose un dossier **`brand`** à
-côté de ses visuels : c'est `out/<projet>/brand/`, la sortie brute de la
-toolchain (logos, favicons, `.ico`). Elle se navigue comme le reste, mais ces
-fichiers sont servis tels quels, sans repasser par Satori. Le dossier n'apparaît
-pas tant qu'aucun script n'a tourné.
-
-Le `<title>` de la page vient du `title` du template (libellé humain), ou à
-défaut du nom de fichier capitalisé. Ce même libellé sert d'`alt` à l'`<img>`, et
-sa version normalisée (slug) de nom de fichier quand tu télécharges le PNG (`?raw`),
-pour que « enregistrer sous » propose un nom propre.
-
-Modifie un template, sauvegarde, rafraîchis le navigateur : l'image est re-rendue
-(le serveur réimporte le template à chaque requête).
-
-### Mode build (export)
-
-`npm run build` parcourt l'arborescence de `templates/` et écrit les PNG finaux
-(à la taille exacte du template) dans `out/`, sous le dossier du projet et nommés
-d'après le titre normalisé (même règle que le téléchargement du serveur) :
-`out/rostand-migan/banner-linkedin-rostand-migan-fr.png`. Prêts à uploader.
+L'agent lit ta charte, pose les questions manquantes, et produit des `.tsx`
+vérifiables (`npm run typecheck`, `npm run build`). Tout reste faisable à la
+main : l'IA est un accélérateur, pas un prérequis.
 
 ## Un projet = une charte
 
-Chaque marque (un produit, un profil perso, un client) est un **projet**, avec
-deux emplacements jumeaux :
+Chaque marque est un projet : sa référence dans `brands/<projet>/` (`brand.md` :
+palette, logo, typographie ; `project.md` : ton, public, claims), ses visuels
+dans `templates/<projet>/`. **`brand.md` est bloquant** : pas de visuel sans
+charte, c'est ce qui empêche (humain comme IA) d'inventer des couleurs ou de
+recomposer un logo au jugé.
 
-- `brands/<projet>/` : la **référence**. `brand.md` (identité visuelle :
-  palette, logotype, typographie, do/don't) et `project.md` (substance et voix :
-  pitch, public, ton, claims autorisés), plus les fichiers logo/favicon.
-- `templates/<projet>/` : les **visuels** (`.tsx`), qui appliquent la charte.
+Une toolchain à part (`tools/<projet>/`) génère les assets que le rendu ne sait
+pas produire : logotype en SVG tracé depuis les glyphes de la police, favicons
+multi-tailles, `.ico`. Détails :
+[`tools/README.md`](https://github.com/roslove44/brand-artisan/blob/main/tools/README.md).
 
-`brand.md` est **bloquant** : pas de visuel sans charte de référence. C'est ce
-qui empêche (humain comme IA) d'inventer des couleurs ou de recomposer un logo
-au jugé. Les règles complètes vivent dans [`CLAUDE.md`](CLAUDE.md).
+## La CLI
 
-## Travailler avec un agent IA
-
-Le dépôt embarque des **skills** Claude Code (`.claude/skills/`) qui encodent la
-recette de chaque livrable : dimensions officielles des plateformes, zones
-sûres, contrat de template, discipline « rien hors charte ». Les principaux :
-
-| Skill | Livrable |
-|---|---|
-| `/new-project` | Initialise un projet : interview, `brand.md`, `project.md` |
-| `/import-reference` | Part de tes exemples : dérive une `brand.md` de tes visuels existants, ou reproduit la composition d'une image dans ta charte |
-| `/new-template` | Scaffolde un visuel libre dans un projet existant |
-| `/og-image` | Image Open Graph 1200×630 |
-| `/facebook-page`, `/facebook-post`, `/facebook-carousel` | Visuels Facebook aux specs Meta |
-| `/linkedin-page`, `/linkedin-post`, `/linkedin-carousel` | Visuels LinkedIn aux specs officielles |
-| `/x-page`, `/x-post`, `/x-carousel` | Visuels X / Twitter |
-| `/campagne` | Kit multi-plateformes cohérent à partir d'un seul brief |
-| `/brand-assets` | Génère logo/favicon et déclinaisons (toolchain de marque) |
-
-Le flux type : `/new-project ma-marque` (pose la charte), puis
-`/og-image ma-marque` ou `/campagne ma-marque`. L'agent lit `brand.md` et
-`project.md`, pose les questions manquantes, et produit des `.tsx` vérifiables
-(`npm run typecheck`, `npm run build`).
-
-Si ta marque existe déjà en dehors du code (logo, site, anciens visuels),
-commence plutôt par `/import-reference` : l'agent mesure tes exemples (palette
-au pixel, composition à l'œil) et en amorce la charte, au lieu de te
-faire tout décrire de mémoire.
-
-## Projet d'exemple
-
-**`rostand-migan`** est la marque de référence du dépôt : une marque
-personnelle, complète de bout en bout. Elle sert d'exemple à imiter, pas de
-gabarit à copier.
-
-| Où | Quoi |
-|---|---|
-| [`brands/rostand-migan/`](brands/rostand-migan/) | La charte : `brand.md`, `project.md`, logo et favicon |
-| [`templates/rostand-migan/`](templates/rostand-migan/) | Les visuels : bannières LinkedIn FR et EN |
-| [`tools/rostand-migan/`](tools/rostand-migan/) | Les scripts qui produisent son logotype et son monogramme |
-
-C'est le parcours complet d'une marque dans l'outil : une charte écrite, des
-assets générés, des visuels composés. Un second projet, `comptaopen` (marque
-produit), montre le même schéma à plus grande échelle : carrousels, OG, posts.
-
-Pour démarrer la tienne : `/new-project <ta-marque>`, ou imite cette structure à
-la main. La palette et les règles de chaque marque vivent dans sa `brand.md`,
-jamais ailleurs.
-
-## Toolchain de marque
-
-À côté du moteur qui **compose** des visuels, une toolchain **génère les assets
-de marque** d'un projet : logo, favicon et leurs déclinaisons, dans `tools/`.
-Elle produit ce qu'un template ne sait pas faire : des SVG à la géométrie exacte
-(logotype tracé depuis les glyphes de la police), des icônes multi-tailles, des
-`.ico`.
-
-```bash
-npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/brand/logo/
-npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/brand/favicon/
+```text
+brand-artisan dev                       serveur de rendu sur http://localhost:4000
+brand-artisan build                     exporte templates/ dans out/
+brand-artisan colors <image> [nombre]   palette d'une image, mesurée plutôt que devinée
+brand-artisan skills sync               (re)pose les skills du moteur dans .claude/skills/
 ```
 
-La sortie va dans `out/<projet>/brand/` (éphémère) ; promouvoir les fichiers
-validés vers `brands/<projet>/`. Détails dans
-[`tools/README.md`](tools/README.md).
+Les commandes marchent depuis n'importe quel sous-dossier du projet. Après un
+`npm update brand-artisan`, relance `npx brand-artisan skills sync` pour que les
+skills décrivent la version installée.
 
-## Structure
+## L'API
 
-| Chemin | Rôle |
-|---|---|
-| `src/index.ts` | Surface publique du paquet : `Template`, `brand()`, `root()`, `toPng()`, `renderToFile()`. C'est ce que résout `import { … } from "brand-artisan"`, ici comme dans un projet qui installe le paquet. |
-| `src/render.ts` | Cœur du rendu. `toPng(node, size)` fait JSX -> SVG -> PNG (buffer) ; `renderToFile(...)` écrit dans `out/`. Rend à la taille exacte (`scale: 1`) par défaut ; passer `scale: 2` pour du retina. Découvre aussi les polices de `fonts/` par leur nom de fichier. |
-| `src/discover.ts` | Auto-découverte : scanne `templates/` (dossier = projet, `.tsx` = image), résout une URL en noeud, charge un template. |
-| `src/template.ts` | Le type `Template` : ce que chaque `.tsx` exporte par défaut (`{ size, title?, render }`). |
-| `src/root.ts` | `root("templates/")` : résout un dossier de contenu depuis la **racine du projet** (le dossier qui porte le `package.json`, trouvé en remontant depuis le répertoire courant). |
-| `src/brand.ts` | `brand("<projet>/chemin")` : URL absolue vers `brands/`, indépendante de la profondeur de l'appelant. |
-| `src/utils.ts` | Helpers purs partagés (échappement HTML, capitalize, slug, manipulation de chemin). |
-| `src/serve.ts` | Serveur de dev HTTP : routing récursif sur l'arbre, pages de listing + preview (`npm run dev`). |
-| `src/build.ts` | Export fichier : parcourt l'arbre, écrit chaque PNG dans `out/<projet>/<slug-du-titre>.png` (`npm run build`). |
-| `templates/` | Arborescence des visuels. Un dossier = un projet/groupe, un `.tsx` = une image. Chaque `.tsx` exporte `{ size, title?, render }` par défaut et charge ses propres assets. |
-| `src/brandkit.ts` | Socle de la toolchain de marque : contours de glyphes (fontkit), SVG -> PNG (resvg), écriture de `.ico`. |
-| `src/colors.ts` | Mesure les couleurs d'une image (PNG, JPEG, SVG) : sert à relever une palette au lieu de la deviner. CLI : `npx brand-artisan colors <image>`. |
-| `src/cli.ts` | Les commandes `dev`, `build` et `colors` de la CLI. |
-| `bin/brand-artisan.js` | Point d'entrée de la CLI, seul fichier en JavaScript pur : il enregistre tsx, puis passe la main à `src/cli.ts`. |
-| `tools/<projet>/` | Scripts d'une marque : géométrie et couleurs en dur, police source. |
-| `brands/<projet>/` | Référence d'une marque : `brand.md`, `project.md`, logo, favicon. |
-| `fonts/` | Polices fournies en dur (Satori n'accède à aucune police système), avec leurs licences : [`NOTICE.md`](fonts/NOTICE.md). |
-| `test/` | Tests : helpers purs et chaîne de rendu (`npm test`), plus `consumer-check.ts` qui installe le paquet dans un projet vierge (`npm run test:consumer`). |
-| `create/` | Le paquet `create-brand-artisan` : `index.js` (le générateur) et `template/`, le squelette qu'il pose, marque de démonstration **Calame** comprise. |
-| `out/` | PNG générés. Ignoré par git (rien à versionner ici). |
+```ts
+import { brand, root, toPng, renderToFile, type Template } from "brand-artisan";
+```
 
-## Ajouter un nouveau visuel
+| Export | Rôle |
+| --- | --- |
+| `type Template` | Le contrat d'un visuel : `{ size: { width, height, scale? }, title?, render }`. `scale: 2` pour du retina. |
+| `brand(path)` | URL absolue vers `brands/<path>`, prête pour `readFile`. Ex. `brand("calame/logo/logo.svg")`. |
+| `root(path)` | URL absolue depuis la racine du projet (le dossier du `package.json` le plus proche). |
+| `toPng(node, size)` | JSX → PNG (`Buffer`). |
+| `renderToFile(node, size & { out })` | Idem, écrit `out/<out>.png` et retourne le chemin. |
 
-1. Créer le fichier sous le projet voulu, p.ex. `templates/rostand-migan/og.tsx`
-   (un nouveau dossier sous `templates/` = un nouveau projet, et il peut contenir
-   des sous-dossiers).
-2. Exporter le template par défaut, qui charge lui-même ses assets :
-   ```tsx
-   import type { Template } from "brand-artisan";
+Deux sous-chemins pour l'outillage de marque : `brand-artisan/brandkit`
+(contours de glyphes, SVG → PNG, `.ico`) et `brand-artisan/colors` (mesure de
+palette).
 
-   const SIZE = { width: 1200, height: 630 };
+## Contribuer
 
-   function render() {
-     return ( /* ton JSX */ );
-   }
-
-   export default { size: SIZE, title: "Nom lisible du visuel", render } satisfies Template;
-   ```
-3. C'est tout : `http://localhost:4000/rostand-migan/og` en dev, et `npm run build`
-   le sort dans `out/rostand-migan/<slug-du-titre>.png`. Aucun registre à éditer, la
-   découverte est automatique.
-
-Avec Claude Code, `/new-template <projet> <nom>` fait la même chose en
-s'assurant de la conformité à la charte.
-
-## Formats de référence
-
-| Usage | Dimensions | Ratio |
-|---|---|---|
-| Couverture panoramique | 1500 x 500 | 3:1 |
-| Open Graph / partage de lien | 1200 x 630 | 1.91:1 |
-| Header X (Twitter) | 1500 x 500 | 3:1 |
-| Bannière LinkedIn (profil) | 1584 x 396 | 4:1 |
-| Couverture Facebook | 851 x 315 | 2.7:1 |
-
-Les plateformes recadrent différemment : garder le contenu important dans une
-**zone centrale safe**, jamais collé aux bords. Les specs détaillées par
-plateforme (zones mortes, poids, statut officiel ou convention) vivent dans les
-skills correspondants (`.claude/skills/`).
-
-## À savoir sur Satori
-
-- **Polices obligatoires et explicites** : aucune font système, d'où `fonts/`.
-- **Tout élément avec plusieurs enfants doit être en `display: flex`** (Satori ne
-  supporte pas le flux de blocs normal). C'est la cause n°1 d'erreur de rendu.
-- Une image s'inclut via `<img src="data:image/svg+xml;base64,...">` (chemin
-  éprouvé), pas via un chemin de fichier.
-- Satori ne mesure pas finement le texte : pour un titre à longueur variable, on
-  choisit la taille de police par paliers plutôt que de compter sur l'auto-fit.
+Setup, commandes du dépôt, filet de tests et conventions :
+[`CONTRIBUTING.md`](https://github.com/roslove44/brand-artisan/blob/main/CONTRIBUTING.md).
 
 ## Licence
 
-Le code (moteur, outils, skills) est sous [licence MIT](LICENSE).
-
-Deux exceptions, qui ne sont pas couvertes par le MIT :
-
-- **Les polices** de `fonts/` sont sous SIL Open Font License 1.1, avec
-  leur texte de licence à côté des fichiers :
-  [`fonts/NOTICE.md`](fonts/NOTICE.md). Y ajouter une police impose
-  d'y déposer aussi sa licence, et de vérifier qu'elle autorise la
-  redistribution.
-- **Les marques d'exemple** (logos, logotypes, chartes de `brands/<projet>/`)
-  relèvent du droit des marques : elles illustrent la méthode, elles ne sont pas
-  réutilisables.
+[MIT](https://github.com/roslove44/brand-artisan/blob/main/LICENSE), avec deux
+exceptions : les **polices** de `fonts/` sont sous SIL Open Font License 1.1
+([`fonts/NOTICE.md`](https://github.com/roslove44/brand-artisan/blob/main/fonts/NOTICE.md)),
+et les **marques d'exemple du dépôt** relèvent du droit des marques : elles
+illustrent la méthode, elles ne sont pas réutilisables. Calame, la marque
+fictive du squelette généré, est l'exception voulue : elle est là pour servir
+de point de départ.
