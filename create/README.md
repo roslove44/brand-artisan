@@ -3,44 +3,45 @@
 [![npm](https://img.shields.io/npm/v/create-brand-artisan)](https://www.npmjs.com/package/create-brand-artisan)
 [![CI](https://github.com/roslove44/brand-artisan/actions/workflows/ci.yml/badge.svg)](https://github.com/roslove44/brand-artisan/actions/workflows/ci.yml)
 
-Crée un projet de visuels [BrandArtisan](https://github.com/roslove44/brand-artisan)
-prêt à rendre : tu composes tes images en JSX (OG, posts et bannières LinkedIn,
-Facebook, X), le moteur en fait des PNG. Sans Figma, sans navigateur.
+Creates a [BrandArtisan](https://github.com/roslove44/brand-artisan) visuals
+project, ready to render: you compose your images in JSX (OG images, LinkedIn,
+Facebook and X posts and banners), the engine turns them into PNGs. No Figma,
+no browser.
 
 ```bash
-npx create-brand-artisan mes-visuels
-cd mes-visuels
-npm run build   # rend l'exemple livré en PNG dans out/
-npm run dev     # aperçu navigable sur http://localhost:4000
+npx create-brand-artisan my-visuals
+cd my-visuals
+npm run build   # renders the bundled example to out/
+npm run dev     # browsable preview at http://localhost:4000
 ```
 
-Le squelette n'est pas vide : il embarque **Calame**, une marque de démonstration
-fictive complète (charte, voix, logo, favicon, toolchain, un visuel). La première
-commande produit donc une image, avant que tu aies écrit quoi que ce soit.
-Calame se remplace par ta marque, puis se supprime.
+The skeleton is not empty: it ships **Calame**, a complete fictional demo brand
+(guidelines, voice, logo, favicon, toolchain, one visual). The first command
+therefore produces an image before you have written anything. Replace Calame
+with your brand, then delete it.
 
-## Ce que la commande fait
+## What the command does
 
-1. Copie le squelette dans le dossier cible, qui doit être vide : chartes
-   (`brands/`), visuels (`templates/`), scripts d'assets (`tools/`), polices
+1. Copies the skeleton into the target folder, which must be empty: guidelines
+   (`brands/`), visuals (`templates/`), asset scripts (`tools/`), fonts
    (`fonts/`).
-2. Lance `npm install` : le moteur
-   [`brand-artisan`](https://www.npmjs.com/package/brand-artisan) arrive dans
-   `node_modules`, comme Next chez un utilisateur de Next. Il se met à jour par
-   `npm update`, ton projet ne contient que ta marque.
-3. Pose les skills Claude Code dans `.claude/skills/` (`brand-artisan skills
-   sync`) : `/new-project`, `/og-image`, `/linkedin-post`, `/campagne`… pour
-   produire des visuels alignés sur ta charte avec un agent IA.
+2. Runs `npm install`: the
+   [`brand-artisan`](https://www.npmjs.com/package/brand-artisan) engine lands
+   in `node_modules`, like Next for a Next user. It updates with `npm update`;
+   your project contains only your brand.
+3. Installs the Claude Code skills into `.claude/skills/` (`brand-artisan
+   skills sync`): `/new-project`, `/og-image`, `/linkedin-post`, `/campagne`…
+   to produce visuals aligned with your guidelines using an AI agent.
 
-Usage : `npx create-brand-artisan [dossier] [--no-install]`. Sans dossier, le
-projet est posé dans le dossier courant. `--no-install` copie les fichiers sans
-lancer `npm install`.
+Usage: `npx create-brand-artisan [folder] [--no-install]`. Without a folder,
+the project is created in the current directory. `--no-install` copies the
+files without running `npm install`.
 
-Toute la documentation (CLI, contrat de template, API, toolchain de marque,
-skills) vit dans le
-[README de brand-artisan](https://github.com/roslove44/brand-artisan#readme).
+The full documentation (CLI, template contract, API, brand toolchain, skills)
+lives in the
+[brand-artisan README](https://github.com/roslove44/brand-artisan#readme).
 
-## Licence
+## License
 
-MIT. Les polices du squelette (`fonts/`) sont sous SIL Open Font License 1.1,
-voir `fonts/NOTICE.md` dans le projet généré.
+MIT. The skeleton's fonts (`fonts/`) are under the SIL Open Font License 1.1;
+see `fonts/NOTICE.md` in the generated project.
