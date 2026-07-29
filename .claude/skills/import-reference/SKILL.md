@@ -1,6 +1,6 @@
 ---
 name: import-reference
-description: Part des exemples visuels fournis par l'utilisateur (logo, screenshots de son site, visuels existants, image qui lui plaît, moodboard) pour en dériver une charte brand.md ou reproduire une composition en template .tsx dans la charte du projet. À utiliser quand l'utilisateur dit "voici mes visuels / mon logo / mon site", "déduis ma charte de ça", "fais pareil que cette image", "reproduis ce visuel", "je te donne un exemple", "inspire-toi de ça". Mesure les couleurs à la machine au lieu de les deviner ; ne copie jamais les couleurs ou la typo d'un exemple tiers dans un template : la composition vient de l'exemple, l'habillage vient de la charte.
+description: Part des exemples visuels fournis par l'utilisateur (logo, screenshots de son site, visuels existants, image qui lui plaît, moodboard) pour en dériver une charte brand.md ou reproduire une composition en template .tsx dans la charte du projet. À utiliser quand l'utilisateur dit "voici mes visuels / mon logo / mon site", "déduis ma charte de ça", "fais pareil que cette image", "reproduis ce visuel", "je te donne un exemple", "inspire-toi de ça". Mesure les couleurs à la machine au lieu de les deviner ; ne copie jamais les couleurs ou la typo d'un exemple tiers dans un template, car la composition vient de l'exemple et l'habillage vient de la charte.
 ---
 
 # import-reference : partir des exemples de l'utilisateur
