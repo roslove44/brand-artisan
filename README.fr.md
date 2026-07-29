@@ -76,10 +76,11 @@ plateformes, les zones sûres et la discipline « rien hors charte ». Elles
 s'installent dans l'agent que tu utilises :
 
 ```bash
-npx skills add roslove44/brand-artisan
+npx skills add roslove44/brand-artisan -s "*"
 ```
 
-Le [CLI `skills`](https://github.com/vercel-labs/skills) sait où Claude Code,
+`-s "*"` prend tout le jeu ; sans lui, une liste te laisse choisir. Le
+[CLI `skills`](https://github.com/vercel-labs/skills) sait où Claude Code,
 Cursor, Copilot et une vingtaine d'autres agents rangent les leurs, et note la
 source dans `skills-lock.json` pour qu'un collègue les installe dans le sien.
 Sous Claude Code, on peut aussi ajouter ce dépôt comme marketplace de plugins :

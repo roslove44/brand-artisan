@@ -76,12 +76,13 @@ safe zones, and the "nothing outside the guidelines" discipline. They install
 into whichever agent you use:
 
 ```bash
-npx skills add roslove44/brand-artisan
+npx skills add roslove44/brand-artisan -s "*"
 ```
 
-The [`skills` CLI](https://github.com/vercel-labs/skills) knows where Claude
-Code, Cursor, Copilot and twenty-odd other agents keep theirs, and records the
-source in `skills-lock.json` so a teammate can install them for their own agent.
+`-s "*"` takes the whole set; drop it to pick from a list. The
+[`skills` CLI](https://github.com/vercel-labs/skills) knows where Claude Code,
+Cursor, Copilot and twenty-odd other agents keep theirs, and records the source
+in `skills-lock.json` so a teammate can install them for their own agent.
 Claude Code users can instead add this repository as a plugin marketplace:
 `/plugin marketplace add roslove44/brand-artisan`.
 

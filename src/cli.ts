@@ -13,7 +13,7 @@ const USAGE = `brand-artisan <commande>
   build                     rend toute l'arborescence de templates/ dans out/
   colors <image> [nombre]   palette d'une image (.png, .jpg, .svg), triee par effectif
 
-Les skills s'installent a part, selon l'agent : npx skills add roslove44/brand-artisan
+Les skills s'installent a part, selon l'agent : npx skills add roslove44/brand-artisan -s "*"
 `;
 
 const [command, ...rest] = process.argv.slice(2);

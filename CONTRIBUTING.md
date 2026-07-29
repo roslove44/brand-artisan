@@ -36,10 +36,10 @@ Bumper les deux `package.json` ensemble ; `test:generator` refuse de démarrer
 s'ils divergent.
 
 Les skills (`skills/`) ne voyagent dans aucun des deux paquets : chaque agent IA
-range les siennes ailleurs, et `npx skills add roslove44/brand-artisan` connaît
-leurs dossiers mieux que nous. Pour travailler dessus, les charger depuis ta
-copie de travail plutôt que depuis `main` : sous Claude Code,
-`/plugin marketplace add ./` puis `/plugin install brand-artisan@brand-artisan`.
+range les siennes ailleurs, et `npx skills` connaît leurs dossiers mieux que
+nous. Pour travailler dessus, les charger depuis ta copie de travail plutôt que
+depuis `main` : sous Claude Code, `/plugin marketplace add ./` puis
+`/plugin install brand-artisan@brand-artisan`.
 
 ## Conventions
 

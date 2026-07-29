@@ -45,7 +45,7 @@ Si tu les as passées à la création du projet, elles s'installent quand tu veu
 dans l'agent que tu utilises :
 
 ```bash
-npx skills add roslove44/brand-artisan
+npx skills add roslove44/brand-artisan -s "*"
 ```
 
 Et `npx skills update` les met à jour ensuite.
