@@ -29,9 +29,10 @@ with your brand, then delete it.
    [`brand-artisan`](https://www.npmjs.com/package/brand-artisan) engine lands
    in `node_modules`, like Next for a Next user. It updates with `npm update`;
    your project contains only your brand.
-3. Installs the Claude Code skills into `.claude/skills/` (`brand-artisan
-   skills sync`): `/new-project`, `/og-image`, `/linkedin-post`, `/campagne`…
-   to produce visuals aligned with your guidelines using an AI agent.
+3. Offers to install the skills into your AI agent, whichever it is, with
+   [`npx skills add roslove44/brand-artisan`](https://github.com/vercel-labs/skills):
+   `/new-project`, `/og-image`, `/linkedin-post`, `/campagne`… to produce visuals
+   aligned with your guidelines. Declining changes nothing about rendering.
 
 Usage: `npx create-brand-artisan [folder] [--no-install]`. Without a folder,
 the project is created in the current directory. `--no-install` copies the

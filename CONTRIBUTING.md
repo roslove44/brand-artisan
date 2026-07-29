@@ -28,19 +28,26 @@ un visuel cassé échoue à l'exécution, pas au typecheck.
 
 Le dépôt publie deux paquets npm, toujours à la même version :
 
-- **`brand-artisan`** (racine) : le moteur, sa CLI et les skills.
+- **`brand-artisan`** (racine) : le moteur et sa CLI.
 - **`create-brand-artisan`** (`create/`) : le générateur et son squelette,
   marque de démonstration Calame comprise.
 
 Bumper les deux `package.json` ensemble ; `test:generator` refuse de démarrer
 s'ils divergent.
 
+Les skills (`skills/`) ne voyagent dans aucun des deux paquets : chaque agent IA
+range les siennes ailleurs, et `npx skills add roslove44/brand-artisan` connaît
+leurs dossiers mieux que nous. Pour travailler dessus, les charger depuis ta
+copie de travail plutôt que depuis `main` : sous Claude Code,
+`/plugin marketplace add ./` puis `/plugin install brand-artisan@brand-artisan`.
+
 ## Conventions
 
 - Les règles de travail du dépôt (charte par projet, contrat de template,
   exigence graphique) vivent dans [`CLAUDE.md`](CLAUDE.md). Faire évoluer le
-  moteur implique de mettre à jour les skills (`.claude/skills/`) en miroir,
-  dans le même changement.
+  moteur implique de mettre à jour les skills (`skills/`) en miroir,
+  dans le même changement. `npm test` les valide (`test/skills.test.ts`) : c'est
+  leur seul filet, puisqu'elles se publient hors des paquets.
 - Commits en anglais, format [Conventional Commits](https://www.conventionalcommits.org/) :
   `feat(scope): …`, `fix(scope): …`.
 - La marque de référence du dépôt est `rostand-migan` (`brands/`, `templates/`,

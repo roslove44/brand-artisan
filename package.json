@@ -21,8 +21,7 @@
   },
   "files": [
     "src",
-    "bin",
-    ".claude/skills"
+    "bin"
   ],
   "scripts": {
     "dev": "tsx watch src/serve.ts",

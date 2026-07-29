@@ -1,9 +1,12 @@
 /**
  * Deroule le parcours reel d'un utilisateur : empaqueter les deux paquets,
- * generer un projet avec create-brand-artisan, y installer le moteur, poser les
- * skills, et rendre. Ce que ce controle attrape et qu'aucun autre ne voit : un
- * fichier oublie dans le `files` du generateur, un placeholder non substitue, un
- * .gitignore reste sans son point, une skill absente du paquet.
+ * generer un projet avec create-brand-artisan, y installer le moteur, et rendre.
+ * Ce que ce controle attrape et qu'aucun autre ne voit : un fichier oublie dans
+ * le `files` du generateur, un placeholder non substitue, un .gitignore reste
+ * sans son point.
+ *
+ * Les skills ne sont plus de son ressort : elles s'installent par `npx skills`,
+ * selon l'agent de l'utilisateur. C'est test/skills.test.ts qui les valide.
  *
  * Le generateur est lance depuis le **tarball**, pas depuis create/ : c'est le
  * contenu publie qui est teste, pas celui du depot.
@@ -13,7 +16,7 @@
  */
 import assert from "node:assert/strict";
 import { execSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -66,12 +69,6 @@ try {
 	run(`npm i "${engine}" --no-audit --no-fund`, APP);
 	run("npm i --no-audit --no-fund", APP);
 
-	step("brand-artisan skills sync");
-	const synced = run("npx brand-artisan skills sync", APP);
-	const skills = readdirSync(join(APP, ".claude", "skills"));
-	assert.ok(skills.length >= 15, `au moins 15 skills attendues, ${skills.length} posees : ${synced.trim()}`);
-	assert.ok(skills.includes("new-project") && skills.includes("og-image"), "les skills cles doivent etre la");
-
 	step("npm run typecheck");
 	run("npm run typecheck", APP);
 
@@ -89,7 +86,7 @@ try {
 	run("npx tsx tools/calame/build-favicon.ts", APP);
 	assert.ok(existsSync(join(APP, "out", "calame", "brand", "favicon", "favicon.ico")), "la toolchain doit produire le .ico");
 
-	console.log(`\nOK : projet genere, ${skills.length} skills posees, ${Math.round(bytes.length / 1024)} Ko de visuel rendus.`);
+	console.log(`\nOK : projet genere, ${Math.round(bytes.length / 1024)} Ko de visuel rendus.`);
 } finally {
 	rmSync(WORK, { recursive: true, force: true });
 }

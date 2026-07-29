@@ -6,3 +6,5 @@ out/
 # AI agent
 .claude/settings.local.json
 .mcp.json
+# Sortie d'installation : la source des skills est skills/, jamais une copie ici
+.claude/skills/

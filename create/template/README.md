@@ -32,7 +32,7 @@ Quand tu n'en as plus besoin, supprime `brands/calame/`, `templates/calame/` et
 
 ## Ta marque
 
-Avec Claude Code, les skills posées dans `.claude/skills/` font le travail :
+Avec un agent IA, les skills font le travail :
 
 ```
 /new-project ma-marque      # pose brands/ma-marque/brand.md (bloquant) et project.md
@@ -41,9 +41,11 @@ Avec Claude Code, les skills posées dans `.claude/skills/` font le travail :
 /brand-assets ma-marque     # génère logo et favicon par la toolchain
 ```
 
-Après une mise à jour du moteur (`npm update brand-artisan`), reposer les
-skills pour qu'elles décrivent la version installée :
+Si tu les as passées à la création du projet, elles s'installent quand tu veux,
+dans l'agent que tu utilises :
 
 ```bash
-npx brand-artisan skills sync
+npx skills add roslove44/brand-artisan
 ```
+
+Et `npx skills update` les met à jour ensuite.

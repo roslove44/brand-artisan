@@ -1,0 +1,24 @@
+{
+  "name": "brand-artisan",
+  "owner": {
+    "name": "Rostand Migan"
+  },
+  "description": "Compose brand visuals in JSX and render them to PNG: Open Graph images, LinkedIn, Facebook and X posts and banners, always inside the project's own guidelines.",
+  "license": "MIT",
+  "homepage": "https://github.com/roslove44/brand-artisan",
+  "repository": "https://github.com/roslove44/brand-artisan",
+  "keywords": ["brand", "design", "og-image", "social-media", "satori", "visuals"],
+  "plugins": [
+    {
+      "name": "brand-artisan",
+      "source": "./",
+      "description": "Produce brand visuals with an AI agent: set up the guidelines, derive them from existing examples, then render Open Graph images, platform posts, banners and brand assets, never outside the guidelines.",
+      "author": {
+        "name": "Rostand Migan"
+      },
+      "homepage": "https://github.com/roslove44/brand-artisan#readme",
+      "license": "MIT",
+      "skills": ["./skills/"]
+    }
+  ]
+}

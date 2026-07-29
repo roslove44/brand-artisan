@@ -71,9 +71,19 @@ Three Satori rules to know:
 
 ## With an AI agent
 
-BrandArtisan is designed to be driven by Claude Code: the generator installs
-**skills** into `.claude/skills/`, encoding each platform's official
-dimensions, safe zones, and the "nothing outside the guidelines" discipline.
+BrandArtisan ships **skills** that encode each platform's official dimensions,
+safe zones, and the "nothing outside the guidelines" discipline. They install
+into whichever agent you use:
+
+```bash
+npx skills add roslove44/brand-artisan
+```
+
+The [`skills` CLI](https://github.com/vercel-labs/skills) knows where Claude
+Code, Cursor, Copilot and twenty-odd other agents keep theirs, and records the
+source in `skills-lock.json` so a teammate can install them for their own agent.
+Claude Code users can instead add this repository as a plugin marketplace:
+`/plugin marketplace add roslove44/brand-artisan`.
 
 ```text
 /new-project my-brand        sets up the guidelines (brand.md) through an interview
@@ -107,12 +117,11 @@ produce: an SVG logotype traced from the font's glyphs, multi-size favicons,
 brand-artisan dev                       render server at http://localhost:4000
 brand-artisan build                     exports templates/ to out/
 brand-artisan colors <image> [count]    an image's palette, measured rather than guessed
-brand-artisan skills sync               (re)installs the engine's skills into .claude/skills/
 ```
 
-Commands work from any subfolder of the project. After
-`npm update brand-artisan`, run `npx brand-artisan skills sync` again so the
-skills describe the installed version.
+Commands work from any subfolder of the project. Skills are not part of the
+engine: they install per agent (see [With an AI agent](#with-an-ai-agent)) and
+`npx skills update` refreshes them.
 
 ## The API
 

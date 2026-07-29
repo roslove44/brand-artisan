@@ -71,9 +71,19 @@ Trois règles Satori à connaître :
 
 ## Avec un agent IA
 
-BrandArtisan est pensé pour être piloté par Claude Code : le générateur pose des
-**skills** dans `.claude/skills/`, qui encodent les dimensions officielles des
-plateformes, les zones sûres et la discipline « rien hors charte ».
+BrandArtisan livre des **skills** qui encodent les dimensions officielles des
+plateformes, les zones sûres et la discipline « rien hors charte ». Elles
+s'installent dans l'agent que tu utilises :
+
+```bash
+npx skills add roslove44/brand-artisan
+```
+
+Le [CLI `skills`](https://github.com/vercel-labs/skills) sait où Claude Code,
+Cursor, Copilot et une vingtaine d'autres agents rangent les leurs, et note la
+source dans `skills-lock.json` pour qu'un collègue les installe dans le sien.
+Sous Claude Code, on peut aussi ajouter ce dépôt comme marketplace de plugins :
+`/plugin marketplace add roslove44/brand-artisan`.
 
 ```text
 /new-project ma-marque       pose la charte (brand.md) par interview
@@ -107,12 +117,11 @@ multi-tailles, `.ico`. Détails :
 brand-artisan dev                       serveur de rendu sur http://localhost:4000
 brand-artisan build                     exporte templates/ dans out/
 brand-artisan colors <image> [nombre]   palette d'une image, mesurée plutôt que devinée
-brand-artisan skills sync               (re)pose les skills du moteur dans .claude/skills/
 ```
 
-Les commandes marchent depuis n'importe quel sous-dossier du projet. Après un
-`npm update brand-artisan`, relance `npx brand-artisan skills sync` pour que les
-skills décrivent la version installée.
+Les commandes marchent depuis n'importe quel sous-dossier du projet. Les skills
+ne font pas partie du moteur : elles s'installent par agent (voir
+[Avec un agent IA](#avec-un-agent-ia)) et `npx skills update` les rafraîchit.
 
 ## L'API
 
