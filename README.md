@@ -76,15 +76,21 @@ safe zones, and the "nothing outside the guidelines" discipline. They install
 into whichever agent you use:
 
 ```bash
-npx skills add roslove44/brand-artisan -s "*"
+npx skills add roslove44/brand-artisan -s "*" -y
 ```
 
-`-s "*"` takes the whole set; drop it to pick from a list. The
+`-s "*" -y` takes the whole set and installs into the agents found on your
+machine; drop the flags to choose both from a list. The
 [`skills` CLI](https://github.com/vercel-labs/skills) knows where Claude Code,
 Cursor, Copilot and twenty-odd other agents keep theirs, and records the source
 in `skills-lock.json` so a teammate can install them for their own agent.
 Claude Code users can instead add this repository as a plugin marketplace:
 `/plugin marketplace add roslove44/brand-artisan`.
+
+These skills read the files you point them at, SVG markup included, and run the
+project's own commands. `import-reference` reaches furthest, since its input
+comes from outside the project: it treats file content as data to measure, never
+as instructions.
 
 ```text
 /new-project my-brand        sets up the guidelines (brand.md) through an interview
@@ -139,7 +145,8 @@ import { brand, root, toPng, renderToFile, type Template } from "brand-artisan";
 | `renderToFile(node, size & { out })` | Same, but writes `out/<out>.png` and returns the path. |
 
 Two subpaths for brand tooling: `brand-artisan/brandkit` (glyph outlines,
-SVG → PNG, `.ico`) and `brand-artisan/colors` (palette measurement).
+SVG → PNG, `.ico`) and `brand-artisan/colors` (palette and painted-area
+measurement).
 
 ## Contributing
 

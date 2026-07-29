@@ -65,6 +65,36 @@ export function palette({ data }: Pixels, top = 12): { unique: number; total: nu
 	return { unique: counts.size, total, colors };
 }
 
+export type Box = { x: number; y: number; width: number; height: number };
+
+/**
+ * Boite englobante de ce qui est peint, c'est-a-dire des pixels non totalement
+ * transparents. Sert a mesurer le cadrage d'un element dans son canevas (un
+ * logo dans un PNG transparent, par exemple) au lieu de l'estimer a l'oeil.
+ *
+ * `null` si rien n'est peint. Sur une image a fond opaque, la boite est l'image
+ * entiere, ce qui est la reponse correcte.
+ *
+ * Existe pour que les skills n'aient pas a faire ecrire un parcours de pixels
+ * ad hoc a l'agent : une fonction testee vaut mieux que du code improvise.
+ */
+export function boundingBox({ data, width, height }: Pixels): Box | null {
+	let minX = width;
+	let minY = height;
+	let maxX = -1;
+	let maxY = -1;
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			if (data[(y * width + x) * 4 + 3] === 0) continue;
+			if (x < minX) minX = x;
+			if (x > maxX) maxX = x;
+			if (y < minY) minY = y;
+			if (y > maxY) maxY = y;
+		}
+	}
+	return maxX < 0 ? null : { x: minX, y: minY, width: maxX - minX + 1, height: maxY - minY + 1 };
+}
+
 /** Releve lisible en console : dimensions puis palette triee. Sert a la CLI. */
 export function report(file: string, top = 12): void {
 	const px = decode(file);

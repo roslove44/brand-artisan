@@ -4,7 +4,7 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { PNG } from "pngjs";
-import { decode, palette } from "../src/colors";
+import { boundingBox, decode, palette } from "../src/colors";
 
 const dir = mkdtempSync(join(tmpdir(), "brandartisan-"));
 
@@ -53,4 +53,31 @@ test("decode : un SVG passe par resvg", () => {
 
 test("decode : format inconnu -> message explicite", () => {
 	assert.throws(() => decode(join(dir, "photo.webp")), /Format non gere.*photo\.webp/s);
+});
+
+// PNG transparent de 10x10 avec un bloc opaque de 3 de large sur 2 de haut en (2,3).
+function marque(): string {
+	const png = new PNG({ width: 10, height: 10 });
+	png.data.fill(0);
+	for (let y = 3; y < 5; y++) for (let x = 2; x < 5; x++) png.data.set([0, 0, 0, 255], (y * 10 + x) * 4);
+	const file = join(dir, "marque.png");
+	writeFileSync(file, PNG.sync.write(png));
+	return file;
+}
+
+test("boundingBox : cadre ce qui est peint, ignore le transparent", () => {
+	assert.deepEqual(boundingBox(decode(marque())), { x: 2, y: 3, width: 3, height: 2 });
+});
+
+test("boundingBox : un fond opaque rend l'image entiere", () => {
+	const px = decode(fixture());
+	assert.deepEqual(boundingBox(px), { x: 0, y: 0, width: 8, height: 8 });
+});
+
+test("boundingBox : rien de peint -> null", () => {
+	const png = new PNG({ width: 4, height: 4 });
+	png.data.fill(0);
+	const file = join(dir, "vide.png");
+	writeFileSync(file, PNG.sync.write(png));
+	assert.equal(boundingBox(decode(file)), null);
 });

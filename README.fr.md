@@ -76,15 +76,21 @@ plateformes, les zones sûres et la discipline « rien hors charte ». Elles
 s'installent dans l'agent que tu utilises :
 
 ```bash
-npx skills add roslove44/brand-artisan -s "*"
+npx skills add roslove44/brand-artisan -s "*" -y
 ```
 
-`-s "*"` prend tout le jeu ; sans lui, une liste te laisse choisir. Le
+`-s "*" -y` prend tout le jeu et l'installe dans les agents détectés sur ta
+machine ; sans les drapeaux, une liste te laisse choisir les deux. Le
 [CLI `skills`](https://github.com/vercel-labs/skills) sait où Claude Code,
 Cursor, Copilot et une vingtaine d'autres agents rangent les leurs, et note la
 source dans `skills-lock.json` pour qu'un collègue les installe dans le sien.
 Sous Claude Code, on peut aussi ajouter ce dépôt comme marketplace de plugins :
 `/plugin marketplace add roslove44/brand-artisan`.
+
+Ces skills lisent les fichiers que tu leur désignes, markup SVG compris, et
+lancent les commandes du projet. `import-reference` va le plus loin, puisque son
+entrée vient de l'extérieur du projet : le contenu d'un fichier y est de la
+matière à mesurer, jamais des instructions.
 
 ```text
 /new-project ma-marque       pose la charte (brand.md) par interview
@@ -140,7 +146,7 @@ import { brand, root, toPng, renderToFile, type Template } from "brand-artisan";
 
 Deux sous-chemins pour l'outillage de marque : `brand-artisan/brandkit`
 (contours de glyphes, SVG → PNG, `.ico`) et `brand-artisan/colors` (mesure de
-palette).
+palette et de zone peinte).
 
 ## Contribuer
 
