@@ -51,18 +51,48 @@ if (occupants.length > 0) {
 }
 
 cpSync(TEMPLATE, target, { recursive: true });
-// Deux fichiers voyagent sous un nom neutre et le retrouvent ici :
+// Trois fichiers voyagent sous un nom neutre et le retrouvent ici :
 //  - .gitignore, parce que npm renomme en .npmignore tout .gitignore publie ;
 //  - tsconfig.json, pour qu'il ne devienne pas le tsconfig le plus proche des
 //    fichiers du squelette dans le depot de BrandArtisan (l'editeur y verrait
-//    des erreurs fantomes, faute de node_modules a cote).
+//    des erreurs fantomes, faute de node_modules a cote) ;
+//  - CLAUDE.md, meme probleme de voisinage : sous son vrai nom, un agent qui lit
+//    le squelette depuis notre depot chargerait les instructions du projet de
+//    l'utilisateur par-dessus les notres.
 renameSync(join(target, "gitignore"), join(target, ".gitignore"));
 renameSync(join(target, "_tsconfig.json"), join(target, "tsconfig.json"));
+renameSync(join(target, "_CLAUDE.md"), join(target, "CLAUDE.md"));
 
 const pkg = join(target, "package.json");
 writeFileSync(pkg, readFileSync(pkg, "utf8").replace("__NAME__", name).replace("__SPEC__", `^${version}`));
 
 console.log(`Created ${bold(name)} in ${target}`);
+
+/**
+ * Sans depot, le .gitignore livre ne sert a rien, et la promesse du produit est
+ * justement des visuels versionnes avec le reste.
+ *
+ * Saute si le dossier est deja sous git : creer un depot imbrique dans un depot
+ * existant est presque toujours une erreur et jamais une intention. Saute aussi
+ * si git n'est pas installe, sans rien dire : ce n'est pas une panne, le
+ * .gitignore attendra simplement un `git init` a la main.
+ */
+function initGit(cwd) {
+	try {
+		execSync("git rev-parse --is-inside-work-tree", { cwd, stdio: "ignore" });
+		return;
+	} catch {
+		// Pas sous git, donc il y a un depot a creer.
+	}
+	try {
+		execSync("git init --quiet", { cwd, stdio: "ignore" });
+		console.log(dim("Initialized an empty git repository."));
+	} catch {
+		// git absent de la machine.
+	}
+}
+
+initGit(target);
 
 /**
  * Les skills ne voyagent pas dans le moteur : chaque agent IA a ses propres

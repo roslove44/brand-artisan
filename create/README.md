@@ -24,12 +24,15 @@ with your brand, then delete it.
 
 1. Copies the skeleton into the target folder, which must be empty: guidelines
    (`brands/`), visuals (`templates/`), asset scripts (`tools/`), fonts
-   (`fonts/`).
-2. Runs `npm install`: the
+   (`fonts/`), and the agent rules (`AGENTS.md`, imported by `CLAUDE.md`).
+2. Runs `git init`, unless the folder already sits inside a repository or git is
+   not installed. Your visuals are code; the bundled `.gitignore` needs a
+   repository to mean anything.
+3. Runs `npm install`: the
    [`brand-artisan`](https://www.npmjs.com/package/brand-artisan) engine lands
    in `node_modules`, like Next for a Next user. It updates with `npm update`;
    your project contains only your brand.
-3. Offers to install the skills into your AI agent, whichever it is, with
+4. Offers to install the skills into your AI agent, whichever it is, with
    [`npx skills add roslove44/brand-artisan -s "*" -y`](https://github.com/vercel-labs/skills):
    `/new-project`, `/og-image`, `/linkedin-post`, `/campagne`… to produce visuals
    aligned with your guidelines. Declining changes nothing about rendering.

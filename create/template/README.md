@@ -1,51 +1,51 @@
-# Visuels
+# Visuals
 
-Projet de visuels [BrandArtisan](https://github.com/roslove44/brand-artisan) :
-des images (couvertures, OG, bannières) composées en JSX et rendues en PNG.
+A [BrandArtisan](https://github.com/roslove44/brand-artisan) visuals project:
+images (Open Graph, posts, banners) composed in JSX and rendered to PNG.
 
 ```bash
-npm run build   # rend tout templates/ dans out/
-npm run dev     # serveur de rendu sur http://localhost:4000
+npm run build   # renders everything in templates/ into out/
+npm run dev     # preview server on http://localhost:4000
 ```
 
-## Ce qu'il y a dedans
+## What is in here
 
-| Chemin | Rôle |
+| Path | Role |
 |---|---|
-| `brands/<projet>/brand.md` | **Charte, bloquante** : palette, typographie, logo. Aucun visuel ne se compose sans elle. |
-| `brands/<projet>/project.md` | Substance et voix : pitch, public, ton, claims autorisés. Sert à **rédiger** les textes. |
-| `brands/<projet>/logo`, `/favicon` | Les assets de la marque, consommés par `brand()`. |
-| `templates/<projet>/*.tsx` | Un fichier = une image. Il exporte `{ size, title?, render }` par défaut. |
-| `tools/<projet>/*.ts` | Scripts qui **produisent** les assets de marque (logo, favicon, `.ico`). |
-| `fonts/` | Les polices, avec leurs licences ([`NOTICE.md`](fonts/NOTICE.md)). Satori n'accède à aucune police système. |
-| `out/` | Les PNG générés. Ignoré par git. |
+| `brands/<project>/brand.md` | **The guidelines, blocking**: palette, typography, logo. No visual is composed without it. |
+| `brands/<project>/project.md` | Substance and voice: pitch, audience, tone, permitted claims. What the **wording** is based on. |
+| `brands/<project>/logo`, `/favicon` | The brand assets, consumed by `brand()`. |
+| `templates/<project>/*.tsx` | One file = one image. Default-exports `{ size, title?, render }`. |
+| `tools/<project>/*.ts` | Scripts that **produce** brand assets (logo, favicon, `.ico`). |
+| `fonts/` | The fonts, with their licenses ([`NOTICE.md`](fonts/NOTICE.md)). Satori reaches no system font. |
+| `out/` | The generated PNGs. Ignored by git. |
+| `AGENTS.md` | The rules an AI agent follows here. `CLAUDE.md` imports it. |
 
-## Calame, l'exemple livré
+## Calame, the bundled example
 
-`calame` est une **marque de démonstration** : elle n'existe pas. Elle est là
-pour que la première commande produise quelque chose, et pour montrer à quoi
-ressemblent une charte complète et un visuel composé. Regarde
-`brands/calame/brand.md`, puis `templates/calame/og.tsx`.
+`calame` is a **demo brand**: it does not exist. It is here so the first command
+produces something, and to show what complete guidelines and a composed visual
+look like. Read `brands/calame/brand.md`, then `templates/calame/og.tsx`.
 
-Quand tu n'en as plus besoin, supprime `brands/calame/`, `templates/calame/` et
-`tools/calame/`.
+Delete `brands/calame/`, `templates/calame/` and `tools/calame/` once you no
+longer need them.
 
-## Ta marque
+## Your brand
 
-Avec un agent IA, les skills font le travail :
+With an AI agent, the skills do the work:
 
 ```
-/new-project ma-marque      # pose brands/ma-marque/brand.md (bloquant) et project.md
-/og-image ma-marque         # un visuel de partage aligné sur la charte
-/linkedin-post ma-marque    # idem pour LinkedIn, Facebook, X…
-/brand-assets ma-marque     # génère logo et favicon par la toolchain
+/new-project my-brand      # writes brands/my-brand/brand.md (blocking) and project.md
+/og-image my-brand         # a share image aligned with the guidelines
+/linkedin-post my-brand    # same for LinkedIn, Facebook, X…
+/brand-assets my-brand     # generates the logo and favicon through the toolchain
 ```
 
-Si tu les as passées à la création du projet, elles s'installent quand tu veux,
-dans l'agent que tu utilises :
+If you skipped them when the project was created, they install whenever you
+like, into whichever agent you use:
 
 ```bash
 npx skills add roslove44/brand-artisan -s "*" -y
 ```
 
-Et `npx skills update` les met à jour ensuite.
+`npx skills update` refreshes them afterwards.

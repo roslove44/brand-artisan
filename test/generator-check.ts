@@ -59,9 +59,13 @@ try {
 	// legitime pendant la release candidate, et couvre bien la 0.1.0 finale.
 	assert.equal(pkg.dependencies["brand-artisan"], `^${ENGINE_VERSION}`, "la dependance doit viser la version publiee du moteur");
 	assert.ok(existsSync(join(APP, ".gitignore")), "gitignore doit retrouver son point");
-	assert.ok(existsSync(join(APP, "tsconfig.json")), "_tsconfig.json doit retrouver son nom");
-	assert.ok(!existsSync(join(APP, "_tsconfig.json")), "le nom de voyage ne doit pas rester");
-	for (const f of ["brands/calame/brand.md", "brands/calame/project.md", "templates/calame/og.tsx", "tools/calame/build-logo.ts", "fonts/Sora-700.ttf", "fonts/NOTICE.md"]) {
+	for (const [voyage, reel] of [["_tsconfig.json", "tsconfig.json"], ["_CLAUDE.md", "CLAUDE.md"]]) {
+		assert.ok(existsSync(join(APP, reel)), `${voyage} doit retrouver son nom`);
+		assert.ok(!existsSync(join(APP, voyage)), `le nom de voyage ${voyage} ne doit pas rester`);
+	}
+	// Sans depot, le .gitignore livre avec le squelette ne servirait a rien.
+	assert.ok(existsSync(join(APP, ".git")), "le generateur doit avoir initialise un depot git");
+	for (const f of ["AGENTS.md", "brands/calame/brand.md", "brands/calame/project.md", "templates/calame/og.tsx", "tools/calame/build-logo.ts", "fonts/Sora-700.ttf", "fonts/NOTICE.md"]) {
 		assert.ok(existsSync(join(APP, ...f.split("/"))), `${f} doit etre livre`);
 	}
 
