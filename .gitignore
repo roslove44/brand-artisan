@@ -6,5 +6,7 @@ out/
 # AI agent
 .claude/settings.local.json
 .mcp.json
-# Sortie d'installation : la source des skills est skills/, jamais une copie ici
+# Sorties d'installation des skills : la source est skills/, jamais une copie.
+# .agents/ est le dossier universel, ecrit meme quand on ne choisit qu'un agent.
 .claude/skills/
+.agents/skills/

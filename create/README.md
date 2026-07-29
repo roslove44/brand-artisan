@@ -30,7 +30,7 @@ with your brand, then delete it.
    in `node_modules`, like Next for a Next user. It updates with `npm update`;
    your project contains only your brand.
 3. Offers to install the skills into your AI agent, whichever it is, with
-   [`npx skills add roslove44/brand-artisan -s "*"`](https://github.com/vercel-labs/skills):
+   [`npx skills add roslove44/brand-artisan -s "*" -y`](https://github.com/vercel-labs/skills):
    `/new-project`, `/og-image`, `/linkedin-post`, `/campagne`… to produce visuals
    aligned with your guidelines. Declining changes nothing about rendering.
 

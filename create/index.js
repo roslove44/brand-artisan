@@ -17,7 +17,7 @@ import { execSync } from "node:child_process";
 
 const HERE = fileURLToPath(new URL(".", import.meta.url));
 const TEMPLATE = join(HERE, "template");
-const SKILLS_CMD = `npx skills add roslove44/brand-artisan -s "*"`;
+const SKILLS_CMD = `npx skills add roslove44/brand-artisan -s "*" -y`;
 const { version } = JSON.parse(readFileSync(join(HERE, "package.json"), "utf8"));
 
 const args = process.argv.slice(2);
