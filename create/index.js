@@ -20,9 +20,18 @@ const TEMPLATE = join(HERE, "template");
 const SKILLS_CMD = `npx skills add roslove44/brand-artisan -s "*" -y`;
 const { version } = JSON.parse(readFileSync(join(HERE, "package.json"), "utf8"));
 
+// Sorties en anglais et en ASCII strict. En anglais parce que c'est la premiere
+// surface publique du projet, lancee par npx chez des inconnus, quand les README
+// et la page npm sont en anglais. En ASCII parce qu'un script n'a aucun moyen de
+// savoir dans quelle console il s'affiche : une coche ou une lettre accentuee
+// sort en carre sur un cmd.exe en page de code heritee.
+const tint = process.stdout.isTTY && !process.env.NO_COLOR;
+const bold = (s) => (tint ? `\u001b[1m${s}\u001b[0m` : s);
+const dim = (s) => (tint ? `\u001b[2m${s}\u001b[0m` : s);
+
 const args = process.argv.slice(2);
 if (args.includes("--help") || args.includes("-h")) {
-	console.log("Usage : npx create-brand-artisan [dossier] [--no-install]");
+	console.log("Usage: npx create-brand-artisan [folder] [--no-install]");
 	process.exit(0);
 }
 
@@ -32,10 +41,12 @@ const target = resolve(args.find((a) => !a.startsWith("--")) ?? ".");
 // Nom de paquet valide tire du dossier : minuscules, le reste en tirets.
 const name = basename(target).toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "") || "visuels";
 
+console.log(`\n${bold("create-brand-artisan")} ${dim(version)}\n`);
+
 mkdirSync(target, { recursive: true });
 const occupants = readdirSync(target).filter((f) => f !== ".git");
 if (occupants.length > 0) {
-	console.error(`"${target}" n'est pas vide (${occupants.length} entrees). Choisir un dossier neuf.`);
+	console.error(`"${target}" is not empty (${occupants.length} entries). Pick a fresh folder.`);
 	process.exit(1);
 }
 
@@ -51,7 +62,7 @@ renameSync(join(target, "_tsconfig.json"), join(target, "tsconfig.json"));
 const pkg = join(target, "package.json");
 writeFileSync(pkg, readFileSync(pkg, "utf8").replace("__NAME__", name).replace("__SPEC__", `^${version}`));
 
-console.log(`Projet "${name}" cree dans ${target}`);
+console.log(`Created ${bold(name)} in ${target}`);
 
 /**
  * Les skills ne voyagent pas dans le moteur : chaque agent IA a ses propres
@@ -67,23 +78,27 @@ async function proposeSkills(cwd) {
 	if (!process.stdin.isTTY) return;
 	const { createInterface } = await import("node:readline/promises");
 	const rl = createInterface({ input: process.stdin, output: process.stdout });
-	const answer = await rl.question("\nInstaller les skills dans votre agent IA ? [O/n] ");
+	const answer = await rl.question(`\n${bold("Install the skills into your AI agent?")} [Y/n] `);
 	rl.close();
 	if (/^n/i.test(answer.trim())) {
-		console.log(`A relancer quand vous voulez : ${SKILLS_CMD}`);
+		console.log(dim(`Skipped. Run it whenever you like: ${SKILLS_CMD}`));
 		return;
 	}
 	try {
 		execSync(SKILLS_CMD, { cwd, stdio: "inherit" });
 	} catch {
-		console.log(`Skills non installees. A relancer : ${SKILLS_CMD}`);
+		console.log(dim(`Skills not installed. Run it later: ${SKILLS_CMD}`));
 	}
 }
 
 if (install) {
-	execSync("npm install", { cwd: target, stdio: "inherit" });
+	// --no-audit --no-fund : le rapport de financement et le compte de
+	// vulnerabilites n'ont rien a dire a quelqu'un qui cree un dossier de
+	// visuels, et noieraient le parcours.
+	console.log(dim("\nInstalling the engine..."));
+	execSync("npm install --no-audit --no-fund", { cwd: target, stdio: "inherit" });
 	await proposeSkills(target);
-	console.log(`\nPret. Ensuite :\n  cd ${basename(target)}\n  npm run build     # rend l'exemple Calame dans out/\n  npm run dev       # serveur de rendu sur http://localhost:4000`);
+	console.log(`\n${bold("Done.")} Next:\n  cd ${basename(target)}\n  ${bold("npm run build")}   ${dim("renders the bundled Calame example into out/")}\n  ${bold("npm run dev")}     ${dim("preview server on http://localhost:4000")}`);
 } else {
-	console.log(`\nEnsuite :\n  cd ${basename(target)}\n  npm install\n  ${SKILLS_CMD}\n  npm run build`);
+	console.log(`\nNext:\n  cd ${basename(target)}\n  npm install\n  ${SKILLS_CMD}\n  npm run build`);
 }
