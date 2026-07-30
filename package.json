@@ -17,7 +17,7 @@
     "./colors": "./src/colors.ts"
   },
   "bin": {
-    "brand-artisan": "./bin/brand-artisan.js"
+    "brand-artisan": "bin/brand-artisan.js"
   },
   "files": [
     "src",
