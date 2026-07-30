@@ -49,3 +49,18 @@ npx skills add roslove44/brand-artisan -s "*" -y
 ```
 
 `npx skills update` refreshes them afterwards.
+
+## One thing in package.json
+
+```json
+"allowScripts": { "esbuild": false }
+```
+
+npm 12 blocks install scripts unless you allow them, and `esbuild` (reached
+through the engine's TypeScript loader) ships one. It is not needed here: esbuild
+delivers its platform binary through `optionalDependencies`, and rendering works
+without the script. The line records that decision so npm stops asking.
+
+It is your project, so it is your call. `npm install-scripts approve esbuild`
+allows it instead, which is worth doing on a platform where the optional package
+does not install.

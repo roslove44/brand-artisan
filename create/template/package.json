@@ -11,6 +11,9 @@
   "dependencies": {
     "brand-artisan": "__SPEC__"
   },
+  "allowScripts": {
+    "esbuild": false
+  },
   "devDependencies": {
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
