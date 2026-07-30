@@ -54,6 +54,12 @@ git tag v0.1.0 && git push origin v0.1.0
 un commit de `main` ou ne porte pas la version des deux paquets, rejoue la suite
 complète, puis publie le moteur avant le générateur.
 
+**Le déclencheur est le tag, pas la release GitHub**, et c'est délibéré : sur
+`on: release`, la page serait le déclencheur, donc publique avant qu'un seul test
+ait tourné, et un échec de publication laisserait une release qui annonce une
+version absente de npm. Ici la page est créée en dernier, elle n'existe donc que
+si npm a reçu les paquets, et un échec ne laisse qu'un tag à supprimer.
+
 **Le dist-tag se déduit de la version**, il ne se choisit pas : une version qui
 porte un suffixe de préversion (`0.1.0-rc.2`) part sur `next`, une version stable
 sur `latest`. npm posant `latest` d'office sur toute version publiée sans `--tag`,
