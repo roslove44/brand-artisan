@@ -1,0 +1,126 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+# Publier deux paquets n'est pas atomique. Deux releases qui se croiseraient
+# pourraient laisser le moteur et le generateur sur des versions differentes,
+# exactement ce que le garde-fou de version cherche a empecher.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write # cree la GitHub Release
+  id-token: write # OIDC : authentifie la publication ET signe la provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # --generate-notes remonte l'historique depuis le tag precedent
+
+      # Node 24 et non 22 : Node 22 embarque npm 10.9.8, sous le 11.5.1 qu'exige
+      # le trusted publishing.
+      #
+      # Pas de `registry-url`, et c'est delibere : l'option fait ecrire a
+      # setup-node une ligne `_authToken=` vide dans .npmrc, npm croit alors
+      # l'authentification deja configuree et n'engage jamais l'echange OIDC.
+      # La publication echoue en ENEEDAUTH (actions/setup-node#1551). Le registre
+      # par defaut de npm est deja registry.npmjs.org : l'option n'apporte rien
+      # ici, elle ne fait que casser.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      # Rend le job independant de ce que setup-node embarquera demain.
+      - run: npm install -g npm@latest
+
+      - run: npm ci
+
+      # La configuration de confiance npm ne sait contraindre que le nom du
+      # fichier de workflow, pas la branche : sans ce controle, un tag pose sur
+      # une branche de travail publierait du code jamais passe par main. Le
+      # `fetch` est necessaire, checkout ne ramenant que la ref du tag.
+      - name: Le tag pointe un commit de main
+        run: |
+          git fetch --no-tags origin main
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "::error::$GITHUB_REF_NAME ne pointe pas un commit de main"
+            exit 1
+          fi
+
+      # Le tag est la seule declaration d'intention de la release : s'il ne
+      # correspond pas aux paquets, tout le reste publierait une version que
+      # personne n'a demandee. Verifie avant les tests, pour echouer en secondes
+      # plutot qu'en minutes.
+      - name: Le tag porte la version des deux paquets
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          engine=$(node -p "require('./package.json').version")
+          create=$(node -p "require('./create/package.json').version")
+          echo "tag=$tag  moteur=$engine  generateur=$create"
+          if [ "$tag" != "$engine" ]; then
+            echo "::error::le tag $GITHUB_REF_NAME ne porte pas la version du moteur ($engine)"
+            exit 1
+          fi
+          if [ "$engine" != "$create" ]; then
+            echo "::error::create/package.json est en $create, le moteur en $engine"
+            exit 1
+          fi
+
+      - run: npm run typecheck
+
+      - run: npm test
+
+      - run: npm run build
+
+      - run: npm run test:consumer
+
+      - run: npm run test:generator
+
+      # npm pose `latest` sur la premiere version publiee quoi qu'il arrive, et
+      # une preversion publiee sans `--tag` le deplacerait sur elle. Le tag se
+      # deduit donc de la version plutot que d'une main : tout ce qui porte un
+      # suffixe semver de preversion va sur `next`, le reste sur `latest`.
+      # `%%+*` retire d'abord les metadonnees de build, ou un `-` ne signifie pas
+      # preversion.
+      - name: Choisir le dist-tag depuis la version
+        id: disttag
+        run: |
+          version=$(node -p "require('./package.json').version")
+          case "${version%%+*}" in
+            *-*) tag=next ;;
+            *)   tag=latest ;;
+          esac
+          echo "$version -> dist-tag $tag"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      # Le moteur d'abord : le generateur ecrit une dependance `^<version>` vers
+      # lui, donc un generateur publie seul reclamerait un moteur inexistant.
+      #
+      # Ni `--provenance` ni token : le trusted publishing signe l'attestation
+      # d'office, et c'est l'absence de token qui fait tout l'interet.
+      - name: Publier le moteur
+        run: npm publish --tag ${{ steps.disttag.outputs.tag }}
+
+      - name: Publier le generateur
+        working-directory: create
+        run: npm publish --tag ${{ steps.disttag.outputs.tag }}
+
+      # Apres les publications : une page de release ne doit pas annoncer ce qui
+      # n'est pas parti.
+      - name: Creer la GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ steps.disttag.outputs.tag }}" = "next" ]; then
+            gh release create "$GITHUB_REF_NAME" --generate-notes --prerelease
+          else
+            gh release create "$GITHUB_REF_NAME" --generate-notes
+          fi

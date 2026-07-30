@@ -41,6 +41,40 @@ nous. Pour travailler dessus, les charger depuis ta copie de travail plutôt que
 depuis `main` : sous Claude Code, `/plugin marketplace add ./` puis
 `/plugin install brand-artisan@brand-artisan`.
 
+## Publier
+
+La publication est automatique. Bumper les deux `package.json`, committer, puis
+pousser un tag :
+
+```bash
+git tag v0.1.0 && git push origin v0.1.0
+```
+
+`.github/workflows/release.yml` fait le reste : il refuse si le tag ne pointe pas
+un commit de `main` ou ne porte pas la version des deux paquets, rejoue la suite
+complète, puis publie le moteur avant le générateur.
+
+**Le dist-tag se déduit de la version**, il ne se choisit pas : une version qui
+porte un suffixe de préversion (`0.1.0-rc.2`) part sur `next`, une version stable
+sur `latest`. npm posant `latest` d'office sur toute version publiée sans `--tag`,
+c'est ce calcul qui empêche une préversion de devenir la version par défaut.
+
+**Aucun token npm n'existe dans ce dépôt.** L'authentification passe par
+[trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC) : GitHub
+prouve l'identité du workflow, npm délivre un jeton valable le temps de la
+publication, et l'**attestation de provenance est signée d'office** (le drapeau
+`--provenance` est donc inutile). La configuration a été posée une fois par paquet :
+
+```bash
+npm trust github brand-artisan        --repo roslove44/brand-artisan --file release.yml --allow-publish
+npm trust github create-brand-artisan --repo roslove44/brand-artisan --file release.yml --allow-publish
+```
+
+Deux conséquences à ne pas découvrir un jour de release : **renommer
+`release.yml` casse la publication**, le nom du fichier faisant partie du contrat
+de confiance ; et le job doit tourner en **Node 24**, Node 22 embarquant un npm
+antérieur au 11.5.1 qu'exige le trusted publishing.
+
 ## Conventions
 
 - Les règles de travail du dépôt (charte par projet, contrat de template,
