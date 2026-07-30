@@ -1,6 +1,6 @@
 {
   "name": "brand-artisan",
-  "version": "0.1.0-rc.0",
+  "version": "0.1.0-rc.1",
   "type": "module",
   "description": "Fabrique des images (couvertures, OG, bannières) via Satori + resvg : le moteur next/og sorti de Next.",
   "license": "MIT",

@@ -1,6 +1,6 @@
 {
   "name": "create-brand-artisan",
-  "version": "0.1.0-rc.0",
+  "version": "0.1.0-rc.1",
   "type": "module",
   "description": "Crée un projet de visuels BrandArtisan, charte et exemple compris.",
   "license": "MIT",
