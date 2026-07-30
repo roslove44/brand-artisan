@@ -16,6 +16,13 @@ audience, tone, permitted claims). Read it before writing any text on a visual.
 If it is missing, ask for the tone and the claims instead of guessing, and never
 fabricate a figure or a promise.
 
+## Calame is an example, not a model
+
+`calame` ships with BrandArtisan as a worked example. Read its code to learn the
+API (the `Template` contract, `brand()`, the `tools/` scripts); never carry its
+palette, its type or its compositions into another brand. A new project starts
+from its own `brand.md` and `project.md`.
+
 ## Where things live
 
 | Path | Role |
