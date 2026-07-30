@@ -1,6 +1,6 @@
 {
   "name": "brand-artisan",
-  "version": "0.1.0-rc.2",
+  "version": "0.1.0-rc.3",
   "type": "module",
   "description": "Turns JSX into brand images (Open Graph, covers, banners) with Satori + resvg: next/og's engine, outside Next.",
   "license": "MIT",
