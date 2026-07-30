@@ -1,5 +1,7 @@
 # BrandArtisan
 
+![JSX in, image out. Un fichier .tsx, une image : Open Graph, posts sociaux, bannières, carrousels.](https://raw.githubusercontent.com/roslove44/brand-artisan/main/.github/assets/github-social-preview.png)
+
 [![npm](https://img.shields.io/npm/v/brand-artisan)](https://www.npmjs.com/package/brand-artisan)
 [![CI](https://github.com/roslove44/brand-artisan/actions/workflows/ci.yml/badge.svg)](https://github.com/roslove44/brand-artisan/actions/workflows/ci.yml)
 [![licence MIT](https://img.shields.io/badge/licence-MIT-blue)](https://github.com/roslove44/brand-artisan/blob/main/LICENSE)
