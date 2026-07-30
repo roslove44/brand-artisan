@@ -4,16 +4,13 @@ on:
   push:
     tags: ["v*"]
 
-# Publier deux paquets n'est pas atomique. Deux releases qui se croiseraient
-# pourraient laisser le moteur et le generateur sur des versions differentes,
-# exactement ce que le garde-fou de version cherche a empecher.
 concurrency:
   group: release
   cancel-in-progress: false
 
 permissions:
   contents: write # cree la GitHub Release
-  id-token: write # OIDC : authentifie la publication ET signe la provenance
+  id-token: write # OIDC : authentifie la publication et signe la provenance
 
 jobs:
   publish:
@@ -22,31 +19,22 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          fetch-depth: 0 # --generate-notes remonte l'historique depuis le tag precedent
+          fetch-depth: 0 # merge-base et --generate-notes remontent l'historique
 
-      # Node 24 et non 22 : Node 22 embarque npm 10.9.8, sous le 11.5.1 qu'exige
-      # le trusted publishing.
-      #
-      # Pas de `registry-url`, et c'est delibere : l'option fait ecrire a
-      # setup-node une ligne `_authToken=` vide dans .npmrc, npm croit alors
-      # l'authentification deja configuree et n'engage jamais l'echange OIDC.
-      # La publication echoue en ENEEDAUTH (actions/setup-node#1551). Le registre
-      # par defaut de npm est deja registry.npmjs.org : l'option n'apporte rien
-      # ici, elle ne fait que casser.
+      # Node 24 et pas 22 : le trusted publishing exige npm >= 11.5.1, Node 22
+      # embarque 10.9.8. Surtout, pas de `registry-url` : l'option ecrit une ligne
+      # `_authToken=` vide dans .npmrc, npm croit l'authentification configuree et
+      # n'engage jamais l'echange OIDC (actions/setup-node#1551).
       - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: npm
 
-      # Rend le job independant de ce que setup-node embarquera demain.
       - run: npm install -g npm@latest
 
       - run: npm ci
 
-      # La configuration de confiance npm ne sait contraindre que le nom du
-      # fichier de workflow, pas la branche : sans ce controle, un tag pose sur
-      # une branche de travail publierait du code jamais passe par main. Le
-      # `fetch` est necessaire, checkout ne ramenant que la ref du tag.
+      # npm ne sait contraindre que le nom du fichier de workflow, pas la branche.
       - name: Le tag pointe un commit de main
         run: |
           git fetch --no-tags origin main
@@ -55,10 +43,6 @@ jobs:
             exit 1
           fi
 
-      # Le tag est la seule declaration d'intention de la release : s'il ne
-      # correspond pas aux paquets, tout le reste publierait une version que
-      # personne n'a demandee. Verifie avant les tests, pour echouer en secondes
-      # plutot qu'en minutes.
       - name: Le tag porte la version des deux paquets
         run: |
           tag="${GITHUB_REF_NAME#v}"
@@ -84,12 +68,9 @@ jobs:
 
       - run: npm run test:generator
 
-      # npm pose `latest` sur la premiere version publiee quoi qu'il arrive, et
-      # une preversion publiee sans `--tag` le deplacerait sur elle. Le tag se
-      # deduit donc de la version plutot que d'une main : tout ce qui porte un
-      # suffixe semver de preversion va sur `next`, le reste sur `latest`.
-      # `%%+*` retire d'abord les metadonnees de build, ou un `-` ne signifie pas
-      # preversion.
+      # Deduit et non choisi : npm pose `latest` sur toute version publiee sans
+      # `--tag`, une preversion deviendrait donc la version par defaut. `%%+*`
+      # retire les metadonnees de build, ou un `-` ne signifie pas preversion.
       - name: Choisir le dist-tag depuis la version
         id: disttag
         run: |
@@ -102,10 +83,7 @@ jobs:
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
       # Le moteur d'abord : le generateur ecrit une dependance `^<version>` vers
-      # lui, donc un generateur publie seul reclamerait un moteur inexistant.
-      #
-      # Ni `--provenance` ni token : le trusted publishing signe l'attestation
-      # d'office, et c'est l'absence de token qui fait tout l'interet.
+      # lui. La provenance est signee d'office, sans `--provenance` ni token.
       - name: Publier le moteur
         run: npm publish --tag ${{ steps.disttag.outputs.tag }}
 
@@ -113,8 +91,6 @@ jobs:
         working-directory: create
         run: npm publish --tag ${{ steps.disttag.outputs.tag }}
 
-      # Apres les publications : une page de release ne doit pas annoncer ce qui
-      # n'est pas parti.
       - name: Creer la GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
