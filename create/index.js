@@ -37,6 +37,8 @@ if (args.includes("--help") || args.includes("-h")) {
 
 const install = !args.includes("--no-install");
 const target = resolve(args.find((a) => !a.startsWith("--")) ?? ".");
+// Genere dans le dossier courant : l'etape `cd` de la conclusion n'a pas lieu d'etre.
+const cd = target === process.cwd() ? "" : `  cd ${basename(target)}\n`;
 
 // Nom de paquet valide tire du dossier : minuscules, le reste en tirets.
 const name = basename(target).toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "") || "visuels";
@@ -128,7 +130,7 @@ if (install) {
 	console.log(dim("\nInstalling the engine..."));
 	execSync("npm install --no-audit --no-fund", { cwd: target, stdio: "inherit" });
 	await proposeSkills(target);
-	console.log(`\n${bold("Done.")} Next:\n  cd ${basename(target)}\n  ${bold("npm run build")}   ${dim("renders the bundled Calame example into out/")}\n  ${bold("npm run dev")}     ${dim("preview server on http://localhost:4000")}`);
+	console.log(`\n${bold("Done.")} Next:\n${cd}  ${bold("npm run build")}   ${dim("renders the bundled Calame example into out/")}\n  ${bold("npm run dev")}     ${dim("preview server on http://localhost:4000")}`);
 } else {
-	console.log(`\nNext:\n  cd ${basename(target)}\n  npm install\n  ${SKILLS_CMD}\n  npm run build`);
+	console.log(`\nNext:\n${cd}  npm install\n  ${SKILLS_CMD}\n  npm run build`);
 }
