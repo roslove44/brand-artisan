@@ -82,8 +82,8 @@ npx skills add roslove44/brand-artisan -s "*" -y
 `-s "*" -y` takes the whole set and installs into the agents found on your
 machine; drop the flags to choose both from a list. The
 [`skills` CLI](https://github.com/vercel-labs/skills) knows where Claude Code,
-Cursor, Copilot and twenty-odd other agents keep theirs, and records the source
-in `skills-lock.json` so a teammate can install them for their own agent.
+Cursor, Copilot and twenty-odd other agents keep theirs. Rerun the command to
+update; a teammate runs it once to get the same set.
 Claude Code users can instead add this repository as a plugin marketplace:
 `/plugin marketplace add roslove44/brand-artisan`.
 

@@ -82,8 +82,9 @@ npx skills add roslove44/brand-artisan -s "*" -y
 `-s "*" -y` prend tout le jeu et l'installe dans les agents détectés sur ta
 machine ; sans les drapeaux, une liste te laisse choisir les deux. Le
 [CLI `skills`](https://github.com/vercel-labs/skills) sait où Claude Code,
-Cursor, Copilot et une vingtaine d'autres agents rangent les leurs, et note la
-source dans `skills-lock.json` pour qu'un collègue les installe dans le sien.
+Cursor, Copilot et une vingtaine d'autres agents rangent les leurs. Relance la
+commande pour mettre à jour ; un collègue la lance une fois pour avoir le même
+jeu.
 Sous Claude Code, on peut aussi ajouter ce dépôt comme marketplace de plugins :
 `/plugin marketplace add roslove44/brand-artisan`.
 

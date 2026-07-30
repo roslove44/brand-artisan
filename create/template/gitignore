@@ -2,7 +2,7 @@ node_modules/
 out/
 *.log
 
-# Skills installees : elles se reinstallent par `npx skills`, comme
-# node_modules. C'est skills-lock.json qui se versionne, pas les copies.
+# Installed skills, lockfile included: `npx skills` rebuilds all of it.
 .agents/skills/
 .claude/skills/
+skills-lock.json
