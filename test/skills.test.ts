@@ -71,7 +71,7 @@ test("skills : description presente, sous 1024 caracteres, avec son declencheur"
 		const d = s.fields.get("description") ?? "";
 		if (d === "") return [`${s.name} : description absente ou vide`];
 		if (d.length > 1024) return [`${s.name} : ${d.length} caracteres (max 1024)`];
-		if (!/[AÀ] utiliser (quand|si)\b/.test(d)) return [`${s.name} : pas de « A utiliser quand… »`];
+		if (!/\bUse (when|if)\b/.test(d)) return [`${s.name} : pas de « Use when… »`];
 		return [];
 	});
 	assert.deepEqual(problems, []);

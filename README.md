@@ -97,7 +97,7 @@ as instructions.
 /import-reference            derives the guidelines from your existing visuals, measured to the pixel
 /og-image my-brand           1200×630 Open Graph image
 /linkedin-post, /facebook-post, /x-post…    visuals to each platform's specs
-/campagne my-brand           multi-platform kit from a single brief
+/campaign my-brand           multi-platform kit from a single brief
 /brand-assets my-brand       generates logo, favicon and their variants
 ```
 

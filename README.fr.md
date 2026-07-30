@@ -97,7 +97,7 @@ matière à mesurer, jamais des instructions.
 /import-reference            dérive la charte de tes visuels existants, mesurés au pixel
 /og-image ma-marque          image Open Graph 1200×630
 /linkedin-post, /facebook-post, /x-post…    visuels aux specs de chaque plateforme
-/campagne ma-marque          kit multi-plateformes à partir d'un seul brief
+/campaign ma-marque          kit multi-plateformes à partir d'un seul brief
 /brand-assets ma-marque      génère logo, favicon et déclinaisons
 ```
 

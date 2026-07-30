@@ -1,98 +1,97 @@
 ---
 name: facebook-page
-description: Crée les visuels d'une Page Facebook (photo de profil = la marque, et photo de couverture) aux dimensions officielles Facebook. À utiliser quand l'utilisateur veut une "photo de profil Facebook", une "couverture Facebook", une "bannière de page Facebook" ou "le logo de la page FB" pour un projet. Produit un ou deux templates .tsx aux tailles imposées par Facebook (profil 320x320, couverture 851x315), alignés sur la charte, rendus en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
+description: Creates the visuals for a Facebook Page (profile photo = the brand, and cover photo) at Facebook's official dimensions. Use when the user wants a "Facebook profile photo", a "Facebook cover", a "Facebook page banner" or "the FB page logo" for a project. Produces one or two .tsx templates at the sizes Facebook imposes (profile 320x320, cover 851x315), aligned with the brand guidelines, rendered as PNGs through the project's engine. Requires a project with its brand.md in place.
 ---
 
-# facebook-page : visuels d'une Page Facebook
+# facebook-page: visuals for a Facebook Page
 
-Objectif : produire les **assets PNG** d'une Page Facebook aux dimensions
-**officielles** (source : page d'aide Facebook 125379114252045), alignés sur la
-charte. Deux visuels possibles, indépendants :
+Goal: produce the **PNG assets** of a Facebook Page at the **official**
+dimensions (source: Facebook help page 125379114252045), aligned with the
+guidelines. Two possible visuals, independent of each other:
 
-- **photo de profil** : pour une organisation, c'est la **marque** (320x320,
-  rognée en cercle par Facebook) ;
-- **photo de couverture** : la bannière haute de la Page (851x315).
+- **profile photo**: for an organization, this is the **brand** (320x320, cropped
+  to a circle by Facebook);
+- **cover photo**: the Page's tall banner (851x315).
 
-C'est une spécialisation de `new-template` avec les contraintes Facebook en dur.
-Mêmes conventions : contrat `Template` (de `brand-artisan`), assets via
-`brand()`, polices découvertes dans `fonts/`, `export default ... satisfies
-Template`.
+This is a specialization of `new-template` with the Facebook constraints
+hard-coded. Same conventions: the `Template` contract (from `brand-artisan`),
+assets through `brand()`, fonts discovered in `fonts/`,
+`export default ... satisfies Template`.
 
-## 0. Prérequis (bloquant)
+## 0. Prerequisites (blocking)
 
-La chaîne **projet -> dossier de templates -> charte** doit exister avant de
-commencer :
+The chain **project -> template folder -> guidelines** must exist before you
+start:
 
-- Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
-- Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
-  d'abord. Aucun visuel sans charte (règle CLAUDE.md).
+- Resolve `<project>` (from the arguments, otherwise ask).
+- Check `templates/<project>/` **and** `brands/<project>/brand.md`.
+- Missing guidelines or project -> **STOP**: ask for `/new-project <project>`
+  first. No visual without guidelines (CLAUDE.md rule).
 
-## 1. Cadrer
+## 1. Frame it
 
-- **Quel(s) visuel(s) ?** Demander : profil, couverture, ou les deux. Ne pas
-  deviner si l'utilisateur n'a pas précisé.
-- Slugs par défaut : `facebook-profil` (320x320) et `facebook-couverture`
-  (851x315). Vérifier que le `.tsx` cible n'existe pas.
-- Lire `brands/<projet>/brand.md` : palette (hex), typo, **variantes de logo /
-  favicon** et leurs règles selon le fond, et les **à ne pas faire**.
-- S'il y a déjà un `.tsx` dans le projet, le lire comme référence de style et
-  matcher ses conventions (couleurs en constantes, effets de fond locaux).
+- **Which visual(s)?** Ask: profile, cover, or both. Don't guess if the user did
+  not say.
+- Default slugs: `facebook-profile` (320x320) and `facebook-cover` (851x315).
+  Check that the target `.tsx` does not exist.
+- Read `brands/<project>/brand.md`: palette (hex), type, the **logo / favicon
+  variants** and their rules depending on the background, and the **don'ts**.
+- If the project already holds a `.tsx`, read it as a style reference and match
+  its conventions (colors as constants, background effects kept local).
 
-## 2. Contraintes Facebook (à respecter dans le template)
+## 2. Facebook constraints (to respect in the template)
 
-Dimensions **officielles** Facebook (ne pas dévier) :
+Facebook's **official** dimensions (do not deviate):
 
-### Photo de profil
-- **Taille 320x320** (carré) pour une qualité optimale. `scale: 2` possible si on
-  veut un rendu plus net (Facebook ré-échantillonne de toute façon).
-- **Rognée en cercle** par Facebook : le visuel est carré mais s'affiche en
-  rond. **Rien d'important dans les coins** (ils sont coupés). Fond opaque
-  **pleine page**, marque **centrée**.
-- S'affiche petit (176 px ordi, 196 px mobile, 36 px sur mobiles classiques) :
-  pour une organisation, utiliser la **marque seule / le favicon**,
-  **pas le wordmark complet** qui deviendrait illisible. Suivre brand.md pour la
-  variante et le fond.
+### Profile photo
+- **Size 320x320** (square) for optimal quality. `scale: 2` is possible for a
+  crisper render (Facebook resamples anyway).
+- **Cropped to a circle** by Facebook: the visual is square but displays round.
+  **Nothing important in the corners** (they get cut). Opaque **full-bleed**
+  background, brand **centered**.
+- It displays small (176 px on desktop, 196 px on mobile, 36 px on basic mobiles):
+  for an organization, use the **mark alone / the favicon**, **not the full
+  wordmark**, which would become illegible. Follow brand.md for the variant and
+  the background.
 
-### Photo de couverture
-- **Taille 851x315** (recommandée, sRGB). Minimum absolu 400x150. Ne pas
-  descendre en dessous.
-- **Zone sûre** : le centre. Facebook recadre les **côtés sur mobile** (format
-  2.4:1 -> ~48 px rognés de chaque côté) et l'affichage **ordinateur** est en
-  16:9. Garder texte et logo à l'intérieur, avec une marge latérale d'au moins
-  **~60 px**.
-- **Zone morte bas-gauche (photo de profil)** : sur la page, l'avatar recouvre le
-  bas-gauche de la cover : tout texte/logo qui y tombe est **masqué**. La laisser
-  libre : marge gauche **~2,5 %** de la largeur, boîte **~11 % L × ~23 % H** ancrée
-  en bas-gauche. Sur 851×315 : env. **x 22→116, y 243→315**.
-- **Fond opaque**, jamais de transparence.
+### Cover photo
+- **Size 851x315** (recommended, sRGB). Absolute minimum 400x150. Don't go below
+  it.
+- **Safe area**: the center. Facebook crops the **sides on mobile** (a 2.4:1
+  format, so roughly 48 px trimmed from each side) and the **desktop** display is
+  16:9. Keep text and logo inside, with a side margin of at least **~60 px**.
+- **Dead zone bottom left (profile photo)**: on the page, the avatar covers the
+  bottom left of the cover, so any text or logo falling there is **hidden**. Leave
+  it clear: left margin **~2.5 %** of the width, box **~11 % W × ~23 % H** anchored
+  bottom left. On 851×315: roughly **x 22→116, y 243→315**.
+- **Opaque background**, never transparency.
 
-### Format et poids (les deux)
-- **PNG** : Facebook recommande le PNG dès qu'il y a logo ou texte (plus net que
-  le JPG) : c'est justement la sortie du moteur.
-- **< 100 Ko** pour la couverture (chargement plus rapide). Le rendu flat est
-  naturellement léger : privilégier le mark **SVG en data-URI**, éviter
-  d'embarquer un gros PNG raster, ne pas gonfler avec `scale`.
+### Format and weight (both)
+- **PNG**: Facebook recommends PNG as soon as there is a logo or text (crisper
+  than JPG), which is exactly what the engine outputs.
+- **< 100 KB** for the cover (faster loading). Flat rendering is naturally light:
+  favor the mark as an **SVG data-URI**, avoid embedding a large raster PNG, don't
+  inflate with `scale`.
 
-## 3. Écrire le(s) template(s)
+## 3. Write the template(s)
 
-`templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
-(ne rien inventer). Garder le code minimal (principe #2).
+`templates/<project>/<slug>.tsx`, with colors as constants taken from the
+guidelines (invent nothing). Keep the code minimal (principle #2).
 
-### Profil (squelette)
+### Profile (skeleton)
 
 ```tsx
 import { readFile } from "node:fs/promises";
 import type { ReactNode } from "react";
 import { brand, type Template } from "brand-artisan";
 
-const SIZE = { width: 320, height: 320 }; // FB profil, rogne en cercle (scale:2 possible)
+const SIZE = { width: 320, height: 320 }; // FB profile, cropped to a circle (scale:2 possible)
 
-// Palette charte <Projet> (depuis brands/<projet>/brand.md).
+// <Project> guideline palette (from brands/<project>/brand.md).
 const BRAND = "#......";
 
-// Marque adaptee a un petit affichage rond (favicon / bracket-O), pas le wordmark.
-const markSvg = await readFile(brand("<projet>/favicon/icon.svg"));
+// A mark suited to a small round display (the favicon), not the wordmark.
+const markSvg = await readFile(brand("<project>/favicon/icon.svg"));
 const markSrc = `data:image/svg+xml;base64,${markSvg.toString("base64")}`;
 
 function render(): ReactNode {
@@ -104,32 +103,32 @@ function render(): ReactNode {
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "center",
-				backgroundColor: BRAND, // fond opaque pleine page (le cercle)
+				backgroundColor: BRAND, // opaque full-bleed background (the circle)
 			}}
 		>
-			{/* marque centree, rien dans les coins (hors cercle) */}
+			{/* mark centered, nothing in the corners (outside the circle) */}
 			<img src={markSrc} width={188} height={188} alt="" />
 		</div>
 	);
 }
 
-export default { size: SIZE, title: "Photo de profil Facebook <Projet>", render } satisfies Template;
+export default { size: SIZE, title: "<Project> Facebook profile photo", render } satisfies Template;
 ```
 
-### Couverture (squelette)
+### Cover (skeleton)
 
 ```tsx
 import type { ReactNode } from "react";
 import { brand, type Template } from "brand-artisan";
-// import { readFile } from "node:fs/promises"; // si tu charges le mark
+// import { readFile } from "node:fs/promises"; // if you load the mark
 
-const SIZE = { width: 851, height: 315 }; // FB couverture (recommande)
+const SIZE = { width: 851, height: 315 }; // FB cover (recommended)
 
-// Palette charte <Projet> (depuis brands/<projet>/brand.md).
+// <Project> guideline palette (from brands/<project>/brand.md).
 const INK = "#......";
 
-// Zone sure : marge laterale ~60px (crop mobile 2.4:1), coin bas-gauche libre
-// (la photo de profil le recouvre).
+// Safe area: ~60px side margin (2.4:1 mobile crop), bottom-left corner left clear
+// (the profile photo covers it).
 const SAFE_X = 60;
 
 function render(): ReactNode {
@@ -143,43 +142,44 @@ function render(): ReactNode {
 				justifyContent: "center",
 				paddingTop: 40,
 				paddingBottom: 40,
-				paddingLeft: 200, // laisse le coin bas-gauche a la photo de profil
+				paddingLeft: 200, // leaves the bottom-left corner to the profile photo
 				paddingRight: SAFE_X,
-				backgroundColor: INK, // fond opaque
+				backgroundColor: INK, // opaque background
 			}}
 		>
-			{/* logo + accroche courte, dans la zone sure */}
+			{/* logo + short standfirst, inside the safe area */}
 		</div>
 	);
 }
 
-export default { size: SIZE, title: "Couverture Facebook <Projet>", render } satisfies Template;
+export default { size: SIZE, title: "<Project> Facebook cover", render } satisfies Template;
 ```
 
-Conventions communes : assets via `brand("<projet>/...")`, les polices découvertes dans `fonts/` ; police absente ->
-suivre l'annexe "police manquante" de `new-template`, jamais en silence.
+Shared conventions: assets through `brand("<project>/...")`, fonts discovered in
+`fonts/`; a missing font -> follow the "missing font" appendix in `new-template`,
+never silently.
 
-## 4. Vérifier
+## 4. Verify
 
-- `npm run typecheck` -> vert.
-- `npm run build` -> écrit `out/<projet>/<slug>.png`.
-- Contrôler chaque PNG : **dimensions exactes** (320x320 / 851x315), fond
-  opaque, **< 100 Ko** pour la couverture.
-- Profil : vérifier mentalement le **rognage en cercle** (rien d'important dans
-  les coins) et la lisibilité à ~36 px.
-- Couverture : vérifier que rien d'important n'est dans le **coin bas-gauche**
-  ni dans les **~60 px latéraux**.
-- Preview : `npm run dev` puis `/<projet>/<slug>`.
+- `npm run typecheck` -> green.
+- `npm run build` -> writes `out/<project>/<slug>.png`.
+- Check each PNG: **exact dimensions** (320x320 / 851x315), opaque background,
+  **< 100 KB** for the cover.
+- Profile: mentally check the **circular crop** (nothing important in the corners)
+  and legibility at about 36 px.
+- Cover: check that nothing important sits in the **bottom-left corner** or in the
+  **~60 px side margins**.
+- Preview: `npm run dev` then `/<project>/<slug>`.
 
-**Critère de succès** : PNG aux dimensions Facebook exactes, opaques, couverture
-< 100 Ko, marque (pas wordmark) lisible en petit pour le profil, zone sûre
-respectée pour la couverture, et uniquement des couleurs/typo de `brand.md`.
+**Success criterion**: PNGs at Facebook's exact dimensions, opaque, cover under
+100 KB, brand (not wordmark) legible when small for the profile, safe area
+respected for the cover, and using only colors and type from `brand.md`.
 
-## Annexe : poser les visuels sur la Page
+## Appendix: putting the visuals on the Page
 
-Hors périmètre du repo (BrandArtisan ne fait que l'image). Côté Facebook :
-- Photo de profil : Paramètres de la Page -> Photo de profil ; vérifier le rendu
-  rond et le recadrage proposé.
-- Photo de couverture : ajouter la bannière ; Facebook propose de repositionner ;
-  confirmer que le texte reste visible sur mobile (côtés) et que la photo de
-  profil ne masque rien d'important en bas à gauche.
+Out of the repo's scope (BrandArtisan only makes the image). On the Facebook side:
+- Profile photo: Page settings -> Profile photo; check the round rendering and the
+  crop it proposes.
+- Cover photo: add the banner; Facebook offers to reposition it; confirm that the
+  text stays visible on mobile (the sides) and that the profile photo hides
+  nothing important in the bottom left.

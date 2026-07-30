@@ -34,7 +34,7 @@ with your brand, then delete it.
    your project contains only your brand.
 4. Offers to install the skills into your AI agent, whichever it is, with
    [`npx skills add roslove44/brand-artisan -s "*" -y`](https://github.com/vercel-labs/skills):
-   `/new-project`, `/og-image`, `/linkedin-post`, `/campagne`… to produce visuals
+   `/new-project`, `/og-image`, `/linkedin-post`, `/campaign`… to produce visuals
    aligned with your guidelines. Declining changes nothing about rendering.
 
 Usage: `npx create-brand-artisan [folder] [--no-install]`. Without a folder,

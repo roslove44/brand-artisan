@@ -1,136 +1,137 @@
-# Charte de marque : Calame
+# Brand guidelines: Calame
 
-Référence de l'identité visuelle de **Calame**. Les fichiers logo/favicon vivent
-dans [`logo/`](logo/) et [`favicon/`](favicon/), à côté de ce document.
+Reference for the visual identity of **Calame**. The logo and favicon files live
+in [`logo/`](logo/) and [`favicon/`](favicon/), next to this document.
 
-> **Marque de démonstration.** Calame n'existe pas : c'est l'exemple livré avec
-> BrandArtisan, pour qu'un projet neuf produise une image dès la première
-> commande. Sa charte est **écrite**, pas relevée sur un site réel. Remplace-la
-> par la tienne (`/new-project`), ou repars de sa structure : elle montre ce
-> qu'une charte doit contenir pour qu'un visuel puisse être composé sans deviner.
+> **Demo brand.** Calame does not exist: it is the example shipped with
+> BrandArtisan, so that a fresh project produces an image on its very first
+> command. Its guidelines are **written**, not measured from a real site.
+> Replace them with your own (`/new-project`), or start from their structure:
+> they show what a set of guidelines must contain for a visual to be composed
+> without guessing.
 
 ---
 
-## 1. Concept et signification
+## 1. Concept and meaning
 
-Le **calame** est un roseau taillé en biseau, le plus vieil outil de tracé. Il
-donne son nom à la marque et sa forme au mark : la marque parle d'un **geste
-unique**, tracé d'un trait, dans une seule encre.
+A **calame** is a reed cut to a bevel, the oldest drawing tool there is. It
+gives the brand its name and the mark its shape: this brand is about a **single
+gesture**, drawn in one stroke, in one ink.
 
-Deux porteurs d'identité :
+Two carriers of the identity:
 
-- **Logotype : le mark suivi du wordmark `calame`** (minuscules). Le mark porte
-  l'accent, le mot reste en encre : un seul moment de couleur.
-- **Icône / favicon : le mark seul**, la plume taillée, sur une tuile à coins
-  arrondis. Lisible à 16 px là où le wordmark ne le serait plus.
+- **Logotype: the mark followed by the `calame` wordmark** (lowercase). The mark
+  carries the accent, the word stays in ink: one moment of color, no more.
+- **Icon / favicon: the mark alone**, the cut nib, on a rounded tile. Legible at
+  16 px, where the wordmark no longer would be.
 
-Le mark est une **géométrie tracée à la main** (quatre points), pas un glyphe :
-un trait qui s'affine de la base vers la pointe, coupé net en haut et en bas
-comme le biseau d'un calame. Il penche à droite, dans le sens de l'écriture.
+The mark is a **hand-drawn geometry** (four points), not a glyph: a stroke that
+tapers from base to tip, cut flat at top and bottom like the bevel of a calame.
+It leans to the right, in the direction of writing.
 
-### Typographie
+### Typography
 
 | | |
 |---|---|
-| Police d'affichage | **Sora**, graisse **700** (wordmark, titres) |
-| Police de texte | **Geist**, graisses **400** et **600** |
-| Source | Statiques livrées dans `fonts/`, découvertes par le moteur |
-| Licence | SIL Open Font License (OFL) pour les deux, voir [`fonts/NOTICE.md`](../../fonts/NOTICE.md) |
+| Display typeface | **Sora**, weight **700** (wordmark, headlines) |
+| Text typeface | **Geist**, weights **400** and **600** |
+| Source | Statics shipped in `fonts/`, discovered by the engine |
+| License | SIL Open Font License (OFL) for both, see [`fonts/NOTICE.md`](../../fonts/NOTICE.md) |
 
-Sora porte l'identité (le mot `calame` et les titres). Geist porte le texte
-courant : accroches, légendes, corps. Ne pas les intervertir.
+Sora carries the identity (the word `calame` and headlines). Geist carries
+running text: standfirsts, captions, body. Do not swap them.
 
-### Couleurs
+### Colors
 
-| Rôle | Hex | Repère Tailwind | Usage |
+| Role | Hex | Tailwind landmark | Usage |
 |---|---|---|---|
-| Encre | `#1c1917` | `stone-900` | Wordmark, titres, texte dominant |
-| Texte secondaire | `#78716c` | `stone-500` | Légendes, mentions, texte atténué |
-| Accent | `#c2410c` | `orange-700` | Le mark, et **un seul** moment d'accent par visuel |
-| Papier | `#fafaf9` | `stone-50` | Fond par défaut |
+| Ink | `#1c1917` | `stone-900` | Wordmark, headlines, dominant text |
+| Secondary text | `#78716c` | `stone-500` | Captions, fine print, muted text |
+| Accent | `#c2410c` | `orange-700` | The mark, and **one single** accent moment per visual |
+| Paper | `#fafaf9` | `stone-50` | Default background |
 
-**Fonds sombres** : encre claire `#fafaf9` (`stone-50`) et accent éclairci
-`#fb923c` (`orange-400`), pour tenir le contraste.
+**Dark backgrounds**: light ink `#fafaf9` (`stone-50`) and lightened accent
+`#fb923c` (`orange-400`), to hold contrast.
 
 ---
 
-## 2. Variantes
+## 2. Variants
 
 ### Logotype (`logo/`)
 
-Le mark en accent, suivi du wordmark **`calame`** en **Sora 700** en encre.
-Produit par `tools/calame/build-logo.ts`.
+The mark in accent, followed by the **`calame`** wordmark in **Sora 700** in ink.
+Produced by `tools/calame/build-logo.ts`.
 
-| Fichier | Quand l'utiliser |
+| File | When to use it |
 |---|---|
-| `logo.svg` / `logo.png` | Par défaut, sur fond clair (mark accent + mot encre) |
-| `logo-dark.svg` / `logo-dark.png` | Sur fond sombre (couleurs éclaircies, fond transparent) |
-| `logo-mono.svg` | Inline, hérite de `currentColor` |
-| `logo-mono-dark.svg` | Tout en encre : impression N&B, fond clair |
-| `logo-mono-white.svg` | Tout en blanc : aplat de couleur, photo, fond sombre |
-| `logo-white.png` | Raster sur fond papier plein |
+| `logo.svg` / `logo.png` | Default, on a light background (accent mark + ink word) |
+| `logo-dark.svg` / `logo-dark.png` | On a dark background (lightened colors, transparent background) |
+| `logo-mono.svg` | Inline, inherits `currentColor` |
+| `logo-mono-dark.svg` | All in ink: black and white print, light background |
+| `logo-mono-white.svg` | All in white: color field, photo, dark background |
+| `logo-white.png` | Raster on a solid paper background |
 
-### Favicon et icône (`favicon/`)
+### Favicon and icon (`favicon/`)
 
-Le mark seul, centré sur une **tuile à coins arrondis** (rayon 22 %). Couleur par
-défaut : **mark papier sur tuile accent `#c2410c`**. Produit par
+The mark alone, centered on a **rounded tile** (22 % radius). Default color:
+**paper mark on an accent tile `#c2410c`**. Produced by
 `tools/calame/build-favicon.ts`.
 
-| Fichier | Détail |
+| File | Detail |
 |---|---|
-| `icon.svg` | Source vectorielle, tuile accent arrondie, mark papier |
-| `icon-square.svg` | Tuile accent à coins droits |
-| `icon-mark.svg` | Mark seul, **accent**, sur transparent (fonds clairs) |
-| `icon-white-mark.svg` | Mark seul, **papier**, sur transparent (fonds sombres) |
-| `icon-white.svg` | Mark accent sur fond papier, coins arrondis |
-| `icon-white-square.svg` | Mark accent sur fond papier, coins droits |
-| `icon-16/32/48/64/180/192/512.png` | Rasters par taille |
-| `apple-icon.png` | 180 px, carré (Apple arrondit lui-même) |
-| `favicon.ico` | Multi-résolution 16 / 32 / 48 |
+| `icon.svg` | Vector source, rounded accent tile, paper mark |
+| `icon-square.svg` | Accent tile with square corners |
+| `icon-mark.svg` | Mark alone, **accent**, on transparent (light backgrounds) |
+| `icon-white-mark.svg` | Mark alone, **paper**, on transparent (dark backgrounds) |
+| `icon-white.svg` | Accent mark on a paper background, rounded corners |
+| `icon-white-square.svg` | Accent mark on a paper background, square corners |
+| `icon-16/32/48/64/180/192/512.png` | Rasters by size |
+| `apple-icon.png` | 180 px, square (Apple rounds it itself) |
+| `favicon.ico` | Multi-resolution 16 / 32 / 48 |
 
 ---
 
-## 3. Règles d'usage
+## 3. Usage rules
 
-**Zone de protection.** Garder autour du logotype un vide au moins égal à la
-hauteur du mark. Rien n'entre dans cette zone.
+**Clear space.** Keep empty space around the logotype at least equal to the
+height of the mark. Nothing enters that zone.
 
-**Taille minimale.** En deçà d'une lisibilité confortable du mot, préférer le
-**mark seul**.
+**Minimum size.** Below comfortable legibility of the word, prefer the **mark
+alone**.
 
-**Fonds.** Choisir la variante selon le contraste :
+**Backgrounds.** Pick the variant according to contrast:
 
-- fond clair → `logo.svg`
-- fond sombre → `logo-dark.svg`
-- photo / aplat de couleur → `logo-mono-white.svg`
+- light background -> `logo.svg`
+- dark background -> `logo-dark.svg`
+- photo / color field -> `logo-mono-white.svg`
 
-### À ne pas faire
+### Don't
 
-- Ne pas **recomposer** le wordmark dans une autre police que **Sora 700**.
-- Ne pas **déformer** (étirer, incliner davantage) le mark : sa pente fait partie
-  du dessin.
-- Ne pas **recolorer** hors des couleurs de la charte.
-- Ne pas ajouter **ombre, contour, dégradé** ni effet.
-- Ne pas mettre l'accent sur le mot : l'accent appartient au mark.
-- Ne pas multiplier les accents : **un seul orange** (`#c2410c`) par visuel, le
-  reste en encre et gris.
+- Don't **recompose** the wordmark in any typeface other than **Sora 700**.
+- Don't **distort** the mark (stretch it, lean it further): its slant is part of
+  the drawing.
+- Don't **recolor** outside the guideline colors.
+- Don't add **shadow, outline, gradient** or any effect.
+- Don't put the accent on the word: the accent belongs to the mark.
+- Don't multiply accents: **one single orange** (`#c2410c`) per visual, the rest
+  in ink and gray.
 
 ---
 
-## 4. Régénération
+## 4. Regeneration
 
-Le logo et le favicon sont générés par la toolchain `tools/calame/`, qui
-s'appuie sur le socle partagé `brand-artisan/brandkit`.
+The logo and the favicon are generated by the `tools/calame/` toolchain, which
+builds on the shared `brand-artisan/brandkit` foundation.
 
 ```bash
-npx tsx tools/calame/build-logo.ts     # -> out/calame/brand/logo/    (mark + wordmark + variantes + PNG)
+npx tsx tools/calame/build-logo.ts     # -> out/calame/brand/logo/    (mark + wordmark + variants + PNG)
 npx tsx tools/calame/build-favicon.ts  # -> out/calame/brand/favicon/ (icon*.svg + rasters + .ico)
 ```
 
-`build-logo.ts` compose depuis les **glyphes** de Sora et place le mark à gauche ;
-`build-favicon.ts` centre la **géométrie** du mark dans la tuile et imprime une
-validation pixel du favicon 32 px. Les deux techniques de la toolchain sont donc
-illustrées ici, une par script.
+`build-logo.ts` composes from the **glyphs** of Sora and places the mark on the
+left; `build-favicon.ts` centers the **geometry** of the mark inside the tile and
+prints a pixel validation of the 32 px favicon. Both techniques of the toolchain
+are therefore illustrated here, one per script.
 
-La sortie va dans `out/calame/brand/` (artefacts éphémères, non commités). Après
-revue, **promouvoir** les fichiers validés vers `logo/` et `favicon/` ici.
+Output goes to `out/calame/brand/` (ephemeral artifacts, not committed). After
+review, **promote** the approved files into `logo/` and `favicon/` here.

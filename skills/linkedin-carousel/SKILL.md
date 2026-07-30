@@ -1,142 +1,142 @@
 ---
 name: linkedin-carousel
-description: Crée les cartes d'un carousel ad LinkedIn (Campaign Manager) aux dimensions LinkedIn, comme une série de visuels 1:1 cohérents. À utiliser quand l'utilisateur veut un "carrousel LinkedIn", une "publicité carrousel LinkedIn" ou "plusieurs cartes qui défilent" pour un projet LinkedIn. Produit N templates .tsx (une carte = un PNG, ratio 1:1) dans un sous-dossier dédié, partageant une charte commune, alignés sur la brand.md. Nécessite un projet avec sa brand.md en place.
+description: Creates the cards of a LinkedIn carousel ad (Campaign Manager) at LinkedIn's dimensions, as a series of coherent 1:1 visuals. Use when the user wants a "LinkedIn carousel", a "LinkedIn carousel ad" or "several cards that swipe" for a LinkedIn project. Produces N .tsx templates (one card = one PNG, 1:1 ratio) in a dedicated subfolder, sharing a common theme, aligned with brand.md. Requires a project with its brand.md in place.
 ---
 
-# linkedin-carousel : cartes d'un carousel ad LinkedIn
+# linkedin-carousel: cards for a LinkedIn carousel ad
 
-Objectif : produire les **assets PNG des N cartes** d'un **carousel ad** LinkedIn
-(Campaign Manager / Sponsored Content), au format **1:1**, cohérents entre eux et
-alignés sur la charte. Un carrousel n'est pas N images indépendantes : c'est une
-**série** qui raconte quelque chose. La cohérence inter-cartes est le cœur du
-livrable.
+Goal: produce the **PNG assets of the N cards** of a LinkedIn **carousel ad**
+(Campaign Manager / Sponsored Content), in **1:1** format, coherent with each
+other and aligned with the guidelines. A carousel is not N independent images: it
+is a **series** that tells something. Coherence across cards is the heart of the
+deliverable.
 
-C'est une spécialisation de `new-template`. Mêmes conventions : contrat
-`Template`, assets via `brand()`, polices chargées dans `render.ts`,
-`export default ... satisfies Template`. Même modèle que `facebook-carousel`.
+This is a specialization of `new-template`. Same conventions: the `Template`
+contract, assets through `brand()`, fonts discovered in `fonts/`,
+`export default ... satisfies Template`. Same model as `facebook-carousel`.
 
-> **Carousel ad ≠ carrousel organique.** Ce que tu produis ici, ce sont les
-> **cartes images 1:1** d'un *carousel ad* (publicité, Campaign Manager). Le
-> « carrousel » **organique** du fil LinkedIn est un **document multi-pages
-> (PDF)**, pas une série d'images : **hors périmètre** de ce moteur (qui sort du
-> PNG).
+> **Carousel ad ≠ organic carousel.** What you produce here are the **1:1 image
+> cards** of a *carousel ad* (advertising, Campaign Manager). The **organic**
+> "carousel" in the LinkedIn feed is a **multi-page document (PDF)**, not a series
+> of images: **out of scope** for this engine (which outputs PNG).
 
-## 0. Prérequis (bloquant)
+## 0. Prerequisites (blocking)
 
-La chaîne **projet -> dossier de templates -> charte** doit exister :
+The chain **project -> template folder -> guidelines** must exist:
 
-- Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
-- Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
-  d'abord. Aucun visuel sans charte (règle CLAUDE.md).
+- Resolve `<project>` (from the arguments, otherwise ask).
+- Check `templates/<project>/` **and** `brands/<project>/brand.md`.
+- Missing guidelines or project -> **STOP**: ask for `/new-project <project>`
+  first. No visual without guidelines (CLAUDE.md rule).
 
-## 1. Cadrer (demander, ne pas deviner)
+## 1. Frame it (ask, don't guess)
 
-- **Nom du carrousel** : slug kebab-case, défaut `linkedin-carousel`. C'est le
-  **sous-dossier** `templates/<projet>/<nom>/`. Vérifier qu'il n'existe pas.
-- **Mécanique narrative** (voir §3) : story, une carte = un produit, top N, tuto,
-  avant/après. Elle dicte le design.
-- **Nombre de cartes** : 2 à 10, **sweet spot 3-5**.
-- **Contenu de chaque carte** : message court + rôle (hook, développement, CTA).
-- Lire `brands/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
-  faire**. S'il y a déjà un `.tsx` dans le projet, le lire comme référence.
-- Lire `brands/<projet>/project.md` s'il existe : caler le **ton** et les
-  **claims** des cartes (ne pas inventer de chiffres ni de promesses). Absent ->
-  demander le ton et le message plutôt que de deviner.
+- **Name of the carousel**: a kebab-case slug, default `linkedin-carousel`. It is
+  the **subfolder** `templates/<project>/<name>/`. Check that it does not exist.
+- **Narrative mechanic** (see §3): a story, one card per product, a top N, a
+  tutorial, before/after. It dictates the design.
+- **Number of cards**: 2 to 10, **sweet spot 3-5**.
+- **Content of each card**: a short message + its role (hook, development, CTA).
+- Read `brands/<project>/brand.md`: palette, type, logo variants, **don'ts**. If
+  the project already holds a `.tsx`, read it as a reference.
+- Read `brands/<project>/project.md` if it exists: set the **tone** and the
+  **claims** of the cards (don't invent figures or promises). If absent -> ask for
+  the tone and the message rather than guessing.
 
-## 2. Contraintes LinkedIn (à respecter)
+## 2. LinkedIn constraints (to respect)
 
-| Point | Valeur | Statut |
+| Point | Value | Status |
 |---|---|---|
-| Nombre de cartes | 2 à 10 (sweet spot 3-5) | Officiel LinkedIn |
-| Ratio | **1:1 uniquement** | Officiel LinkedIn |
-| Taille / carte | **1080x1080** (max 4320x4320) | Officiel LinkedIn |
-| Format | JPG ou PNG (GIF non animé) | Officiel LinkedIn |
-| Poids / carte | ≤ 10 Mo | Officiel LinkedIn |
-| Headline / carte | ≤ 45 caractères | Officiel LinkedIn |
+| Number of cards | 2 to 10 (sweet spot 3-5) | Official LinkedIn |
+| Ratio | **1:1 only** | Official LinkedIn |
+| Size / card | **1080x1080** (max 4320x4320) | Official LinkedIn |
+| Format | JPG or PNG (non-animated GIF) | Official LinkedIn |
+| Weight / card | ≤ 10 MB | Official LinkedIn |
+| Headline / card | ≤ 45 characters | Official LinkedIn |
 
-- **Le 1:1 est imposé** : pas de 4:5 ni 9:16 en carousel ad LinkedIn (différence
-  avec Facebook). Toutes les cartes au même format.
-- Le **texte d'intro** et les headlines/liens se règlent dans Campaign Manager,
-  **pas dans l'image** : une idée par carte.
+- **1:1 is mandatory**: no 4:5 or 9:16 in a LinkedIn carousel ad (this differs
+  from Facebook). Every card at the same format.
+- The **intro text** and the headlines/links are set in Campaign Manager, **not in
+  the image**: one idea per card.
 
-## 3. L'esprit : agencer pour que ça pope
+## 3. The spirit: arrange it so it lands
 
-### Mécaniques narratives (choisir UNE)
-- **Story séquentielle** : hook -> problème -> solution -> preuve -> CTA.
-- **Une carte = un produit / une offre** : chaque carte lisible seule, fond et
-  position constants.
-- **Top N / tips** : carte 1 = titre, cartes 2..N = un item, dernière = CTA.
-  Numéroter les cartes.
-- **Tuto pas-à-pas** : une étape par carte, visuel auto-portant.
-- **Avant / après** : contraste fort entre première et dernière carte.
+### Narrative mechanics (pick ONE)
+- **Sequential story**: hook -> problem -> solution -> proof -> CTA.
+- **One card = one product / one offer**: each card legible on its own, constant
+  background and position.
+- **Top N / tips**: card 1 = the title, cards 2..N = one item each, the last = the
+  CTA. Number the cards.
+- **Step-by-step tutorial**: one step per card, each visual self-supporting.
+- **Before / after**: strong contrast between the first and the last card.
 
-### Carte 1 = hook
-Seule pleinement visible avant le swipe : **un seul message**, fort contraste, un
-élément qui crée la curiosité. Ne pas tout expliquer ici.
+### Card 1 = the hook
+It is the only one fully visible before the swipe: **a single message**, strong
+contrast, one element that creates curiosity. Don't explain everything here.
 
-### Cohérence inter-cartes (le cœur)
-Palette et typo identiques ; **logo en position fixe et discrète** ; placements
-constants ; **fil conducteur visuel** (couleur ou repère de progression) ; chaque
-carte lisible de façon autonome.
+### Coherence across cards (the heart of it)
+Identical palette and type; **the logo in a fixed, discreet position**; constant
+placements; a **visual through-line** (a color or a progress marker); each card
+legible on its own.
 
-### Ton LinkedIn
-Audience **professionnelle** : registre valeur ajoutée (insight, donnée, bénéfice
-métier, preuve), CTA mesuré. Éviter le ton « promo agressive ».
+### LinkedIn tone
+A **professional** audience: a register of added value (an insight, a data point,
+a business benefit, proof), a measured CTA. Avoid the "aggressive promo" tone.
 
-### CTA croissant
-Doux au début, **conversion sur la dernière carte**. Chaque carte a son propre
-lien dans Campaign Manager.
+### Rising CTA
+Soft at the start, **conversion on the last card**. Each card has its own link in
+Campaign Manager.
 
-## 4. Écrire les cartes
+## 4. Write the cards
 
-Structure : **un sous-dossier par carrousel**, **un `.tsx` par carte**, plus un
-`theme.ts` partagé.
+Structure: **one subfolder per carousel**, **one `.tsx` per card**, plus a shared
+`theme.ts`.
 
 ```
-templates/<projet>/<nom>/
-  theme.ts        <- palette + layout partages (TS pur, PAS de JSX)
-  card-1.tsx      <- une carte = un PNG (1080x1080)
+templates/<project>/<name>/
+  theme.ts        <- shared palette + layout (pure TS, NO JSX)
+  card-1.tsx      <- one card = one PNG (1080x1080)
   card-2.tsx
   card-3.tsx
 ```
 
-- **`theme.ts` factorise la cohérence** (palette, `SIZE`, marges). **TS pur sans
-  JSX** : la découverte ne charge que les `.tsx`, donc `theme.ts` est ignoré.
-  **Ne pas** créer de composant de cadre en `.tsx` dans ce dossier : il serait
-  découvert comme une fausse carte et casserait le build. Le peu de JSX de cadre
-  est répété dans chaque carte.
-- **Nommage et ordre** : tri **lexical** -> `card-10` passe avant `card-2`. Dès
-  10 cartes, **padder** : `card-01` … `card-10`.
-- Couleurs depuis `theme.ts`, assets via `brand("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
-  manquante » de `new-template`, jamais en silence.
+- **`theme.ts` factors out the coherence** (palette, `SIZE`, margins). **Pure TS
+  with no JSX**: discovery only loads `.tsx` files, so `theme.ts` is ignored.
+  **Do not** create a frame component as a `.tsx` in this folder: it would be
+  discovered as a fake card and break the build. The little bit of frame JSX gets
+  repeated in each card.
+- **Naming and order**: the sort is **lexical**, so `card-10` comes before
+  `card-2`. From 10 cards on, **pad** them: `card-01` … `card-10`.
+- Colors from `theme.ts`, assets through `brand("<project>/...")`, fonts
+  discovered in `fonts/`; a missing font -> the "missing font" appendix in
+  `new-template`, never silently.
 
-### `theme.ts` (squelette)
+### `theme.ts` (skeleton)
 
 ```ts
 import type { CSSProperties } from "react";
 
-export const SIZE = { width: 1080, height: 1080 }; // carousel ad LinkedIn, 1:1
-export const TOTAL = 4; // nombre de cartes (index + progression)
+export const SIZE = { width: 1080, height: 1080 }; // LinkedIn carousel ad, 1:1
+export const TOTAL = 4; // number of cards (index + progress)
 
-// Palette charte <Projet> (depuis brands/<projet>/brand.md).
+// <Project> guideline palette (from brands/<project>/brand.md).
 export const INK = "#......";
 export const ACCENT = "#......";
 export const PAPER = "#......";
 
-// Cadre commun a toutes les cartes : meme fond, meme zone de securite.
+// Frame shared by every card: same background, same safe area.
 export const frame: CSSProperties = {
 	width: "100%",
 	height: "100%",
 	display: "flex",
 	flexDirection: "column",
 	justifyContent: "space-between",
-	padding: 90, // zone de securite
-	backgroundColor: INK, // fond opaque, identique partout
+	padding: 90, // safe area
+	backgroundColor: INK, // opaque background, identical everywhere
 };
 ```
 
-### `card-1.tsx` (squelette)
+### `card-1.tsx` (skeleton)
 
 ```tsx
 import type { ReactNode } from "react";
@@ -146,9 +146,9 @@ import { SIZE, frame, PAPER, ACCENT } from "./theme";
 function render(): ReactNode {
 	return (
 		<div style={frame}>
-			{/* logo en position fixe (meme coin sur toutes les cartes) */}
-			{/* hook : un seul message, fort contraste */}
-			{/* repere de progression (ex. 1/4) */}
+			{/* logo in a fixed position (same corner on every card) */}
+			{/* the hook: a single message, strong contrast */}
+			{/* progress marker (e.g. 1/4) */}
 		</div>
 	);
 }
@@ -156,18 +156,19 @@ function render(): ReactNode {
 export default { size: SIZE, render } satisfies Template;
 ```
 
-(Sans `title`, le PNG sort sous le nom du fichier : `out/<projet>/<nom>/card-1.png`.)
+(With no `title`, the PNG comes out under the file's name:
+`out/<project>/<name>/card-1.png`.)
 
-## 5. Vérifier
+## 5. Verify
 
-- `npm run typecheck` -> vert.
-- `npm run build` -> écrit `out/<projet>/<nom>/card-*.png`.
-- Contrôler **chaque** PNG : **1080×1080** (1:1 partout), fond opaque, ≤ 10 Mo
-  (trivial en rendu flat).
-- Vérifier la **cohérence visuelle** (palette, typo, logo, fil conducteur) et que
-  **chaque carte est lisible seule**.
-- Preview : `npm run dev` puis `/<projet>/<nom>`.
+- `npm run typecheck` -> green.
+- `npm run build` -> writes `out/<project>/<name>/card-*.png`.
+- Check **each** PNG: **1080×1080** (1:1 throughout), opaque background, ≤ 10 MB
+  (trivial with flat rendering).
+- Check the **visual coherence** (palette, type, logo, through-line) and that
+  **each card is legible on its own**.
+- Preview: `npm run dev` then `/<project>/<name>`.
 
-**Critère de succès** : N cartes (2-10) en 1:1 1080×1080, opaques, visuellement
-cohérentes, carte 1 accrocheuse, dernière carte porteuse du CTA, ton
-professionnel, et n'utilisant que des couleurs/typo de `brand.md`.
+**Success criterion**: N cards (2-10) at 1:1 1080×1080, opaque, visually coherent,
+card 1 catchy, the last card carrying the CTA, professional in tone, and using
+only colors and type from `brand.md`.

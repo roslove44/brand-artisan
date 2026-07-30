@@ -1,100 +1,101 @@
 ---
 name: x-page
-description: Crée les visuels de profil X / Twitter (photo de profil et header / bannière) aux dimensions officielles X. À utiliser quand l'utilisateur veut une "photo de profil X/Twitter", un "header Twitter", une "bannière X" ou "l'avatar X" pour un projet. Produit un ou deux templates .tsx aux tailles imposées par X (profil 400x400, header 1500x500), alignés sur la charte, rendus en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
+description: Creates the X / Twitter profile visuals (profile photo and header / banner) at X's official dimensions. Use when the user wants an "X/Twitter profile photo", a "Twitter header", an "X banner" or "the X avatar" for a project. Produces one or two .tsx templates at the sizes X imposes (profile 400x400, header 1500x500), aligned with the brand guidelines, rendered as PNGs through the project's engine. Requires a project with its brand.md in place.
 ---
 
-# x-page : visuels de profil X / Twitter
+# x-page: X / Twitter profile visuals
 
-Objectif : produire les **assets PNG** d'un profil X (Twitter) aux dimensions
-**officielles** (source : aide X « customize your profile »), alignés sur la
-charte. Deux visuels possibles, indépendants :
+Goal: produce the **PNG assets** of an X (Twitter) profile at the **official**
+dimensions (source: X help, "customize your profile"), aligned with the
+guidelines. Two possible visuals, independent of each other:
 
-- **photo de profil** : la marque, 400×400, rognée en cercle ;
-- **header / bannière** : 1500×500 (3:1).
+- **profile photo**: the brand, 400×400, cropped to a circle;
+- **header / banner**: 1500×500 (3:1).
 
-C'est une spécialisation de `new-template` avec les contraintes X en dur. Mêmes
-conventions : contrat `Template`, assets via `brand()`, polices chargées dans
-`render.ts`, `export default ... satisfies Template`.
+This is a specialization of `new-template` with the X constraints hard-coded. Same
+conventions: the `Template` contract, assets through `brand()`, fonts discovered
+in `fonts/`, `export default ... satisfies Template`.
 
-## 0. Prérequis (bloquant)
+## 0. Prerequisites (blocking)
 
-La chaîne **projet -> dossier de templates -> charte** doit exister :
+The chain **project -> template folder -> guidelines** must exist:
 
-- Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
-- Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
-  d'abord. Aucun visuel sans charte (règle CLAUDE.md).
+- Resolve `<project>` (from the arguments, otherwise ask).
+- Check `templates/<project>/` **and** `brands/<project>/brand.md`.
+- Missing guidelines or project -> **STOP**: ask for `/new-project <project>`
+  first. No visual without guidelines (CLAUDE.md rule).
 
-## 1. Cadrer
+## 1. Frame it
 
-- **Quel(s) visuel(s) ?** Demander : profil, header, ou les deux.
-- Slugs par défaut : `x-profil` (400×400), `x-header` (1500×500). Vérifier que le
-  `.tsx` cible n'existe pas.
-- Lire `brands/<projet>/brand.md` : palette, typo, **variantes de logo /
-  favicon** et leurs règles selon le fond, et les **à ne pas faire**.
-- S'il y a déjà un `.tsx` dans le projet, le lire comme référence de style.
+- **Which visual(s)?** Ask: profile, header, or both.
+- Default slugs: `x-profile` (400×400), `x-header` (1500×500). Check that the
+  target `.tsx` does not exist.
+- Read `brands/<project>/brand.md`: palette, type, the **logo / favicon variants**
+  and their rules depending on the background, and the **don'ts**.
+- If the project already holds a `.tsx`, read it as a style reference.
 
-## 2. Contraintes X (à respecter)
+## 2. X constraints (to respect)
 
-| Visuel | Taille | Ratio | Notes |
+| Visual | Size | Ratio | Notes |
 |---|---|---|---|
-| Photo de profil | **400×400** | 1:1 | rognée en **cercle** |
-| Header / bannière | **1500×500** | 3:1 | recadrée sur mobile (bords) |
+| Profile photo | **400×400** | 1:1 | cropped to a **circle** |
+| Header / banner | **1500×500** | 3:1 | cropped on mobile (the edges) |
 
-- **Format** : PNG ou JPG. Fond **opaque**. X ne documente pas de poids max pour
-  ces deux visuels (le 5 Mo officiel concerne les images de tweet).
-- **Profil** : carré, **marque centrée**, rien d'important dans les coins (affiché
-  en cercle). 400×400 est la taille officielle ; `scale: 2` conseillé pour la
-  netteté. Pour une organisation, préférer la **marque seule / le favicon** au
-  wordmark, illisible en petit. Suivre brand.md.
-- **Header (1500×500)** : sur mobile, X **rogne les côtés** → garder le contenu
-  important centré, marges latérales confortables.
-- **Zone morte bas-gauche (photo de profil)** : sur la page profil, l'avatar
-  recouvre le bas-gauche du header : tout texte/logo qui y tombe est **masqué**.
-  La laisser libre : marge gauche **~2,5 %** de la largeur, boîte **~23 % L ×
-  ~35 % H** ancrée en bas-gauche. Sur 1500×500 : env. **x 38→388, y 325→500**.
+- **Format**: PNG or JPG. **Opaque** background. X documents no maximum weight for
+  these two visuals (the official 5 MB applies to tweet images).
+- **Profile**: square, **brand centered**, nothing important in the corners
+  (displayed as a circle). 400×400 is the official size; `scale: 2` is advised for
+  crispness. For an organization, prefer the **mark alone / the favicon** over the
+  wordmark, which is illegible when small. Follow brand.md.
+- **Header (1500×500)**: on mobile, X **crops the sides**, so keep the important
+  content centered, with comfortable side margins.
+- **Dead zone bottom left (profile photo)**: on the profile page, the avatar covers
+  the bottom left of the header, so any text or logo falling there is **hidden**.
+  Leave it clear: left margin **~2.5 %** of the width, box **~23 % W × ~35 % H**
+  anchored bottom left. On 1500×500: roughly **x 38→388, y 325→500**.
 
-## 3. Écrire le(s) template(s)
+## 3. Write the template(s)
 
-`templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
-(ne rien inventer). Choisir `SIZE` selon le visuel :
+`templates/<project>/<slug>.tsx`, with colors as constants taken from the
+guidelines (invent nothing). Pick `SIZE` according to the visual:
 
 ```tsx
 import type { ReactNode } from "react";
 import { brand, type Template } from "brand-artisan";
-// import { readFile } from "node:fs/promises"; // si tu charges le mark
+// import { readFile } from "node:fs/promises"; // if you load the mark
 
-// Choisir selon le visuel :
-const SIZE = { width: 400, height: 400 };   // Profil 1:1 (scale:2 conseille)
+// Pick according to the visual:
+const SIZE = { width: 400, height: 400 };   // Profile 1:1 (scale:2 advised)
 // const SIZE = { width: 1500, height: 500 };  // Header 3:1
 
-// Palette charte <Projet> (depuis brands/<projet>/brand.md).
+// <Project> guideline palette (from brands/<project>/brand.md).
 const INK = "#......";
 
 function render(): ReactNode {
 	return (
 		<div style={{ width: "100%", height: "100%", display: "flex", /* ... */ backgroundColor: INK }}>
-			{/* marque centree (profil) OU lockup + accroche centres (header) */}
+			{/* brand centered (profile) OR lockup + standfirst centered (header) */}
 		</div>
 	);
 }
 
-export default { size: SIZE, title: "<Titre humain>", render } satisfies Template;
+export default { size: SIZE, title: "<Human title>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `brand("<projet>/...")`, les polices chargées dans `render.ts` ; police absente -> annexe « police
-manquante » de `new-template`, jamais en silence.
+Shared conventions: assets through `brand("<project>/...")`, fonts discovered in
+`fonts/`; a missing font -> the "missing font" appendix in `new-template`, never
+silently.
 
-## 4. Vérifier
+## 4. Verify
 
-- `npm run typecheck` -> vert.
-- `npm run build` -> écrit `out/<projet>/<slug>.png`.
-- Contrôler chaque PNG : **dimensions exactes** (400×400 / 1500×500), fond opaque.
-- Profil : vérifier le **rognage en cercle** (rien dans les coins).
-- Header : rien d'important dans le **coin bas-gauche** (photo de profil) ni trop
-  près des **bords latéraux** (crop mobile).
-- Preview : `npm run dev` puis `/<projet>/<slug>`.
+- `npm run typecheck` -> green.
+- `npm run build` -> writes `out/<project>/<slug>.png`.
+- Check each PNG: **exact dimensions** (400×400 / 1500×500), opaque background.
+- Profile: check the **circular crop** (nothing in the corners).
+- Header: nothing important in the **bottom-left corner** (profile photo) nor too
+  close to the **side edges** (mobile crop).
+- Preview: `npm run dev` then `/<project>/<slug>`.
 
-**Critère de succès** : PNG aux dimensions X exactes, opaques, marque centrée et
-lisible pour le profil, zone sûre respectée pour le header, et uniquement des
-couleurs/typo de `brand.md`.
+**Success criterion**: PNGs at X's exact dimensions, opaque, brand centered and
+legible for the profile, safe area respected for the header, and using only colors
+and type from `brand.md`.

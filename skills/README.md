@@ -21,7 +21,7 @@ npx skills add roslove44/brand-artisan -s "*" -y  # these skills, in your agent
 | `new-template` | Add any visual, aligned with those guidelines |
 | `og-image` | 1200x630 share images |
 | `linkedin-*`, `facebook-*`, `x-*` | Posts, page art and carousel cards at each platform's official sizes |
-| `campagne` | One brief, a coherent kit across every platform |
+| `campaign` | One brief, a coherent kit across every platform |
 | `brand-assets` | Logo, favicon and their variants, generated rather than drawn |
 
 None of them will invent a color or a font. The project's `brand.md` is the

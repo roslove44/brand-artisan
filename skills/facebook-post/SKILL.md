@@ -1,96 +1,97 @@
 ---
 name: facebook-post
-description: Crée une image de publication Facebook (post image / affiche / visuel publicitaire simple sur le fil) aux dimensions Meta, dans l'orientation choisie. À utiliser quand l'utilisateur veut une "image Facebook", un "post Facebook", une "affiche", un "visuel publicitaire" ou une "publication" pour un projet. Demande l'orientation (portrait par défaut, carré, paysage) et produit un template .tsx au bon ratio, aligné sur la charte, rendu en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
+description: Creates a Facebook post image (feed post, poster, simple ad visual) at Meta's dimensions, in the chosen orientation. Use when the user wants a "Facebook image", a "Facebook post", a "poster", an "ad visual" or a "publication" for a project. Asks for the orientation (portrait by default, square, landscape) and produces a .tsx template at the right ratio, aligned with the brand guidelines, rendered as a PNG through the project's engine. Requires a project with its brand.md in place.
 ---
 
-# facebook-post : image de publication Facebook
+# facebook-post: Facebook post image
 
-Objectif : produire l'**asset PNG** d'une image de post Facebook (publication
-sur le fil, affiche, visuel publicitaire simple), au **ratio Meta** choisi,
-aligné sur la charte.
+Goal: produce the **PNG asset** of a Facebook post image (a feed publication, a
+poster, a simple ad visual), at the chosen **Meta ratio**, aligned with the
+guidelines.
 
-C'est une spécialisation de `new-template` avec les contraintes Facebook en dur.
-Mêmes conventions : contrat `Template` (de `brand-artisan`), assets via
-`brand()`, polices découvertes dans `fonts/`, `export default ... satisfies
-Template`.
+This is a specialization of `new-template` with the Facebook constraints
+hard-coded. Same conventions: the `Template` contract (from `brand-artisan`),
+assets through `brand()`, fonts discovered in `fonts/`,
+`export default ... satisfies Template`.
 
-> **Statut des dimensions.** Meta ne publie **aucune** spec de dimensions pour
-> les *posts organiques* : les chiffres ci-dessous viennent des specs du
-> **Gestionnaire de publicités** (Ads Guide + pages de placement). Le moteur de
-> rendu du fil étant le même, c'est la meilleure référence. Les **ratios** sont
-> officiels Meta ; pour le **paysage**, les px sont une convention (Meta ne
-> documente pas de résolution pour ce ratio).
+> **Status of the dimensions.** Meta publishes **no** dimension spec for *organic
+> posts*: the figures below come from the **Ads Manager** specs (Ads Guide +
+> placement pages). Since the feed's rendering engine is the same, that is the
+> best available reference. The **ratios** are official Meta; for **landscape**,
+> the pixel figures are a convention (Meta documents no resolution for that
+> ratio).
 
-## 0. Prérequis (bloquant)
+## 0. Prerequisites (blocking)
 
-La chaîne **projet -> dossier de templates -> charte** doit exister :
+The chain **project -> template folder -> guidelines** must exist:
 
-- Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
-- Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
-  d'abord. Aucun visuel sans charte (règle CLAUDE.md).
+- Resolve `<project>` (from the arguments, otherwise ask).
+- Check `templates/<project>/` **and** `brands/<project>/brand.md`.
+- Missing guidelines or project -> **STOP**: ask for `/new-project <project>`
+  first. No visual without guidelines (CLAUDE.md rule).
 
-## 1. Cadrer
+## 1. Frame it
 
-- **Orientation ?** Demander. **Défaut : portrait** (4:5, le plus performant sur
-  le fil). Sinon carré (1:1) ou paysage (1.91:1).
-- Slug par défaut `facebook-post` (ou `facebook-post-<orientation>` si plusieurs
-  variantes). Vérifier que le `.tsx` cible n'existe pas.
-- Lire `brands/<projet>/brand.md` : palette (hex), typo, variantes de logo selon
-  le fond, et les **à ne pas faire**.
-- Lire `brands/<projet>/project.md` s'il existe : caler le **ton** et les
-  **claims** (ne pas inventer de chiffres ni de promesses). Absent -> demander
-  le ton et le message plutôt que de deviner.
-- Demander le **message** : titre court + accroche (1 phrase). Pas de paragraphe.
-- S'il y a déjà un `.tsx` dans le projet, le lire comme référence de style.
+- **Which orientation?** Ask. **Default: portrait** (4:5, the best performer in
+  the feed). Otherwise square (1:1) or landscape (1.91:1).
+- Default slug `facebook-post` (or `facebook-post-<orientation>` if there are
+  several variants). Check that the target `.tsx` does not exist.
+- Read `brands/<project>/brand.md`: palette (hex), type, logo variants depending
+  on the background, and the **don'ts**.
+- Read `brands/<project>/project.md` if it exists: set the **tone** and the
+  **claims** (don't invent figures or promises). If absent -> ask for the tone and
+  the message rather than guessing.
+- Ask for the **message**: short headline + standfirst (1 sentence). No paragraph.
+- If the project already holds a `.tsx`, read it as a style reference.
 
-## 2. Contraintes Facebook (à respecter dans le template)
+## 2. Facebook constraints (to respect in the template)
 
-### Dimensions par orientation
+### Dimensions per orientation
 
-| Orientation | Taille (px) | Ratio | Statut |
+| Orientation | Size (px) | Ratio | Status |
 |---|---|---|---|
-| **Portrait** (défaut) | **1440x1800** | 4:5 | Résolution cible Meta (min 1080x1350) |
-| **Carré** | **1080x1080** | 1:1 | Minimum officiel Meta |
-| **Paysage** | **1080x566** | 1.91:1 | Ratio officiel ; px de convention (alt 1200x628) |
+| **Portrait** (default) | **1440x1800** | 4:5 | Meta target resolution (min 1080x1350) |
+| **Square** | **1080x1080** | 1:1 | Official Meta minimum |
+| **Landscape** | **1080x566** | 1.91:1 | Official ratio; convention pixels (alt 1200x628) |
 
-- **Ne pas utiliser le 16:9** en paysage : il n'est **pas** pris en charge sur le
-  Fil Facebook. Le paysage supporté est **1.91:1**.
-- Largeur minimale officielle : **600 px**. Ne pas descendre en dessous.
-- `scale: 2` possible pour un rendu plus net ; inutile aux tailles ci-dessus.
+- **Don't use 16:9** in landscape: it is **not** supported in the Facebook Feed.
+  The supported landscape is **1.91:1**.
+- Official minimum width: **600 px**. Don't go below it.
+- `scale: 2` is possible for a crisper render; unnecessary at the sizes above.
 
-### Mise en page
+### Layout
 
-- **Fond opaque**, jamais de transparence.
-- **Zone de sécurité** ~80 px de marge : garder logo et texte vers le centre, le
-  fil peut rogner légèrement et arrondir les coins selon le contexte.
-- **Lisible en petit** : le fil s'affiche souvent étroit sur mobile. Titre gros,
-  accroche courte, fort contraste.
-- L'ancienne **règle des 20 % de texte** de Meta est **abandonnée** : pas de
-  limite de texte, mais garder une affiche aérée et lisible.
+- **Opaque background**, never transparency.
+- **Safe area** of roughly 80 px of margin: keep the logo and the text towards the
+  center, since the feed may crop slightly and round the corners depending on
+  context.
+- **Legible when small**: the feed often displays narrow on mobile. Large headline,
+  short standfirst, strong contrast.
+- Meta's old **20 % text rule** is **gone**: there is no text limit, but keep the
+  poster airy and legible.
 
-### Format et poids
+### Format and weight
 
-- **PNG** (ou JPG) : le moteur sort du PNG, net pour le texte/logo.
-- Poids max Meta : **30 Mo**, le rendu flat est très loin de cette limite, rien
-  à optimiser de particulier.
+- **PNG** (or JPG): the engine outputs PNG, crisp for text and logos.
+- Meta's maximum weight: **30 MB**. Flat rendering is nowhere near that limit,
+  so there is nothing particular to optimize.
 
-## 3. Écrire le template
+## 3. Write the template
 
-`templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
-(ne rien inventer). Choisir `SIZE` selon l'orientation. Squelette :
+`templates/<project>/<slug>.tsx`, with colors as constants taken from the
+guidelines (invent nothing). Pick `SIZE` according to the orientation. Skeleton:
 
 ```tsx
 import type { ReactNode } from "react";
 import { brand, type Template } from "brand-artisan";
-// import { readFile } from "node:fs/promises"; // si tu charges le mark (SVG/PNG)
+// import { readFile } from "node:fs/promises"; // if you load the mark (SVG/PNG)
 
-// Choisir selon l'orientation :
-const SIZE = { width: 1440, height: 1800 }; // Portrait 4:5 (defaut)
-// const SIZE = { width: 1080, height: 1080 }; // Carre 1:1
-// const SIZE = { width: 1080, height: 566 };  // Paysage 1.91:1
+// Pick according to the orientation:
+const SIZE = { width: 1440, height: 1800 }; // Portrait 4:5 (default)
+// const SIZE = { width: 1080, height: 1080 }; // Square 1:1
+// const SIZE = { width: 1080, height: 566 };  // Landscape 1.91:1
 
-// Palette charte <Projet> (depuis brands/<projet>/brand.md).
+// <Project> guideline palette (from brands/<project>/brand.md).
 const INK = "#......";
 
 function render(): ReactNode {
@@ -102,30 +103,30 @@ function render(): ReactNode {
 				display: "flex",
 				flexDirection: "column",
 				justifyContent: "center",
-				padding: 80, // zone de securite
-				backgroundColor: INK, // fond opaque
+				padding: 80, // safe area
+				backgroundColor: INK, // opaque background
 			}}
 		>
-			{/* logo + titre gros + accroche courte, fort contraste */}
+			{/* logo + large headline + short standfirst, strong contrast */}
 		</div>
 	);
 }
 
-export default { size: SIZE, title: "Post Facebook <Projet>", render } satisfies Template;
+export default { size: SIZE, title: "<Project> Facebook post", render } satisfies Template;
 ```
 
-Conventions communes : assets via `brand("<projet>/...")`, les polices découvertes dans `fonts/` ; police absente ->
-suivre l'annexe "police manquante" de `new-template`, jamais en silence. Garder
-le code minimal (principe #2).
+Shared conventions: assets through `brand("<project>/...")`, fonts discovered in
+`fonts/`; a missing font -> follow the "missing font" appendix in `new-template`,
+never silently. Keep the code minimal (principle #2).
 
-## 4. Vérifier
+## 4. Verify
 
-- `npm run typecheck` -> vert.
-- `npm run build` -> écrit `out/<projet>/<slug>.png`.
-- Contrôler le PNG : **dimensions exactes** selon l'orientation, fond opaque,
-  ratio correct (4:5 / 1:1 / 1.91:1).
-- Preview : `npm run dev` puis `/<projet>/<slug>` ; vérifier la lisibilité réduit
-  à la largeur d'un fil mobile.
+- `npm run typecheck` -> green.
+- `npm run build` -> writes `out/<project>/<slug>.png`.
+- Check the PNG: **exact dimensions** for the orientation, opaque background,
+  correct ratio (4:5 / 1:1 / 1.91:1).
+- Preview: `npm run dev` then `/<project>/<slug>`; check legibility shrunk to the
+  width of a mobile feed.
 
-**Critère de succès** : PNG aux dimensions Meta de l'orientation choisie,
-opaque, lisible en petit, et n'utilisant que des couleurs/typo de `brand.md`.
+**Success criterion**: a PNG at Meta's dimensions for the chosen orientation,
+opaque, legible when small, and using only colors and type from `brand.md`.

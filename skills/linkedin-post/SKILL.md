@@ -1,79 +1,78 @@
 ---
 name: linkedin-post
-description: Crée une image de publication LinkedIn (post image) aux dimensions LinkedIn, dans l'orientation choisie. À utiliser quand l'utilisateur veut une "image LinkedIn", un "post LinkedIn", un "visuel LinkedIn" ou une "publication LinkedIn" pour un projet. Demande l'orientation (portrait par défaut, carré, paysage) et produit un template .tsx au bon ratio, aligné sur la charte, rendu en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
+description: Creates a LinkedIn post image at LinkedIn's dimensions, in the chosen orientation. Use when the user wants a "LinkedIn image", a "LinkedIn post", a "LinkedIn visual" or a "LinkedIn publication" for a project. Asks for the orientation (portrait by default, square, landscape) and produces a .tsx template at the right ratio, aligned with the brand guidelines, rendered as a PNG through the project's engine. Requires a project with its brand.md in place.
 ---
 
-# linkedin-post : image de publication LinkedIn
+# linkedin-post: LinkedIn post image
 
-Objectif : produire l'**asset PNG** d'une image de post LinkedIn, au **ratio**
-choisi, aligné sur la charte.
+Goal: produce the **PNG asset** of a LinkedIn post image, at the chosen **ratio**,
+aligned with the guidelines.
 
-C'est une spécialisation de `new-template` avec les contraintes LinkedIn en dur.
-Mêmes conventions : contrat `Template` (de `brand-artisan`), assets via
-`brand()`, polices découvertes dans `fonts/`, `export default ... satisfies
-Template`.
+This is a specialization of `new-template` with the LinkedIn constraints
+hard-coded. Same conventions: the `Template` contract (from `brand-artisan`),
+assets through `brand()`, fonts discovered in `fonts/`,
+`export default ... satisfies Template`.
 
-> **Statut des dimensions.** LinkedIn ne documente officiellement qu'un visuel à
-> **1200×627 (1.91:1)**, pour l'aperçu de **lien** sur les Pages. Pour une image
-> postée directement, LinkedIn ne publie **pas** de dimensions : le **carré
-> 1080×1080** et le **portrait 1080×1350** sont des **conventions** (reprises des
-> specs publicitaires), pas de la doc organique.
+> **Status of the dimensions.** LinkedIn only officially documents one visual, at
+> **1200×627 (1.91:1)**, for the **link** preview on Pages. For an image posted
+> directly, LinkedIn publishes **no** dimensions: the **1080×1080 square** and the
+> **1080×1350 portrait** are **conventions** (carried over from the advertising
+> specs), not from the organic documentation.
 
-## 0. Prérequis (bloquant)
+## 0. Prerequisites (blocking)
 
-La chaîne **projet -> dossier de templates -> charte** doit exister :
+The chain **project -> template folder -> guidelines** must exist:
 
-- Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
-- Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
-  d'abord. Aucun visuel sans charte (règle CLAUDE.md).
+- Resolve `<project>` (from the arguments, otherwise ask).
+- Check `templates/<project>/` **and** `brands/<project>/brand.md`.
+- Missing guidelines or project -> **STOP**: ask for `/new-project <project>`
+  first. No visual without guidelines (CLAUDE.md rule).
 
-## 1. Cadrer
+## 1. Frame it
 
-- **Orientation ?** Demander. **Défaut : portrait** (4:5, prend le plus de
-  hauteur dans le fil). Sinon carré (1:1) ou paysage (1.91:1).
-- Slug par défaut `linkedin-post` (ou `linkedin-post-<orientation>` si plusieurs).
-  Vérifier que le `.tsx` cible n'existe pas.
-- Lire `brands/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
-  faire**.
-- Lire `brands/<projet>/project.md` s'il existe : caler le **ton** et les
-  **claims** (ne pas inventer de chiffres ni de promesses). Absent -> demander
-  le ton et le message plutôt que de deviner.
-- Demander le **message** : titre court + accroche (1 phrase). Pas de paragraphe.
-- S'il y a déjà un `.tsx` dans le projet, le lire comme référence de style.
+- **Which orientation?** Ask. **Default: portrait** (4:5, takes the most height
+  in the feed). Otherwise square (1:1) or landscape (1.91:1).
+- Default slug `linkedin-post` (or `linkedin-post-<orientation>` if there are
+  several). Check that the target `.tsx` does not exist.
+- Read `brands/<project>/brand.md`: palette, type, logo variants, **don'ts**.
+- Read `brands/<project>/project.md` if it exists: set the **tone** and the
+  **claims** (don't invent figures or promises). If absent -> ask for the tone and
+  the message rather than guessing.
+- Ask for the **message**: short headline + standfirst (1 sentence). No paragraph.
+- If the project already holds a `.tsx`, read it as a style reference.
 
-## 2. Contraintes LinkedIn (à respecter)
+## 2. LinkedIn constraints (to respect)
 
-| Orientation | Taille (px) | Ratio | Statut |
+| Orientation | Size (px) | Ratio | Status |
 |---|---|---|---|
-| **Portrait** (défaut) | **1080x1350** | 4:5 | Convention (specs ads) |
-| **Carré** | **1080x1080** | 1:1 | Convention (specs ads) |
-| **Paysage** | **1200x627** | 1.91:1 | Officiel LinkedIn (aperçu de lien) |
+| **Portrait** (default) | **1080x1350** | 4:5 | Convention (ads specs) |
+| **Square** | **1080x1080** | 1:1 | Convention (ads specs) |
+| **Landscape** | **1200x627** | 1.91:1 | Official LinkedIn (link preview) |
 
-- **Format** : PNG ou JPG, fond **opaque**.
-- **Texte du post** (corps, lien) : vit **hors image**, dans la publication :
-  ne pas tout écrire dans le visuel. **Une idée par carte**.
-- **Lisible en petit** : le fil LinkedIn s'affiche étroit sur mobile. Titre gros,
-  accroche courte, fort contraste, **zone de sécurité ~80 px**.
-- **Ton LinkedIn** : audience professionnelle. Privilégier une accroche à valeur
-  ajoutée (insight, donnée, bénéfice métier) plutôt qu'un argumentaire agressif.
+- **Format**: PNG or JPG, **opaque** background.
+- **The post's text** (body, link) lives **outside the image**, in the
+  publication: don't write everything into the visual. **One idea per card.**
+- **Legible when small**: the LinkedIn feed displays narrow on mobile. Large
+  headline, short standfirst, strong contrast, **safe area of about 80 px**.
+- **LinkedIn tone**: a professional audience. Favor a standfirst carrying added
+  value (an insight, a data point, a business benefit) over an aggressive pitch.
 
-## 3. Écrire le template
+## 3. Write the template
 
-`templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte.
-Choisir `SIZE` selon l'orientation. Squelette :
+`templates/<project>/<slug>.tsx`, with colors as constants taken from the
+guidelines. Pick `SIZE` according to the orientation. Skeleton:
 
 ```tsx
 import type { ReactNode } from "react";
 import { brand, type Template } from "brand-artisan";
-// import { readFile } from "node:fs/promises"; // si tu charges le mark
+// import { readFile } from "node:fs/promises"; // if you load the mark
 
-// Choisir selon l'orientation :
-const SIZE = { width: 1080, height: 1350 }; // Portrait 4:5 (defaut)
-// const SIZE = { width: 1080, height: 1080 }; // Carre 1:1
-// const SIZE = { width: 1200, height: 627 };  // Paysage 1.91:1
+// Pick according to the orientation:
+const SIZE = { width: 1080, height: 1350 }; // Portrait 4:5 (default)
+// const SIZE = { width: 1080, height: 1080 }; // Square 1:1
+// const SIZE = { width: 1200, height: 627 };  // Landscape 1.91:1
 
-// Palette charte <Projet> (depuis brands/<projet>/brand.md).
+// <Project> guideline palette (from brands/<project>/brand.md).
 const INK = "#......";
 
 function render(): ReactNode {
@@ -85,30 +84,31 @@ function render(): ReactNode {
 				display: "flex",
 				flexDirection: "column",
 				justifyContent: "center",
-				padding: 80, // zone de securite
-				backgroundColor: INK, // fond opaque
+				padding: 80, // safe area
+				backgroundColor: INK, // opaque background
 			}}
 		>
-			{/* logo + titre gros + accroche courte, fort contraste */}
+			{/* logo + large headline + short standfirst, strong contrast */}
 		</div>
 	);
 }
 
-export default { size: SIZE, title: "Post LinkedIn <Projet>", render } satisfies Template;
+export default { size: SIZE, title: "<Project> LinkedIn post", render } satisfies Template;
 ```
 
-Conventions communes : assets via `brand("<projet>/...")`, les polices découvertes dans `fonts/` ; police absente -> annexe « police
-manquante » de `new-template`, jamais en silence. Garder le code minimal.
+Shared conventions: assets through `brand("<project>/...")`, fonts discovered in
+`fonts/`; a missing font -> the "missing font" appendix in `new-template`, never
+silently. Keep the code minimal.
 
-## 4. Vérifier
+## 4. Verify
 
-- `npm run typecheck` -> vert.
-- `npm run build` -> écrit `out/<projet>/<slug>.png`.
-- Contrôler le PNG : **dimensions exactes** selon l'orientation, fond opaque,
-  ratio correct (4:5 / 1:1 / 1.91:1).
-- Preview : `npm run dev` puis `/<projet>/<slug>` ; vérifier la lisibilité réduit
-  à la largeur d'un fil mobile.
+- `npm run typecheck` -> green.
+- `npm run build` -> writes `out/<project>/<slug>.png`.
+- Check the PNG: **exact dimensions** for the orientation, opaque background,
+  correct ratio (4:5 / 1:1 / 1.91:1).
+- Preview: `npm run dev` then `/<project>/<slug>`; check legibility shrunk to the
+  width of a mobile feed.
 
-**Critère de succès** : PNG aux dimensions de l'orientation choisie, opaque,
-lisible en petit, ton professionnel, et n'utilisant que des couleurs/typo de
+**Success criterion**: a PNG at the dimensions of the chosen orientation, opaque,
+legible when small, professional in tone, and using only colors and type from
 `brand.md`.

@@ -1,113 +1,116 @@
 ---
 name: linkedin-page
-description: Crée les visuels d'un profil ou d'une Page LinkedIn (photo de profil, banner perso, logo entreprise, cover entreprise) aux dimensions officielles LinkedIn. À utiliser quand l'utilisateur veut une "photo de profil LinkedIn", un "banner LinkedIn", une "bannière de page entreprise", un "logo de page LinkedIn" ou une "cover LinkedIn" pour un projet. Produit un ou plusieurs templates .tsx aux tailles imposées par LinkedIn, alignés sur la charte, rendus en PNG via le moteur du projet. Nécessite un projet avec sa brand.md en place.
+description: Creates the visuals for a LinkedIn profile or Page (profile photo, personal banner, company logo, company cover) at LinkedIn's official dimensions. Use when the user wants a "LinkedIn profile photo", a "LinkedIn banner", a "company page banner", a "LinkedIn page logo" or a "LinkedIn cover" for a project. Produces one or more .tsx templates at the sizes LinkedIn imposes, aligned with the brand guidelines, rendered as PNGs through the project's engine. Requires a project with its brand.md in place.
 ---
 
-# linkedin-page : visuels d'un profil / Page LinkedIn
+# linkedin-page: visuals for a LinkedIn profile / Page
 
-Objectif : produire les **assets PNG** d'un profil personnel ou d'une Page
-entreprise LinkedIn, aux dimensions **officielles** (source : help LinkedIn
-a563309 / a568217 / a549049), alignés sur la charte. Quatre visuels possibles,
-indépendants :
+Goal: produce the **PNG assets** of a personal profile or a LinkedIn company
+Page, at the **official** dimensions (source: LinkedIn help a563309 / a568217 /
+a549049), aligned with the guidelines. Four possible visuals, independent of each
+other:
 
-- **photo de profil** (perso) : la marque, 400×400, rognée en cercle ;
-- **banner perso** : l'arrière-plan de profil, 1584×396 (4:1) ;
-- **logo entreprise** (Page) : 400×400 ;
-- **cover entreprise** (Page) : la bannière haute, 4200×700 (6:1).
+- **profile photo** (personal): the brand, 400×400, cropped to a circle;
+- **personal banner**: the profile background, 1584×396 (4:1);
+- **company logo** (Page): 400×400;
+- **company cover** (Page): the tall banner, 4200×700 (6:1).
 
-C'est une spécialisation de `new-template` avec les contraintes LinkedIn en dur.
-Mêmes conventions : contrat `Template` (de `brand-artisan`), assets via
-`brand()`, polices découvertes dans `fonts/`, `export default ... satisfies
-Template`.
+This is a specialization of `new-template` with the LinkedIn constraints
+hard-coded. Same conventions: the `Template` contract (from `brand-artisan`),
+assets through `brand()`, fonts discovered in `fonts/`,
+`export default ... satisfies Template`.
 
-## 0. Prérequis (bloquant)
+## 0. Prerequisites (blocking)
 
-La chaîne **projet -> dossier de templates -> charte** doit exister :
+The chain **project -> template folder -> guidelines** must exist:
 
-- Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
-- Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
-  d'abord. Aucun visuel sans charte (règle CLAUDE.md).
+- Resolve `<project>` (from the arguments, otherwise ask).
+- Check `templates/<project>/` **and** `brands/<project>/brand.md`.
+- Missing guidelines or project -> **STOP**: ask for `/new-project <project>`
+  first. No visual without guidelines (CLAUDE.md rule).
 
-## 1. Cadrer
+## 1. Frame it
 
-- **Quel(s) visuel(s) ?** Demander : profil, banner perso, logo entreprise,
-  cover entreprise. Ne pas deviner.
-- Slugs par défaut : `linkedin-profil`, `linkedin-banner`, `linkedin-logo`,
-  `linkedin-cover`. Vérifier que le `.tsx` cible n'existe pas.
-- Lire `brands/<projet>/brand.md` : palette, typo, **variantes de logo /
-  favicon** et leurs règles selon le fond, et les **à ne pas faire**.
-- S'il y a déjà un `.tsx` dans le projet, le lire comme référence de style.
+- **Which visual(s)?** Ask: profile, personal banner, company logo, company
+  cover. Don't guess.
+- Default slugs: `linkedin-profile`, `linkedin-banner`, `linkedin-logo`,
+  `linkedin-cover`. Check that the target `.tsx` does not exist.
+- Read `brands/<project>/brand.md`: palette, type, the **logo / favicon
+  variants** and their rules depending on the background, and the **don'ts**.
+- If the project already holds a `.tsx`, read it as a style reference.
 
-## 2. Contraintes LinkedIn (à respecter)
+## 2. LinkedIn constraints (to respect)
 
-| Visuel | Taille | Ratio | Poids | Notes |
+| Visual | Size | Ratio | Weight | Notes |
 |---|---|---|---|---|
-| Photo de profil | **400×400** (min) | 1:1 | ≤ 8 Mo | rognée en **cercle** |
-| Banner perso | **1584×396** | 4:1 | ≤ 8 Mo | photo de profil en **bas-gauche** |
-| Logo entreprise | **400×400** | 1:1 | ≤ 3 Mo | posé sur blanc si transparent |
-| Cover entreprise | **4200×700** | 6:1 | ≤ 3 Mo | peut être rognée pour s'adapter |
+| Profile photo | **400×400** (min) | 1:1 | ≤ 8 MB | cropped to a **circle** |
+| Personal banner | **1584×396** | 4:1 | ≤ 8 MB | profile photo **bottom left** |
+| Company logo | **400×400** | 1:1 | ≤ 3 MB | placed on white if transparent |
+| Company cover | **4200×700** | 6:1 | ≤ 3 MB | may be cropped to fit |
 
-- **Format** : PNG ou JPG. Fond **opaque** (notre rendu n'est jamais transparent).
-- **Profil & logo** : carré, **marque centrée**, rien d'important dans les coins
-  (le profil est affiché en cercle). 400×400 est le **minimum** : `scale: 2`
-  conseillé pour un rendu net. Pour une organisation, préférer la **marque seule /
-  le favicon** au wordmark complet, illisible en petit. Suivre brand.md.
-- **Zone morte bas-gauche (avatar / logo)** : sur la page, la photo de profil
-  (perso) ou le logo (entreprise) recouvre le bas-gauche de la cover : tout
-  texte/logo qui y tombe est **masqué**. **Mêmes proportions** dans les deux cas
-  (marge gauche **~3,1 %** de la largeur, boîte **~16 % L × ~46 % H** ancrée en
-  bas-gauche) ; seule la **forme du masque** change : **cercle** (rounded-full) en
-  perso, **carré** en entreprise.
-  - Banner perso 1584×396 : env. **x 49→305, y 214→396** (masque rond).
-  - Cover entreprise 4200×700 : env. **x 130→808, y 378→700** (masque carré).
-- **Cover entreprise** : LinkedIn peut aussi la **rogner** selon l'écran → garder
-  le reste du contenu **centré**, marges larges.
+- **Format**: PNG or JPG. **Opaque** background (our rendering is never
+  transparent).
+- **Profile & logo**: square, **brand centered**, nothing important in the corners
+  (the profile is displayed as a circle). 400×400 is the **minimum**: `scale: 2`
+  is advised for a crisp render. For an organization, prefer the **mark alone /
+  the favicon** over the full wordmark, which is illegible when small. Follow
+  brand.md.
+- **Dead zone bottom left (avatar / logo)**: on the page, the profile photo
+  (personal) or the logo (company) covers the bottom left of the cover, so any
+  text or logo falling there is **hidden**. **The same proportions** apply in both
+  cases (left margin **~3.1 %** of the width, box **~16 % W × ~46 % H** anchored
+  bottom left); only the **shape of the mask** changes: a **circle**
+  (rounded-full) for personal, a **square** for company.
+  - Personal banner 1584×396: roughly **x 49→305, y 214→396** (round mask).
+  - Company cover 4200×700: roughly **x 130→808, y 378→700** (square mask).
+- **Company cover**: LinkedIn may also **crop** it depending on the screen, so
+  keep the rest of the content **centered**, with wide margins.
 
-## 3. Écrire le(s) template(s)
+## 3. Write the template(s)
 
-`templates/<projet>/<slug>.tsx`, couleurs en constantes tirées de la charte
-(ne rien inventer). Garder le code minimal (principe #2). Choisir `SIZE` selon le
-visuel :
+`templates/<project>/<slug>.tsx`, with colors as constants taken from the
+guidelines (invent nothing). Keep the code minimal (principle #2). Pick `SIZE`
+according to the visual:
 
 ```tsx
 import type { ReactNode } from "react";
 import { brand, type Template } from "brand-artisan";
-// import { readFile } from "node:fs/promises"; // si tu charges le mark
+// import { readFile } from "node:fs/promises"; // if you load the mark
 
-// Choisir selon le visuel :
-const SIZE = { width: 400, height: 400 };   // Profil / logo (scale:2 conseille)
-// const SIZE = { width: 1584, height: 396 };  // Banner perso 4:1
-// const SIZE = { width: 4200, height: 700 };  // Cover entreprise 6:1
+// Pick according to the visual:
+const SIZE = { width: 400, height: 400 };   // Profile / logo (scale:2 advised)
+// const SIZE = { width: 1584, height: 396 };  // Personal banner 4:1
+// const SIZE = { width: 4200, height: 700 };  // Company cover 6:1
 
-// Palette charte <Projet> (depuis brands/<projet>/brand.md).
+// <Project> guideline palette (from brands/<project>/brand.md).
 const INK = "#......";
 
 function render(): ReactNode {
 	return (
 		<div style={{ width: "100%", height: "100%", display: "flex", /* ... */ backgroundColor: INK }}>
-			{/* marque centree (profil/logo) OU logo + accroche dans la zone sure (banner/cover) */}
+			{/* brand centered (profile/logo) OR logo + standfirst in the safe area (banner/cover) */}
 		</div>
 	);
 }
 
-export default { size: SIZE, title: "<Titre humain>", render } satisfies Template;
+export default { size: SIZE, title: "<Human title>", render } satisfies Template;
 ```
 
-Conventions communes : assets via `brand("<projet>/...")`, les polices découvertes dans `fonts/` ; police absente -> annexe « police
-manquante » de `new-template`, jamais en silence.
+Shared conventions: assets through `brand("<project>/...")`, fonts discovered in
+`fonts/`; a missing font -> the "missing font" appendix in `new-template`, never
+silently.
 
-## 4. Vérifier
+## 4. Verify
 
-- `npm run typecheck` -> vert.
-- `npm run build` -> écrit `out/<projet>/<slug>.png`.
-- Contrôler chaque PNG : **dimensions exactes** selon le visuel, fond opaque,
-  poids sous la limite (≤ 8 Mo perso, ≤ 3 Mo entreprise, trivial en rendu flat).
-- Profil/logo : vérifier le **rognage en cercle** (rien dans les coins).
-- Banner : rien d'important dans le **coin bas-gauche** (photo de profil).
-- Cover entreprise : contenu **centré** (rognage possible).
-- Preview : `npm run dev` puis `/<projet>/<slug>`.
+- `npm run typecheck` -> green.
+- `npm run build` -> writes `out/<project>/<slug>.png`.
+- Check each PNG: **exact dimensions** for the visual, opaque background, weight
+  under the limit (≤ 8 MB personal, ≤ 3 MB company, trivial with flat rendering).
+- Profile/logo: check the **circular crop** (nothing in the corners).
+- Banner: nothing important in the **bottom left corner** (profile photo).
+- Company cover: content **centered** (cropping is possible).
+- Preview: `npm run dev` then `/<project>/<slug>`.
 
-**Critère de succès** : PNG aux dimensions LinkedIn exactes, opaques, marque
-centrée et lisible pour profil/logo, zone sûre respectée pour banner/cover, et
-uniquement des couleurs/typo de `brand.md`.
+**Success criterion**: PNGs at LinkedIn's exact dimensions, opaque, brand
+centered and legible for profile/logo, safe area respected for banner/cover, and
+using only colors and type from `brand.md`.

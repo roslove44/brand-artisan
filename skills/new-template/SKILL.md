@@ -1,144 +1,144 @@
 ---
 name: new-template
-description: Scaffolde un nouveau visuel (.tsx) dans un projet BrandArtisan existant, aligné sur sa charte brand.md. À utiliser quand l'utilisateur veut créer une nouvelle image/couverture/bannière/OG dans un projet ("nouveau visuel", "ajoute une couverture pour X", "crée l'OG de Y"). Lit obligatoirement brands/<projet>/brand.md et refuse si absente.
+description: Scaffolds a new visual (.tsx) in an existing BrandArtisan project, aligned with its brand.md guidelines. Use when the user wants to create a new image/cover/banner/OG in a project ("new visual", "add a cover for X", "create the OG for Y"). Always reads brands/<project>/brand.md and refuses if it is missing.
 ---
 
-# new-template : scaffold d'un visuel
+# new-template: scaffolding a visual
 
-Objectif : créer `templates/<projet>/<nom>.tsx` conforme au contrat
-`Template` et **aligné sur la charte du projet**.
+Goal: create `templates/<project>/<name>.tsx` conforming to the `Template`
+contract and **aligned with the project's guidelines**.
 
-## 1. Résoudre `<projet>` et `<nom>`
+## 1. Resolve `<project>` and `<name>`
 
-Les prendre dans les arguments. Sinon les demander. `<nom>` est un slug
-kebab-case (ex. `cover`, `og-home`, `banniere-linkedin`). Vérifier que
-`templates/<projet>/<nom>.tsx` n'existe pas déjà.
+Take them from the arguments. Otherwise ask. `<name>` is a kebab-case slug (e.g.
+`cover`, `og-home`, `linkedin-banner`). Check that
+`templates/<project>/<name>.tsx` does not already exist.
 
-## 2. Lire la charte (bloquant)
+## 2. Read the guidelines (blocking)
 
-**Lire `brands/<projet>/brand.md`.** Si le fichier n'existe pas -> **STOP** :
-ne pas produire de visuel, dire à l'utilisateur de lancer `/new-project <projet>`
-d'abord. C'est la règle de CLAUDE.md, sans exception.
+**Read `brands/<project>/brand.md`.** If the file does not exist -> **STOP**:
+produce no visual, tell the user to run `/new-project <project>` first. That is
+the CLAUDE.md rule, without exception.
 
-En lisant la charte, extraire : palette (rôles + hex), typo/graisses, variantes
-de logo/favicon et leurs règles, et les **à ne pas faire**.
+While reading the guidelines, extract: the palette (roles + hex), type and
+weights, logo/favicon variants and their rules, and the **don'ts**.
 
-## 3. S'appuyer sur l'existant
+## 3. Build on what is there
 
-S'il y a déjà un `.tsx` dans `templates/<projet>/`, le lire comme référence
-de style (ex. `cover.tsx`) et matcher ses conventions. Sinon, partir du squelette
-ci-dessous.
+If `templates/<project>/` already holds a `.tsx`, read it as a style reference
+(e.g. `og.tsx`) and match its conventions. Otherwise start from the skeleton
+below.
 
-## 4. Cadrer le visuel (demander, ne pas deviner)
+## 4. Frame the visual (ask, don't guess)
 
-Demander à l'utilisateur :
+Ask the user for:
 
-- **Dimensions** (px). Suggérer un défaut selon l'usage : OG ~1200×630,
-  couverture sociale ~1500×500, bannière LinkedIn ~1584×396.
-- **Message / contenu** (titre, tagline, éléments). Si
-  `brands/<projet>/project.md` existe, le lire pour caler le ton et les claims
-  (ne pas inventer de chiffres ni de promesses) ; sinon, demander le ton plutôt
-  que de deviner.
-- **Variante de logo** à utiliser (selon le fond, suivre les règles de la charte).
+- **Dimensions** (px). Suggest a default for the use: OG ~1200×630, social cover
+  ~1500×500, LinkedIn banner ~1584×396.
+- **Message / content** (headline, tagline, elements). If
+  `brands/<project>/project.md` exists, read it to set the tone and the claims
+  (don't invent figures or promises); otherwise ask for the tone rather than
+  guessing.
+- **Which logo variant** to use (depending on the background, following the
+  guideline rules).
 
-Plusieurs interprétations possibles du brief -> les présenter, ne pas choisir en
-silence (principe #1 de CLAUDE.md).
+If the brief has several possible readings -> present them, don't choose in
+silence (CLAUDE.md principle #1).
 
-## 5. Écrire le `.tsx`
+## 5. Write the `.tsx`
 
-Respecter le contrat `Template` (de `brand-artisan`) et les conventions du
-projet :
+Respect the `Template` contract (from `brand-artisan`) and the project's
+conventions:
 
-- Couleurs en **constantes nommées tirées de la charte** : ne pas inventer de hex.
-- Polices : celles présentes dans `fonts/`, découvertes automatiquement par
-  le moteur. Le nom du fichier donne la famille et la graisse
-  (`GeistMono-600.ttf` -> famille `Geist Mono`, graisse 600). Si la charte impose
-  une autre police absente de `fonts/`, suivre la procédure **Police manquante**
-  ci-dessous : ne jamais l'utiliser en silence.
-- Assets via `brand("<projet>/...")` (jamais de chemin relatif au cwd ni de
+- Colors as **named constants taken from the guidelines**: don't invent hex.
+- Fonts: those present in `fonts/`, discovered automatically by the engine. The
+  file name gives the family and the weight (`GeistMono-600.ttf` -> family
+  `Geist Mono`, weight 600). If the guidelines require another font that is
+  absent from `fonts/`, follow the **Missing font** procedure below: never use
+  one silently.
+- Assets through `brand("<project>/...")` (never a path relative to the cwd, nor
   `../../..`).
-- `scale` optionnel dans `size` si un rendu retina est voulu.
-- Export par défaut `satisfies Template`.
+- `scale` is optional in `size` if a retina render is wanted.
+- Default export `satisfies Template`.
 
-Squelette de départ :
+Starting skeleton:
 
 ```tsx
 import type { ReactNode } from "react";
 import { brand, type Template } from "brand-artisan";
-// import { readFile } from "node:fs/promises"; // si le visuel charge un asset (SVG/PNG)
+// import { readFile } from "node:fs/promises"; // if the visual loads an asset (SVG/PNG)
 
 const SIZE = { width: 1200, height: 630 };
 
-// Palette charte <Projet> (depuis brands/<projet>/brand.md).
+// <Project> guideline palette (from brands/<project>/brand.md).
 const INK = "#......";
 
-// Charger les assets au top-level (data-URI pour les <img> SVG).
-// const markSvg = await readFile(brand("<projet>/favicon/icon.svg"));
+// Load assets at the top level (data-URI for SVG <img>).
+// const markSvg = await readFile(brand("<project>/favicon/icon.svg"));
 
 function render(): ReactNode {
 	return (
 		<div style={{ width: "100%", height: "100%", display: "flex", /* ... */ backgroundColor: INK }}>
-			{/* contenu aligne sur la charte */}
+			{/* content aligned with the guidelines */}
 		</div>
 	);
 }
 
-export default { size: SIZE, title: "<Titre humain>", render } satisfies Template;
+export default { size: SIZE, title: "<Human title>", render } satisfies Template;
 ```
 
-Garder le code minimal (principe #2) : pas d'abstraction pour du single-use, pas
-de helper non demandé. Si un effet de fond (trame, glow) est répété, le factoriser
-localement comme dans `cover.tsx`.
+Keep the code minimal (principle #2): no abstraction for single-use code, no
+helper nobody asked for. If a background effect (texture, glow) repeats, factor
+it out locally as `banner.tsx` does with its rule.
 
-Satori ne couvre qu'un sous-ensemble de CSS : lire l'annexe **pièges Satori**
-avant de positionner des calques ou de tenter un effet de texte.
+Satori only covers a subset of CSS: read the **Satori pitfalls** appendix before
+positioning layers or attempting a text effect.
 
-## 6. Vérifier
+## 6. Verify
 
-- `npm run typecheck` -> vert.
-- Rendu : `npm run build` (écrit le PNG) ou pointer l'utilisateur vers
-  `npm run dev` puis `/<projet>/<nom>` pour la preview.
+- `npm run typecheck` -> green.
+- Render: `npm run build` (writes the PNG) or point the user to `npm run dev`
+  then `/<project>/<name>` for the preview.
 
-**Critère de succès** : le fichier typecheck, rend un PNG, et n'utilise que des
-couleurs/typo issues de `brand.md`.
+**Success criterion**: the file typechecks, renders a PNG, and uses only colors
+and type coming from `brand.md`.
 
-## Annexe : pièges Satori
+## Appendix: Satori pitfalls
 
-Propriétés CSS que Satori ignore **silencieusement** (aucun warning, le calque
-disparaît ou l'effet ne se produit pas) :
+CSS properties that Satori ignores **silently** (no warning, the layer just
+disappears or the effect does not happen):
 
-- **`inset` n'existe pas.** Un calque avec `position: "absolute", inset: 0`
-  n'est jamais rendu. Écrire les quatre propriétés :
+- **`inset` does not exist.** A layer with `position: "absolute", inset: 0` is
+  never rendered. Write the four properties instead:
   `top: 0, right: 0, bottom: 0, left: 0`.
-- **`color: "transparent"` ne rend aucun glyphe**, même combiné à un
-  `WebkitTextStroke`. Pour un effet de texte en contour (outline), donner au
-  texte un `color` de la couleur du fond : le stroke dessine le contour, le
-  fill « troue » visuellement le glyphe.
+- **`color: "transparent"` renders no glyph**, even combined with a
+  `WebkitTextStroke`. For an outlined text effect, give the text a `color` equal
+  to the background color: the stroke draws the outline, and the fill visually
+  "punches out" the glyph.
 
-## Annexe : police manquante
+## Appendix: missing font
 
-Si la charte impose une police qui n'est pas dans `fonts/` :
+If the guidelines require a font that is not in `fonts/`:
 
-1. **Demander l'autorisation** de la récupérer : action réseau sortante, jamais
-   en silence. Nommer la **source** et la **licence** avant de télécharger.
-2. **Source fiable, format ttf/otf** (Satori ne lit pas le woff2) : le `.ttf`
-   brut du repo officiel (`github.com/google/fonts`) ou un package
-   `@fontsource/<police>`. La plupart des Google Fonts sont en OFL/Apache -> OK.
-   Police propriétaire ou licence ambiguë -> **refuser** et demander à
-   l'utilisateur de fournir le fichier lui-même.
-3. **Télécharger** vers `fonts/<Famille>-<graisse>.ttf`, via
-   `curl -L <url> -o ...` ou `Invoke-WebRequest -OutFile`. WebFetch ne convient
-   pas (binaire). Le nom du fichier **fait foi** : il détermine la famille citée
-   par les templates, en PascalCase (`GeistMono-600.ttf` -> `Geist Mono`, 600).
-4. **Vérifier le fichier** : taille non nulle et en-tête de vraie police
-   (`.ttf` commence par `00 01 00 00`, OpenType par `OTTO`), pas une page
-   d'erreur HTML déguisée, qui ferait planter Satori à l'exécution.
-5. **Documenter la licence** : déposer son texte dans `fonts/` et ajouter
-   la ligne correspondante au tableau de `fonts/NOTICE.md`. Aucune
-   déclaration de code n'est nécessaire : le moteur découvre le fichier au
-   démarrage, à condition que son nom suive la convention de l'étape 3.
-6. **Confirmer avant de commit** le `.ttf` (binaire) avec l'utilisateur.
+1. **Ask for permission** to fetch it: this is an outbound network action, never
+   silent. Name the **source** and the **license** before downloading.
+2. **Trustworthy source, ttf/otf format** (Satori does not read woff2): the raw
+   `.ttf` from the official repo (`github.com/google/fonts`) or an
+   `@fontsource/<font>` package. Most Google Fonts are OFL/Apache -> fine. A
+   proprietary font or an ambiguous license -> **refuse** and ask the user to
+   provide the file themselves.
+3. **Download** to `fonts/<Family>-<weight>.ttf`, using `curl -L <url> -o ...`
+   or `Invoke-WebRequest -OutFile`. WebFetch is not suitable (binary). The file
+   name **is authoritative**: it determines the family the templates cite, in
+   PascalCase (`GeistMono-600.ttf` -> `Geist Mono`, 600).
+4. **Check the file**: non-zero size and a real font header (`.ttf` starts with
+   `00 01 00 00`, OpenType with `OTTO`), not an HTML error page in disguise,
+   which would crash Satori at runtime.
+5. **Document the license**: drop its text into `fonts/` and add the matching
+   row to the table in `fonts/NOTICE.md`. No code declaration is needed: the
+   engine discovers the file at startup, provided its name follows the
+   convention from step 3.
+6. **Confirm before committing** the `.ttf` (a binary) with the user.
 
-Si l'utilisateur refuse le téléchargement -> ne pas utiliser la police ; lui
-demander de déposer le fichier dans `fonts/`, ou rester sur une police
-déjà présente dans `fonts/`.
+If the user refuses the download -> do not use the font; ask them to drop the
+file into `fonts/`, or stay with a font already present in `fonts/`.

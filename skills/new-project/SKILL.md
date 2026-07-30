@@ -1,112 +1,110 @@
 ---
 name: new-project
-description: Initialise un nouveau projet de visuels BrandArtisan en posant sa charte de référence. À utiliser quand l'utilisateur veut créer/ajouter un nouveau projet, démarrer une nouvelle marque ou charte graphique ("nouveau projet", "ajoute le projet X", "initialise la marque Y"). Crée brands/<projet>/brand.md (obligatoire avant tout visuel) et le dossier templates/<projet>/.
+description: Initializes a new BrandArtisan visuals project by laying down its reference guidelines. Use when the user wants to create/add a new project, start a new brand or a new visual identity ("new project", "add project X", "set up brand Y"). Creates brands/<project>/brand.md (mandatory before any visual) and the templates/<project>/ folder.
 ---
 
-# new-project : bootstrap d'un projet de visuels
+# new-project: bootstrapping a visuals project
 
-Objectif : poser les **deux références** d'un nouveau projet dans
-`brands/<projet>/` : `brand.md` (identité visuelle, **bloquant** : aucun visuel
-sans lui) et `project.md` (substance et voix, pour rédiger les textes). Règle de
-CLAUDE.md.
+Goal: lay down the **two references** of a new project in `brands/<project>/`:
+`brand.md` (visual identity, **blocking**: no visual without it) and `project.md`
+(substance and voice, for writing the text). A CLAUDE.md rule.
 
-## 1. Déterminer le slug `<projet>`
+## 1. Determine the `<project>` slug
 
-Le prendre dans les arguments. Sinon le demander. C'est un slug kebab-case
-(ex. `calame`, `mon-app`). Vérifier qu'il n'existe pas déjà :
-`brands/<projet>/` ou `templates/<projet>/`. S'il existe -> stop, le signaler.
+Take it from the arguments. Otherwise ask. It is a kebab-case slug (e.g.
+`calame`, `my-app`). Check that it does not already exist: `brands/<project>/` or
+`templates/<project>/`. If it does -> stop, say so.
 
-## 2. Recueillir la charte (ne rien inventer)
+## 2. Collect the guidelines (invent nothing)
 
-Interviewer l'utilisateur. **Ne jamais inventer couleurs, typo ou logo** :
-c'est le cœur de la règle projet. Recueillir au minimum :
+Interview the user. **Never invent colors, type or logo**: that is the heart of
+the project rule. Collect at least:
 
-- **Concept / signification** du logo et du nom.
-- **Typographie** : police, graisse, source. Note : les familles et graisses
-  disponibles sont celles présentes dans `fonts/`, découvertes automatiquement
-  par le moteur. Si la charte impose une autre police absente de `fonts/`,
-  suivre la procédure **Police manquante** ci-dessous : proposer de la
-  pré-installer maintenant, ou laisser `/new-template` la récupérer au premier
-  visuel qui en a besoin.
-- **Palette** : pour chaque rôle, le hex (+ repère Tailwind si connu) et l'usage.
-- **Variantes de logo / favicon** disponibles et quand les utiliser.
-- **Règles d'usage** et **à ne pas faire** (do/don't).
+- **Concept / meaning** of the logo and the name.
+- **Typography**: typeface, weight, source. Note: the available families and
+  weights are those present in `fonts/`, discovered automatically by the engine.
+  If the guidelines require another font absent from `fonts/`, follow the
+  **Missing font** procedure below: offer to pre-install it now, or let
+  `/new-template` fetch it for the first visual that needs it.
+- **Palette**: for each role, the hex (+ Tailwind landmark if known) and the
+  usage.
+- **Logo / favicon variants** available and when to use them.
+- **Usage rules** and **don'ts**.
 
-Recueillir aussi la **substance** (pour `project.md`) : pitch en une phrase,
-ce que fait le produit, public cible et langue, proposition de valeur, voix
-éditoriale (registre, tutoiement/vouvoiement), vocabulaire (nom exact, URL) et
-**claims interdits** (ne pas inventer de chiffres).
+Collect the **substance** too (for `project.md`): a one-sentence pitch, what the
+product does, audience and language, value proposition, editorial voice
+(register, how it addresses the reader), vocabulary (exact name, URL) and
+**forbidden claims** (don't invent figures).
 
-Si l'utilisateur n'a pas encore tout, écrire ce qui est connu et marquer les
-trous par `_(à définir)_` plutôt que de combler au hasard.
+If the user does not have everything yet, write down what is known and mark the
+gaps with `_(to be defined)_` rather than filling them at random.
 
-## 3. Écrire `brands/<projet>/brand.md`
+## 3. Write `brands/<project>/brand.md`
 
-Calquer la **structure** de `brands/calame/brand.md` (c'est la référence) :
+Mirror the **structure** of `brands/calame/brand.md` (that is the reference):
 
-1. Titre `# Charte de marque : <Projet>` + intro courte.
-2. `## 1. Concept et signification` (avec sous-sections Typographie, Couleurs).
-3. `## 2. Variantes` (logotype, favicon/icônes) si applicable.
-4. `## 3. Règles d'usage` (zone de protection, taille mini, fonds, **À ne pas faire**).
-5. `## 4. Régénération` seulement si des assets sont générés par script.
+1. Title `# Brand guidelines: <Project>` + a short intro.
+2. `## 1. Concept and meaning` (with Typography and Colors subsections).
+3. `## 2. Variants` (logotype, favicon/icons) if applicable.
+4. `## 3. Usage rules` (clear space, minimum size, backgrounds, **Don't**).
+5. `## 4. Regeneration` only if some assets are generated by a script.
 
-Les fichiers logo/favicon vivent à côté, dans `brands/<projet>/logo/` et
-`brands/<projet>/favicon/`. Ne pas créer de faux assets : si l'utilisateur a des
-fichiers, lui dire où les déposer. S'ils doivent être **générés par script**
-(comme ceux de calame), c'est le rôle de la skill `brand-assets`.
+The logo and favicon files live next to it, in `brands/<project>/logo/` and
+`brands/<project>/favicon/`. Don't create fake assets: if the user has files,
+tell them where to drop them. If the assets are to be **generated by a script**
+(like Calame's), that is the `brand-assets` skill's job.
 
-## 3 bis. Écrire `brands/<projet>/project.md`
+## 3b. Write `brands/<project>/project.md`
 
-Calquer la **structure** de `brands/calame/project.md` (c'est la référence) :
+Mirror the **structure** of `brands/calame/project.md` (that is the reference):
 
-1. `# Projet : <Projet>` + intro courte (rôle du fichier).
-2. `## 1. En une phrase` (le pitch).
-3. `## 2. Le produit` (ce que ça fait, différenciateur).
-4. `## 3. Public cible` (personas, marché, langue).
-5. `## 4. Proposition de valeur` (bénéfices, par priorité).
-6. `## 5. Voix éditoriale` (registre, tutoiement/vouvoiement, format, do/don't).
-7. `## 6. Vocabulaire & claims` (nom exact, URL, accroches validées, **claims
-   interdits** : pas de chiffres inventés).
+1. `# Project: <Project>` + a short intro (what the file is for).
+2. `## 1. In one sentence` (the pitch).
+3. `## 2. The product` (what it does, the differentiator).
+4. `## 3. Audience` (personas, market, language).
+5. `## 4. Value proposition` (benefits, by priority).
+6. `## 5. Editorial voice` (register, how it addresses the reader, format, do/don't).
+7. `## 6. Vocabulary & claims` (exact name, URL, approved lines, **forbidden
+   claims**: no invented figures).
 
-Mêmes règles que pour `brand.md` : ne rien inventer, marquer les trous par
-`_(à définir)_` ou `_(à confirmer)_`.
+Same rules as for `brand.md`: invent nothing, mark the gaps with
+`_(to be defined)_` or `_(to be confirmed)_`.
 
-## 4. Créer l'arbo des templates
+## 4. Create the templates tree
 
-Créer le dossier `templates/<projet>/` (il accueillera les `.tsx`).
+Create the `templates/<project>/` folder (it will hold the `.tsx` files).
 
-## 5. Conclure
+## 5. Wrap up
 
-Récapituler ce qui a été créé et ce qui reste `_(à définir)_` dans la charte.
-Pointer la suite : `/new-template <projet> <nom>` pour le premier visuel.
+Recap what was created and what is still `_(to be defined)_` in the guidelines.
+Point to what comes next: `/new-template <project> <name>` for the first visual.
 
-**Critère de succès** : `brands/<projet>/brand.md` **et**
-`brands/<projet>/project.md` existent, suivent la structure de référence, et ne
-contiennent ni couleur/typo ni claim inventés (trous marqués `_(à définir)_`).
+**Success criterion**: `brands/<project>/brand.md` **and**
+`brands/<project>/project.md` exist, follow the reference structure, and contain
+no invented color, type or claim (gaps marked `_(to be defined)_`).
 
-## Police manquante (procédure)
+## Missing font (procedure)
 
-Si la charte impose une police qui n'est pas dans `fonts/` :
+If the guidelines require a font that is not in `fonts/`:
 
-1. **Demander l'autorisation** de la récupérer : action réseau sortante, jamais
-   en silence. Nommer la **source** et la **licence** avant de télécharger.
-2. **Source fiable, format ttf/otf** (Satori ne lit pas le woff2) : le `.ttf`
-   brut du repo officiel (`github.com/google/fonts`) ou un package
-   `@fontsource/<police>`. La plupart des Google Fonts sont en OFL/Apache -> OK.
-   Police propriétaire ou licence ambiguë -> **refuser** et demander à
-   l'utilisateur de fournir le fichier lui-même.
-3. **Télécharger** vers `fonts/<Famille>-<graisse>.ttf`, via
-   `curl -L <url> -o ...` ou `Invoke-WebRequest -OutFile`. WebFetch ne convient
-   pas (binaire). Le nom du fichier **fait foi** : il détermine la famille citée
-   par les templates, en PascalCase (`GeistMono-600.ttf` -> `Geist Mono`, 600).
-4. **Vérifier le fichier** : taille non nulle et en-tête de vraie police
-   (`.ttf` commence par `00 01 00 00`, OpenType par `OTTO`), pas une page
-   d'erreur HTML déguisée.
-5. **Documenter la licence** : déposer son texte dans `fonts/` et ajouter
-   la ligne correspondante au tableau de `fonts/NOTICE.md`. Aucune
-   déclaration de code : le moteur découvre le fichier au démarrage, si
-   son nom suit la convention `<Famille>-<graisse>.ttf` de l'étape 3.
-6. **Confirmer avant de commit** le `.ttf` (binaire) avec l'utilisateur.
+1. **Ask for permission** to fetch it: this is an outbound network action, never
+   silent. Name the **source** and the **license** before downloading.
+2. **Trustworthy source, ttf/otf format** (Satori does not read woff2): the raw
+   `.ttf` from the official repo (`github.com/google/fonts`) or an
+   `@fontsource/<font>` package. Most Google Fonts are OFL/Apache -> fine. A
+   proprietary font or an ambiguous license -> **refuse** and ask the user to
+   provide the file themselves.
+3. **Download** to `fonts/<Family>-<weight>.ttf`, using `curl -L <url> -o ...`
+   or `Invoke-WebRequest -OutFile`. WebFetch is not suitable (binary). The file
+   name **is authoritative**: it determines the family the templates cite, in
+   PascalCase (`GeistMono-600.ttf` -> `Geist Mono`, 600).
+4. **Check the file**: non-zero size and a real font header (`.ttf` starts with
+   `00 01 00 00`, OpenType with `OTTO`), not an HTML error page in disguise.
+5. **Document the license**: drop its text into `fonts/` and add the matching
+   row to the table in `fonts/NOTICE.md`. No code declaration: the engine
+   discovers the file at startup, provided its name follows the
+   `<Family>-<weight>.ttf` convention from step 3.
+6. **Confirm before committing** the `.ttf` (a binary) with the user.
 
-Si l'utilisateur refuse -> ne pas pré-installer ; noter dans la charte que la
-police est `_(à fournir)_` et laisser `/new-template` reposer la question.
+If the user refuses -> do not pre-install; note in the guidelines that the font
+is `_(to be provided)_` and let `/new-template` ask the question again.

@@ -1,160 +1,161 @@
 ---
 name: facebook-carousel
-description: Crée les cartes d'une publicité carrousel Facebook (carousel ad) aux dimensions Meta, comme une série de visuels cohérents. À utiliser quand l'utilisateur veut un "carrousel Facebook", une "publicité carrousel", un "carousel ad" ou "plusieurs cartes qui défilent" pour un projet. Produit N templates .tsx (une carte = un PNG) dans un sous-dossier dédié, partageant une charte commune, alignés sur la brand.md. Nécessite un projet avec sa brand.md en place.
+description: Creates the cards of a Facebook carousel ad at Meta's dimensions, as a series of coherent visuals. Use when the user wants a "Facebook carousel", a "carousel ad" or "several cards that swipe" for a project. Produces N .tsx templates (one card = one PNG) in a dedicated subfolder, sharing a common theme, aligned with brand.md. Requires a project with its brand.md in place.
 ---
 
-# facebook-carousel : cartes d'un carrousel Facebook
+# facebook-carousel: cards for a Facebook carousel
 
-Objectif : produire les **assets PNG des N cartes** d'un carrousel publicitaire
-Facebook, au **ratio Meta** choisi, **cohérents entre eux** et alignés sur la
-charte. Un carrousel n'est pas N images indépendantes : c'est une **série** qui
-raconte quelque chose. La cohérence inter-cartes est le cœur du livrable.
+Goal: produce the **PNG assets of the N cards** of a Facebook carousel ad, at the
+chosen **Meta ratio**, **coherent with each other** and aligned with the
+guidelines. A carousel is not N independent images: it is a **series** that tells
+something. Coherence across cards is the heart of the deliverable.
 
-C'est une spécialisation de `new-template`. Mêmes conventions : contrat
-`Template` (de `brand-artisan`), assets via `brand()`, polices chargées dans
-`render.ts`, `export default ... satisfies Template`.
+This is a specialization of `new-template`. Same conventions: the `Template`
+contract (from `brand-artisan`), assets through `brand()`, fonts discovered in
+`fonts/`, `export default ... satisfies Template`.
 
-> **Statut des dimensions.** Les specs viennent du **Gestionnaire de publicités**
-> Meta (Ads Guide + pages d'aide carrousel) ; il n'existe pas de spec de post
-> organique. Les ratios sont officiels Meta ; le « 1080×1080 » est une
-> convention (Meta documente 1024×1024 comme minimum recommandé en 1:1).
+> **Status of the dimensions.** The specs come from Meta's **Ads Manager** (Ads
+> Guide + the carousel help pages); there is no organic post spec. The ratios are
+> official Meta; the "1080×1080" is a convention (Meta documents 1024×1024 as the
+> recommended minimum at 1:1).
 
-## 0. Prérequis (bloquant)
+## 0. Prerequisites (blocking)
 
-La chaîne **projet -> dossier de templates -> charte** doit exister :
+The chain **project -> template folder -> guidelines** must exist:
 
-- Résoudre `<projet>` (arguments, sinon demander).
-- Vérifier `templates/<projet>/` **et** `brands/<projet>/brand.md`.
-- Charte ou projet manquant -> **STOP** : demander `/new-project <projet>`
-  d'abord. Aucun visuel sans charte (règle CLAUDE.md).
+- Resolve `<project>` (from the arguments, otherwise ask).
+- Check `templates/<project>/` **and** `brands/<project>/brand.md`.
+- Missing guidelines or project -> **STOP**: ask for `/new-project <project>`
+  first. No visual without guidelines (CLAUDE.md rule).
 
-## 1. Cadrer (demander, ne pas deviner)
+## 1. Frame it (ask, don't guess)
 
-- **Nom du carrousel** : slug kebab-case, défaut `carousel`. C'est le
-  **sous-dossier** `templates/<projet>/<nom>/`. Vérifier qu'il n'existe pas.
-- **Mécanique narrative** (voir §3) : story, une carte = un produit, top N,
-  tuto, avant/après, ou seamless. Elle dicte tout le design.
-- **Nombre de cartes** : 2 à 10, **sweet spot 3-5**. Si une carte n'ajoute rien,
-  la retirer.
-- **Ratio** : défaut **1:1 (1080×1080)**. Sinon 4:5 (1080×1350) ou 9:16
-  (1080×1920). **Le même pour toutes les cartes** (obligatoire).
-- **Contenu de chaque carte** : message court + rôle dans la série (hook,
-  développement, CTA). Plus le **CTA** final.
-- Lire `brands/<projet>/brand.md` : palette, typo, variantes de logo, **à ne pas
-  faire**. S'il y a déjà un `.tsx` dans le projet, le lire comme référence.
-- Lire `brands/<projet>/project.md` s'il existe : caler le **ton** et les
-  **claims** des cartes (ne pas inventer de chiffres ni de promesses). Absent ->
-  demander le ton et le message plutôt que de deviner.
+- **Name of the carousel**: a kebab-case slug, default `carousel`. It is the
+  **subfolder** `templates/<project>/<name>/`. Check that it does not exist.
+- **Narrative mechanic** (see §3): a story, one card per product, a top N, a
+  tutorial, before/after, or seamless. It dictates the whole design.
+- **Number of cards**: 2 to 10, **sweet spot 3-5**. If a card adds nothing, drop
+  it.
+- **Ratio**: default **1:1 (1080×1080)**. Otherwise 4:5 (1080×1350) or 9:16
+  (1080×1920). **The same for every card** (mandatory).
+- **Content of each card**: a short message + its role in the series (hook,
+  development, CTA). Plus the final **CTA**.
+- Read `brands/<project>/brand.md`: palette, type, logo variants, **don'ts**. If
+  the project already holds a `.tsx`, read it as a reference.
+- Read `brands/<project>/project.md` if it exists: set the **tone** and the
+  **claims** of the cards (don't invent figures or promises). If absent -> ask for
+  the tone and the message rather than guessing.
 
-## 2. Contraintes Facebook (à respecter)
+## 2. Facebook constraints (to respect)
 
-| Point | Valeur | Statut |
+| Point | Value | Status |
 |---|---|---|
-| Nombre de cartes | 2 à 10 (sweet spot 3-5) | Officiel Meta |
-| Ratio (identique partout) | 1:1, 4:5 ou 9:16 (tolérance 3 %) | Officiel Meta |
-| Taille 1:1 | **1080x1080** (min reco Meta 1024) | Convention / Meta |
-| Taille 4:5 | 1080x1350 | Officiel Meta |
-| Taille 9:16 | 1080x1920 | Officiel Meta |
-| Format | PNG ou JPG | Officiel Meta |
-| Poids / image | ≤ 30 Mo (viser < 1 Mo) | Officiel Meta |
-| Headline / carte | ≤ 40 car. (≤ 25 sans troncature) | Officiel Meta |
-| Texte principal | ≤ 125 car. (vit **hors image**) | Officiel Meta |
+| Number of cards | 2 to 10 (sweet spot 3-5) | Official Meta |
+| Ratio (identical throughout) | 1:1, 4:5 or 9:16 (3 % tolerance) | Official Meta |
+| Size 1:1 | **1080x1080** (Meta recommended min 1024) | Convention / Meta |
+| Size 4:5 | 1080x1350 | Official Meta |
+| Size 9:16 | 1080x1920 | Official Meta |
+| Format | PNG or JPG | Official Meta |
+| Weight / image | ≤ 30 MB (aim for < 1 MB) | Official Meta |
+| Headline / card | ≤ 40 chars (≤ 25 to avoid truncation) | Official Meta |
+| Primary text | ≤ 125 chars (lives **outside the image**) | Official Meta |
 
-- **Même ratio sur toutes les cartes** : mélanger 1:1 et 4:5 n'est pas supporté.
-- Le **texte principal** et le **headline/lien** se règlent dans le Gestionnaire
-  de publicités, **pas dans l'image** : ne pas tout écrire dans le visuel.
-- L'ancienne **règle des 20 % de texte** est abandonnée (2021), mais une carte
-  surchargée reste illisible sur mobile : **une idée par carte**.
+- **The same ratio on every card**: mixing 1:1 and 4:5 is not supported.
+- The **primary text** and the **headline/link** are set in Ads Manager, **not in
+  the image**: don't write everything into the visual.
+- The old **20 % text rule** was dropped (2021), but an overloaded card is still
+  illegible on mobile: **one idea per card**.
 
-## 3. L'esprit : agencer pour que ça pope
+## 3. The spirit: arrange it so it lands
 
-### Mécaniques narratives (choisir UNE)
-- **Story séquentielle** : hook -> problème -> solution -> preuve -> CTA. Chaque
-  carte fait avancer le récit.
-- **Une carte = un produit** : catalogue, gamme, variantes. Position du produit
-  et fond constants ; chaque carte lisible seule.
-- **Top N / tips** : carte 1 = titre de la liste, cartes 2..N = un item chacune,
-  dernière = CTA. Numéroter les cartes.
-- **Tuto pas-à-pas** : une étape par carte, visuel auto-portant (compréhensible
-  sans lire le texte).
-- **Avant / après** : contraste fort entre la première et la dernière carte.
-- **Seamless (panoramique)** : voir l'avertissement dédié plus bas.
+### Narrative mechanics (pick ONE)
+- **Sequential story**: hook -> problem -> solution -> proof -> CTA. Each card
+  moves the story forward.
+- **One card = one product**: a catalog, a range, variants. Constant product
+  position and background; each card legible on its own.
+- **Top N / tips**: card 1 = the title of the list, cards 2..N = one item each,
+  the last = the CTA. Number the cards.
+- **Step-by-step tutorial**: one step per card, each visual self-supporting
+  (understandable without reading the text).
+- **Before / after**: strong contrast between the first and the last card.
+- **Seamless (panoramic)**: see the dedicated warning below.
 
-### Carte 1 = hook (décisive)
-Seule visible avant le premier swipe. **Un seul message**, 3-5 mots, fort
-contraste, un élément qui crée la curiosité (chiffre sans contexte, visuel qui
-« déborde », question). Ne pas tout expliquer ici : ça tue le swipe.
+### Card 1 = the hook (decisive)
+It is the only one visible before the first swipe. **A single message**, 3-5
+words, strong contrast, one element that creates curiosity (a figure with no
+context, a visual that "spills over", a question). Don't explain everything here:
+that kills the swipe.
 
-### Cohérence inter-cartes (le cœur)
-- **Palette et typo identiques** sur toutes les cartes (un seul accent qui varie
-  au besoin).
-- **Logo en position fixe et discrète** (même coin partout), jamais en pièce
-  maîtresse : l'agrandir sur chaque carte est une erreur fréquente.
-- **Placements constants** : si le titre est en bas, il est toujours en bas.
-- **Fil conducteur visuel** : élément ou couleur qui relie les cartes ; une
-  nuance qui évolue de carte en carte signale la progression.
-- **Chaque carte lisible de façon autonome** (un utilisateur peut entrer au
-  milieu).
+### Coherence across cards (the heart of it)
+- **Identical palette and type** on every card (a single accent that varies if
+  needed).
+- **The logo in a fixed, discreet position** (the same corner throughout), never
+  as the centerpiece: enlarging it on every card is a common mistake.
+- **Constant placements**: if the headline is at the bottom, it is always at the
+  bottom.
+- **A visual through-line**: an element or a color that links the cards; a shade
+  that evolves from card to card signals the progression.
+- **Each card legible on its own** (a user can enter in the middle).
 
-### CTA croissant
-Doux au début (« Découvrir »), direct ensuite, **conversion sur la dernière
-carte** (« Demander un devis »). Chaque carte a son propre lien dans Meta.
+### Rising CTA
+Soft at the start ("Find out more"), direct next, **conversion on the last card**
+("Request a quote"). Each card has its own link in Meta.
 
-### Erreurs à éviter
-Carte 1 trop explicative ; cartes en silo sans fil conducteur ; répéter le même
-message ; texte trop dense ; mélanger les ratios ; logo trop gros.
+### Mistakes to avoid
+Card 1 too explanatory; cards siloed with no through-line; repeating the same
+message; text too dense; mixing ratios; logo too big.
 
-## 4. Écrire les cartes
+## 4. Write the cards
 
-Structure : **un sous-dossier par carrousel**, **un `.tsx` par carte**, plus un
-`theme.ts` partagé.
+Structure: **one subfolder per carousel**, **one `.tsx` per card**, plus a shared
+`theme.ts`.
 
 ```
-templates/<projet>/<nom>/
-  theme.ts        <- palette + layout partages (TS pur, PAS de JSX)
-  card-1.tsx      <- une carte = un PNG
+templates/<project>/<name>/
+  theme.ts        <- shared palette + layout (pure TS, NO JSX)
+  card-1.tsx      <- one card = one PNG
   card-2.tsx
   card-3.tsx
 ```
 
-- **`theme.ts` factorise la cohérence** : palette tirée de la charte, ratio/SIZE,
-  marges. Du **TS pur sans JSX** : la découverte ne charge que les `.tsx`, donc
-  `theme.ts` est ignoré comme template. **Ne pas** créer de composant de cadre en
-  `.tsx` dans ce dossier : il serait découvert comme une fausse carte et
-  casserait le build. La cohérence passe par les constantes ; le peu de JSX de
-  cadre est répété dans chaque carte (elles diffèrent de toute façon).
-- **Nommage et ordre** : la découverte trie les fichiers en ordre **lexical**,
-  donc `card-10` passerait avant `card-2`. Dès qu'on atteint 10 cartes, **padder
-  à deux chiffres** : `card-01` … `card-10`.
-- Couleurs en constantes (depuis `theme.ts`), assets via `brand("<projet>/...")`,
-  les polices découvertes dans `fonts/` ; police absente -> annexe
-  « police manquante » de `new-template`, jamais en silence.
+- **`theme.ts` factors out the coherence**: palette taken from the guidelines,
+  ratio/SIZE, margins. **Pure TS with no JSX**: discovery only loads `.tsx` files,
+  so `theme.ts` is ignored as a template. **Do not** create a frame component as a
+  `.tsx` in this folder: it would be discovered as a fake card and break the
+  build. The coherence travels through the constants; the little bit of frame JSX
+  gets repeated in each card (they differ anyway).
+- **Naming and order**: discovery sorts the files in **lexical** order, so
+  `card-10` would come before `card-2`. As soon as you reach 10 cards, **pad to
+  two digits**: `card-01` … `card-10`.
+- Colors as constants (from `theme.ts`), assets through
+  `brand("<project>/...")`, fonts discovered in `fonts/`; a missing font -> the
+  "missing font" appendix in `new-template`, never silently.
 
-### `theme.ts` (squelette)
+### `theme.ts` (skeleton)
 
 ```ts
 import type { CSSProperties } from "react";
 
-export const SIZE = { width: 1080, height: 1080 }; // carrousel 1:1
+export const SIZE = { width: 1080, height: 1080 }; // 1:1 carousel
 
-// Palette charte <Projet> (depuis brands/<projet>/brand.md).
+// <Project> guideline palette (from brands/<project>/brand.md).
 export const INK = "#......";
 export const ACCENT = "#......";
 export const PAPER = "#......";
 
-// Cadre commun a toutes les cartes : meme fond, meme zone de securite.
+// Frame shared by every card: same background, same safe area.
 export const frame: CSSProperties = {
 	width: "100%",
 	height: "100%",
 	display: "flex",
 	flexDirection: "column",
 	justifyContent: "space-between",
-	padding: 96, // zone de securite (~10%)
-	backgroundColor: INK, // fond opaque, identique partout
+	padding: 96, // safe area (~10%)
+	backgroundColor: INK, // opaque background, identical everywhere
 };
 ```
 
-### `card-1.tsx` (squelette)
+### `card-1.tsx` (skeleton)
 
 ```tsx
 import type { ReactNode } from "react";
@@ -164,9 +165,9 @@ import { SIZE, frame, PAPER, ACCENT } from "./theme";
 function render(): ReactNode {
 	return (
 		<div style={frame}>
-			{/* logo en position fixe (meme coin sur toutes les cartes) */}
-			{/* hook : un seul message, fort contraste */}
-			{/* repere de progression (ex. 1/3) */}
+			{/* logo in a fixed position (same corner on every card) */}
+			{/* the hook: a single message, strong contrast */}
+			{/* progress marker (e.g. 1/3) */}
 		</div>
 	);
 }
@@ -174,33 +175,34 @@ function render(): ReactNode {
 export default { size: SIZE, render } satisfies Template;
 ```
 
-(Sans `title`, le PNG sort sous le nom du fichier : `out/<projet>/<nom>/card-1.png`.)
+(With no `title`, the PNG comes out under the file's name:
+`out/<project>/<name>/card-1.png`.)
 
-### Avertissement : mode seamless (panoramique)
+### Warning: seamless mode (panoramic)
 
-Facebook insère des **gouttières** (bordure + ombre) entre les cartes : une image
-panoramique n'est **jamais** parfaitement continue à l'écran. Si l'utilisateur
-veut du seamless avec ce modèle (N fichiers) :
-- Concevoir mentalement une fresque de `N×1080 × 1080`, et **décaler le fond** de
-  `-1080*(i-1)` px dans la carte `i` (chaque carte rend sa tranche).
-- **Aucun élément critique** (texte, visage, logo) à moins de **~100 px** d'un
-  bord gauche/droit : la gouttière le couperait.
-- Dans le Gestionnaire de publicités, **désactiver l'optimisation automatique**
-  (« montrer les meilleures cartes en premier ») et importer **de gauche à
-  droite**, sinon Meta réordonne et détruit la fresque.
-Le seamless est exigeant : par défaut, préférer une mécanique par carte (produit,
-story, top N) qui tolère les gouttières.
+Facebook inserts **gutters** (a border plus a shadow) between the cards, so a
+panoramic image is **never** perfectly continuous on screen. If the user wants
+seamless with this model (N files):
+- Design a mural of `N×1080 × 1080` in your head, and **offset the background** by
+  `-1080*(i-1)` px in card `i` (each card renders its own slice).
+- **No critical element** (text, a face, the logo) within about **100 px** of a
+  left or right edge: the gutter would cut it.
+- In Ads Manager, **turn off automatic optimization** ("show the best-performing
+  cards first") and upload **left to right**, otherwise Meta reorders them and
+  destroys the mural.
+Seamless is demanding: by default, prefer a per-card mechanic (product, story, top
+N) that tolerates the gutters.
 
-## 5. Vérifier
+## 5. Verify
 
-- `npm run typecheck` -> vert.
-- `npm run build` -> écrit `out/<projet>/<nom>/card-*.png`.
-- Contrôler **chaque** PNG : dimensions exactes selon le ratio choisi, **même
-  ratio partout**, fond opaque.
-- Vérifier la **cohérence visuelle** sur la série (palette, typo, position du
-  logo, fil conducteur) et que **chaque carte est lisible seule**.
-- Preview : `npm run dev` puis `/<projet>/<nom>` (liste les cartes du carrousel).
+- `npm run typecheck` -> green.
+- `npm run build` -> writes `out/<project>/<name>/card-*.png`.
+- Check **each** PNG: exact dimensions for the chosen ratio, **the same ratio
+  throughout**, opaque background.
+- Check the **visual coherence** across the series (palette, type, logo position,
+  through-line) and that **each card is legible on its own**.
+- Preview: `npm run dev` then `/<project>/<name>` (lists the carousel's cards).
 
-**Critère de succès** : N cartes (2-10) au même ratio Meta, opaques, visuellement
-cohérentes, carte 1 accrocheuse, dernière carte porteuse du CTA, et n'utilisant
-que des couleurs/typo de `brand.md`.
+**Success criterion**: N cards (2-10) at the same Meta ratio, opaque, visually
+coherent, card 1 catchy, the last card carrying the CTA, and using only colors and
+type from `brand.md`.
