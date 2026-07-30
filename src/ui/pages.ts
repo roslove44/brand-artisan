@@ -2,7 +2,7 @@
 // (sidebar, toolbar, vues icônes/liste/galerie, barre de chemin).
 import { esc, capitalize, last } from "../utils";
 import { STYLE } from "./style";
-import { folderIcon, folderMini, rootMini, imageMini, chevron, viewIcons, downloadIcon } from "./icons";
+import { folderIcon, folderMini, rootMini, imageMini, chevron, viewIcons, downloadIcon, brandMark } from "./icons";
 
 const PROJECT_NAME = "BrandArtisan";
 
@@ -122,6 +122,7 @@ function windowShell(opts: {
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>${esc(opts.pageTitle)}</title>
+	<link rel="icon" href="data:image/svg+xml,${encodeURIComponent(brandMark)}" />
 	<style>${STYLE}</style>
 </head>
 <body>

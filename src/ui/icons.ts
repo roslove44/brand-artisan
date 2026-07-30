@@ -74,3 +74,7 @@ export const downloadIcon = `
 <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
 	<path d="M10 3v9m0 0-3.5-3.5M10 12l3.5-3.5M4 16.5h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
+
+// Marque BrandArtisan, favicon des pages du serveur : encodée en data URI dans
+// le <head>, donc sur une ligne et sans attribut superflu.
+export const brandMark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#b45309"/><path d="M18 18 H58 V33 H33 V58 H18 Z M82 82 H42 V67 H67 V42 H82 Z" fill="#faf9f7"/></svg>`;
