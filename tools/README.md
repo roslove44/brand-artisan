@@ -1,75 +1,64 @@
-# tools : toolchain de marque
+# tools: the brand toolchain
 
-Génération des **assets de marque** d'un projet (logo, favicon et leurs
-déclinaisons). Monde séparé du moteur de composition : ici on **produit** les
-fichiers de `brands/<projet>/logo` et `/favicon` ; le moteur les **consomme**
-via `brand()`.
+Generates a project's **brand assets** (logo, favicon and their variants). A
+separate world from the composition engine: here you **produce** the files in
+`brands/<project>/logo` and `/favicon`; the engine **consumes** them through
+`brand()`.
 
-## Organisation
+## Layout
 
 ```
-src/brandkit.ts        socle partagé (police -> contours, SVG -> PNG, .ico)
+src/brandkit.ts        shared foundation (font -> outlines, SVG -> PNG, .ico)
 tools/
-  <projet>/            scripts propres à une marque (couleurs, géométrie en dur)
+  <project>/           one brand's scripts, colors and geometry hard-coded
     build-logo.ts
     build-favicon.ts
-    _geist.ttf         police source, instanciée par le script
+    _sora.ttf          optional: a source font not shared through fonts/
 ```
 
-Le socle vit avec le moteur, dans `src/` : il est générique. Les scripts par
-marque sont du **contenu**, ils vivent ici. Les constantes et la géométrie d'une
-marque vivent dans ses scripts, jamais dans `brandkit.ts`.
+The foundation is generic, so it lives with the engine in `src/`. Per-brand
+scripts are **content**, so they live here. A brand's colors and geometry belong
+in its own scripts, never in `brandkit.ts`.
 
-## Ce que fait le socle
+## What the foundation gives you
 
-| Fonction | Rôle |
+| Function | Role |
 |---|---|
-| `loadInstanced(police, axes)` | Charge une police, instanciée sur ses axes si elle est variable, et donne accès aux glyphes : tracé SVG, chasse, encombrement. |
-| `renderSvg(svg, taille, fond?)` | Rasterise en PNG à la largeur ou à la hauteur voulue. Le vecteur est mis à l'échelle, rien n'est rogné. |
-| `renderPixels(svg, taille)` | Même rendu, en pixels RGBA bruts. Sert aux contrôles de couleur des scripts. |
-| `makeIco(images)` | Écrit un `.ico` multi-résolution : en-tête, répertoire, PNG collés. |
+| `loadInstanced(font, axes)` | Loads a font, instanced on its axes if variable, and exposes each glyph: SVG outline, advance, bounding box. |
+| `renderSvg(svg, size, background?)` | Rasterizes to PNG at a given width or height. The vector is scaled, nothing is cropped. |
+| `renderPixels(svg, size)` | Same render, as raw RGBA pixels, for a script's color checks. |
+| `makeIco(images)` | Writes a multi-resolution `.ico`: header, directory, PNGs appended. |
 
-Ces quatre primitives suffisent à composer un logotype depuis les glyphes d'une
-police, une tuile d'icône, et toutes leurs déclinaisons.
+## Running
 
-## Lancer
-
-Toutes les commandes se lancent depuis n'importe quel dossier du projet.
+From any folder in the project:
 
 ```bash
 npx tsx tools/calame/build-logo.ts     # -> out/calame/brand/logo/
 npx tsx tools/calame/build-favicon.ts  # -> out/calame/brand/favicon/
 ```
 
-Une marque peut avoir des scripts en plus des deux standards, propres à son
-besoin : un `build-oauth.ts` pour les icônes 120 px exigées par Google OAuth,
-par exemple. Chaque `brand.md` liste les siens dans sa section « Régénération ».
+A brand may add scripts beyond these two. Each `brand.md` lists its own in its
+Regeneration section.
 
-## Sortie et promotion
+## Output and promotion
 
-Les scripts écrivent dans **`out/<projet>/brand/`** (dossier `out/` ignoré par
-git : artefacts éphémères). C'est volontaire : on ne réécrit pas les assets
-commités à l'aveugle. L'arborescence y est le miroir exact de
-`brands/<projet>/`, si bien que la **promotion** des fichiers validés vers
-`brands/<projet>/logo/` et `brands/<projet>/favicon/` est une simple copie.
+Scripts write to **`out/<project>/brand/`**, which git ignores: committed assets
+are never overwritten blind. The tree there mirrors `brands/<project>/` exactly,
+so **promoting** an approved file is a plain copy.
 
-Pour la revue, `npm run dev` expose cette sortie : le projet gagne un dossier
-`brand` à côté de ses visuels (`http://localhost:4000/<projet>/brand`), où
-les fichiers produits s'affichent tels quels. Plus besoin d'ouvrir l'explorateur.
+`npm run dev` serves that output for review, the project gaining a `brand` folder
+next to its visuals (`http://localhost:4000/<project>/brand`).
 
-Pour écrire directement dans les assets (régénération en place), pointer la
-constante `OUT` d'un script vers `brands/<projet>` plutôt que
-`out/<projet>/brand`.
+To regenerate in place instead, point a script's `OUT` at `brands/<project>`.
 
 ## Tests
 
-Le socle est couvert par `test/brandkit.test.ts`, lancé par `npm test` et en CI :
-mise à l'échelle du rendu, fond optionnel, structure du `.ico`, extraction de
-glyphes. Les scripts par marque n'y figurent pas : la CI ne doit pas dépendre du
-contenu présent dans le dépôt.
+`test/brandkit.test.ts` covers the foundation: render scaling, optional
+background, `.ico` structure, glyph extraction. Per-brand scripts are not
+covered, since CI must not depend on which brands the repo happens to hold.
 
-## Ajouter une marque
+## Adding a brand
 
-Créer `tools/<projet>/` avec ses scripts (s'inspirer de `calame/`),
-réutiliser `src/brandkit.ts` pour la plomberie, et garder couleurs et géométrie
-locales.
+Create `tools/<project>/` with its scripts, taking `calame/` as the model, reuse
+`src/brandkit.ts` for the plumbing, and keep colors and geometry local.
