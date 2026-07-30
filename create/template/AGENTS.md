@@ -47,6 +47,19 @@ from its own `brand.md` and `project.md`.
 proof that it works: the type checker cannot catch a Satori layout error, and a
 broken layout fails at render time.
 
+## How to work
+
+- **Think first.** Several readings of a request: name them and ask, never pick
+  one in silence. Unclear: stop and say what is unclear.
+- **Simplest thing that works.** No unrequested feature, no abstraction for
+  single-use code, no flexibility nobody asked for.
+- **Surgical changes.** Touch only what the request needs. No drive-by
+  refactor, no reformatting, no comment cleanup. Match the surrounding style.
+- **Never change code you have not read.**
+- **Be frank.** A simpler approach, a flaw in the brief, a bad idea: say it.
+- **Ask before `git commit` or `git push`.** Neither happens without an
+  explicit go-ahead, and a go-ahead to commit is not one to push.
+
 ## Compose, do not fill
 
 A visual is not text on a background. One focal point, a strong contrast of
