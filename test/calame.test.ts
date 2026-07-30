@@ -1,13 +1,11 @@
 /**
- * Calame existe en double : à la racine, comme marque de référence du dépôt, et
- * dans `create/template/`, comme squelette livré par le générateur. Un paquet
- * npm ne pouvant pas référencer de fichiers hors de son dossier, la duplication
- * n'est pas évitable — la dérive silencieuse, si.
+ * Calame existe en double, à la racine et dans `create/template/` : un paquet npm
+ * ne peut pas référencer de fichiers hors de son dossier. La duplication n'est
+ * pas évitable, la dérive silencieuse si.
  *
- * Sens de la comparaison : **tout ce que le squelette livre doit être identique
- * à la racine**. L'inverse n'est pas vrai, la racine porte des visuels en plus
- * (`banner`, `card`) pour donner au build une vraie couverture, là où le projet
- * généré reste minimal avec son seul OG.
+ * Le sens compte : tout ce que le squelette livre doit être identique à la
+ * racine, pas l'inverse. La racine porte `banner` et `card` en plus, pour donner
+ * au build une vraie couverture, là où le projet généré garde son seul OG.
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -20,8 +18,7 @@ import { root } from "../src/root";
 const SKELETON = fileURLToPath(root("create/template/"));
 const ROOT = fileURLToPath(root("."));
 
-// Ce que les deux copies partagent : la charte et ses assets, la toolchain, et
-// l'OG. Les autres visuels de la racine ne sont pas concernés.
+// Ce que les deux copies partagent ; les autres visuels de la racine sont hors sujet.
 const SHARED_DIRS = ["brands/calame", "tools/calame"];
 const SHARED_FILES = ["templates/calame/og.tsx"];
 

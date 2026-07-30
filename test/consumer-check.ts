@@ -1,15 +1,10 @@
 /**
- * Preuve que le paquet est installable et utilisable : empaquette le depot,
- * l'installe dans un projet vierge, et y lance la CLI. C'est le seul controle
- * qui exerce le moteur depuis node_modules, la ou vivent les vraies erreurs de
- * packaging (chemins qui visent l'interieur du moteur, export ou fichier
- * manquant du tarball, bin qui ne demarre pas).
+ * Le seul controle qui exerce le moteur depuis node_modules, la ou vivent les
+ * erreurs de packaging : chemins qui visent l'interieur du moteur, export ou
+ * fichier manquant du tarball, bin qui ne demarre pas.
  *
- * Le projet d'essai n'installe que le paquet : react doit arriver seul par la
- * peer dependency, et tsx par les dependances du moteur.
- *
- * Hors de `npm test` (fichier sans .test.ts) : il installe depuis le reseau et
- * dure une minute. Lancer : npm run test:consumer
+ * Le projet d'essai n'installe que le paquet, react devant arriver seul par la
+ * peer dependency. Hors de `npm test`, car il installe depuis le reseau.
  */
 import assert from "node:assert/strict";
 import { execSync } from "node:child_process";
@@ -26,9 +21,8 @@ const APP = join(WORK, "app");
 const run = (cmd: string, cwd = APP) => execSync(cmd, { cwd, stdio: "pipe", encoding: "utf8" });
 const step = (msg: string) => console.log(`  ${msg}`);
 
-// Le projet genere devra porter ces deux reglages : sans "react-jsx" le JSX
-// retombe sur la transformation classique (React is not defined), sans
-// skipLibCheck @types/node ne typecheck pas seul.
+// Sans "react-jsx" le JSX retombe sur la transformation classique (React is not
+// defined) ; sans skipLibCheck, @types/node ne typecheck pas seul.
 const TSCONFIG = {
 	compilerOptions: {
 		target: "ES2022",
@@ -79,9 +73,8 @@ try {
 	writeFileSync(join(APP, "check.ts"), 'import { MARK } from "./templates/demo/og";\nconsole.log(MARK.href);\n');
 	writeFileSync(join(APP, "tsconfig.json"), `${JSON.stringify(TSCONFIG, null, 2)}\n`);
 
-	// Le paquet livrant du .ts, tsc suit les sources du moteur : le consommateur
-	// a donc besoin des types de ses dependances, pas seulement des siens. C'est
-	// le prix du .ts livre, et ce que le generateur devra mettre dans le projet.
+	// Le paquet livrant du .ts, tsc suit les sources du moteur : le consommateur a
+	// donc besoin des types de nos dependances. C'est le prix du .ts livre.
 	step("typecheck du projet consommateur");
 	run("npm i -D typescript @types/node @types/react --no-audit --no-fund");
 	run("npx tsc --noEmit");
@@ -91,7 +84,6 @@ try {
 	assert.equal(lines.length, 1, `un seul visuel attendu, obtenu : ${lines.join(" | ")}`);
 	const png = join(APP, ...lines[0].replace(/^\W+\s*/, "").split("/"));
 
-	// Le PNG sort chez le consommateur, a la taille du template.
 	const bytes = readFileSync(png);
 	assert.ok(bytes.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])), "en-tete PNG");
 	assert.deepEqual({ width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20) }, { width: 1200, height: 630 });

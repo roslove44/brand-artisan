@@ -3,8 +3,7 @@ import assert from "node:assert/strict";
 import { createElement } from "react";
 import { toPng } from "../src/render";
 
-// Le plus petit visuel valide : un aplat, un seul enfant (pas de flex requis).
-// Sans texte, donc independant des polices chargees dans render.ts.
+// Le plus petit visuel valide, et sans texte, donc independant des polices.
 const square = () => createElement("div", { style: { width: "100%", height: "100%", backgroundColor: "#2563eb" } });
 
 const PNG_MAGIC = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
@@ -24,8 +23,8 @@ test("toPng : scale double la resolution de sortie sans changer le cadrage", asy
 });
 
 // Les familles sont derivees du nom des fichiers de fonts/. Si la derivation
-// cassait, Satori ne trouverait plus les familles citees et retomberait sur la
-// meme police de secours pour les deux : rendus identiques.
+// cassait, Satori retomberait sur la meme police de secours pour les deux, et
+// les deux rendus seraient identiques.
 test("les familles de polices sont bien resolues depuis fonts/", async () => {
 	const label = (fontFamily: string) =>
 		createElement("div", { style: { width: "100%", height: "100%", fontSize: 40, fontFamily } }, "Aa Bb 123");

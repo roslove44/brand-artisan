@@ -1,18 +1,11 @@
 /**
- * Deroule le parcours reel d'un utilisateur : empaqueter les deux paquets,
- * generer un projet avec create-brand-artisan, y installer le moteur, et rendre.
- * Ce que ce controle attrape et qu'aucun autre ne voit : un fichier oublie dans
- * le `files` du generateur, un placeholder non substitue, un .gitignore reste
- * sans son point.
+ * Deroule le parcours reel d'un utilisateur : empaqueter, generer un projet,
+ * installer le moteur, rendre. Ce qu'aucun autre controle ne voit : un fichier
+ * oublie dans le `files` du generateur, un placeholder non substitue, un
+ * .gitignore reste sans son point.
  *
- * Les skills ne sont plus de son ressort : elles s'installent par `npx skills`,
- * selon l'agent de l'utilisateur. C'est test/skills.test.ts qui les valide.
- *
- * Le generateur est lance depuis le **tarball**, pas depuis create/ : c'est le
- * contenu publie qui est teste, pas celui du depot.
- *
- * Hors de `npm test` : installe depuis le reseau et dure une minute.
- * Lancer : npm run test:generator
+ * Lance depuis le **tarball** et non depuis create/ : c'est le contenu publie
+ * qui est teste. Hors de `npm test`, car il installe depuis le reseau.
  */
 import assert from "node:assert/strict";
 import { execSync } from "node:child_process";
@@ -34,9 +27,8 @@ const pack = (dir: string) => join(WORK, run(`npm pack --pack-destination "${WOR
 const version = (dir: string): string => JSON.parse(readFileSync(join(REPO, dir, "package.json"), "utf8")).version;
 
 try {
-	// Le generateur ecrit la dependance au moteur depuis SA propre version. Deux
-	// versions qui divergent, et un projet genere reclame un moteur qui n'existe
-	// pas sur le registre : panne chez l'utilisateur, invisible ici.
+	// Le generateur ecrit la dependance depuis SA propre version : si les deux
+	// divergent, le projet genere reclame un moteur absent du registre.
 	const ENGINE_VERSION = version(".");
 	assert.equal(version("create"), ENGINE_VERSION, "create/package.json doit porter la meme version que le moteur");
 
@@ -55,8 +47,7 @@ try {
 	// Le squelette est complet et ses placeholders sont substitues.
 	const pkg = JSON.parse(readFileSync(join(APP, "package.json"), "utf8"));
 	assert.equal(pkg.name, "mes-visuels", "le nom du projet vient du dossier");
-	// Comparaison a la version reelle, pas a une forme : un `^0.1.0-rc.0` est
-	// legitime pendant la release candidate, et couvre bien la 0.1.0 finale.
+	// A la version reelle et non a une forme : un `^0.1.0-rc.0` est legitime.
 	assert.equal(pkg.dependencies["brand-artisan"], `^${ENGINE_VERSION}`, "la dependance doit viser la version publiee du moteur");
 	assert.ok(existsSync(join(APP, ".gitignore")), "gitignore doit retrouver son point");
 	for (const [voyage, reel] of [["_tsconfig.json", "tsconfig.json"], ["_CLAUDE.md", "CLAUDE.md"]]) {
@@ -85,7 +76,6 @@ try {
 	assert.deepEqual({ width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20) }, { width: 1200, height: 630 });
 	assert.ok(bytes.length < 300_000, `un OG doit rester sous 300 Ko, obtenu ${Math.round(bytes.length / 1024)} Ko`);
 
-	// La toolchain de marque tourne aussi chez l'utilisateur.
 	step("npx tsx tools/calame/build-favicon.ts");
 	run("npx tsx tools/calame/build-favicon.ts", APP);
 	assert.ok(existsSync(join(APP, "out", "calame", "brand", "favicon", "favicon.ico")), "la toolchain doit produire le .ico");

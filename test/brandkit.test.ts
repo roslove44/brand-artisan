@@ -11,8 +11,8 @@ const SQUARE =
 const PNG_MAGIC = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 const pngSize = (png: Buffer) => ({ width: png.readUInt32BE(16), height: png.readUInt32BE(20) });
 
-// Boite englobante de ce qui est peint. C'est elle qui porte la mise a l'echelle :
-// un pixel central garde sa couleur quel que soit le facteur, ses bords non.
+// La boite englobante porte la mise a l'echelle : un pixel central garde sa
+// couleur quel que soit le facteur, ses bords non.
 function inkBox({ data, width }: { data: Buffer; width: number }) {
 	let minX = 1e9, minY = 1e9, maxX = -1, maxY = -1;
 	for (let i = 0; i < data.length; i += 4) {
@@ -52,8 +52,8 @@ test("renderSvg : le vecteur est mis a l'echelle, pas rogne", () => {
 test("renderSvg : fond optionnel, sinon transparent", () => {
 	const transparent = renderPixels(SQUARE, { width: 64 });
 	assert.equal(transparent.at(2, 2)[3], 0, "sans fond, le coin est transparent");
-	// Le fond passe a resvg n'apparait pas dans les pixels bruts : on verifie sur le PNG,
-	// dont le poids chute quand tout est opaque et uni.
+	// Le fond passe a resvg n'apparait pas dans les pixels bruts : on le verifie
+	// sur le poids du PNG, qui chute quand tout est opaque et uni.
 	const withBg = renderSvg(SQUARE, { width: 64 }, "#ffffff");
 	assert.ok(withBg.subarray(0, 8).equals(PNG_MAGIC));
 	assert.notEqual(withBg.length, renderSvg(SQUARE, { width: 64 }).length);
@@ -75,7 +75,6 @@ test("makeIco : en-tete, repertoire et decalages coherents", () => {
 		assert.equal(ico.readUInt16LE(e + 6), 32, "32 bits par pixel");
 		assert.equal(ico.readUInt32LE(e + 8), data.length, `poids de l'image ${i}`);
 		assert.equal(ico.readUInt32LE(e + 12), expected, `decalage de l'image ${i}`);
-		// Le PNG pointe par le repertoire est bien la, intact.
 		assert.ok(ico.subarray(expected, expected + 8).equals(PNG_MAGIC));
 		expected += data.length;
 	}

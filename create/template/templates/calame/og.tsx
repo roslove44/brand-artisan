@@ -4,12 +4,12 @@ import { brand, type Template } from "brand-artisan";
 
 const SIZE = { width: 1200, height: 630 }; // OG standard, no scale
 
-// Calame guideline palette (brands/calame/brand.md).
+// Calame palette (brands/calame/brand.md).
 const INK = "#1c1917"; // stone-900
 const MUTED = "#78716c"; // stone-500
 const PAPER = "#fafaf9"; // stone-50
 
-// Mark and logotype as data-URIs: proven path, and the OG stays light.
+// Data-URIs rather than files: the OG stays light.
 const uri = async (path: string) => `data:image/svg+xml;base64,${(await readFile(brand(path))).toString("base64")}`;
 const markSrc = await uri("calame/favicon/icon-mark.svg");
 const logoSrc = await uri("calame/logo/logo.svg");

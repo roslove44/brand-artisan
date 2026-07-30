@@ -1,14 +1,11 @@
 /**
- * Les skills se publient a part du moteur (`npx skills add`), donc rien d'autre
- * ne les valide : ni le typecheck, ni le build, ni le rendu. Ce controle est
- * leur seul filet.
+ * Les skills se publient a part du moteur, donc ni le typecheck ni le build ne
+ * les voit : ce controle est leur seul filet.
  *
- * Il existe parce que les deux lecteurs de frontmatter echouent en silence :
- * celui de Claude Code se rabat sur le titre du corps, et une skill perd alors
- * ses declencheurs sans que rien ne casse ; celui de skills.sh saute le fichier
- * avec un warning noye dans sa sortie. C'est arrive une fois, sur une
- * description contenant « : » (typographie francaise), invisible pendant des
- * mois.
+ * Il existe parce que les deux lecteurs de frontmatter echouent en silence.
+ * Claude Code se rabat sur le titre du corps, et la skill perd ses declencheurs
+ * sans rien casser ; skills.sh saute le fichier avec un warning noye. Arrive une
+ * fois sur une description contenant « : », invisible pendant des mois.
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -19,15 +16,14 @@ import { root } from "../src/root";
 
 const SKILLS = fileURLToPath(root("skills/"));
 const NAME_FORMAT = /^[a-z0-9]+(-[a-z0-9]+)*$/;
-// Un scalaire YAML non quote ne peut pas contenir « : » (indicateur de mapping)
-// ni commencer par un caractere de structure (bloc, ancre, alias, flow, tag).
+// Un scalaire YAML non quote ne peut ni contenir « : » ni commencer par un
+// caractere de structure.
 const COLON = /:(\s|$)/;
 const INDICATOR = /^[[\]{}#&*!|>%@`]/;
 
-// Lu comme un parseur YAML strict le lirait : cles de premier niveau seulement,
-// valeur brute laissee telle quelle, guillemets compris. Les fins de ligne sont
-// normalisees parce que le depot melange CRLF et LF, et que les deux lecteurs
-// reels acceptent les deux.
+// Lu comme un parseur strict le lirait : cles de premier niveau, valeur brute
+// guillemets compris. Fins de ligne normalisees, les deux lecteurs reels
+// acceptant CRLF comme LF.
 function parse(content: string) {
 	const raw = content.replaceAll("\r\n", "\n");
 	const end = raw.startsWith("---\n") ? raw.indexOf("\n---\n", 4) : -1;
@@ -52,8 +48,7 @@ const skills = dirs.map((name) => {
 	return { name, ...parse(existsSync(file) ? readFileSync(file, "utf8") : "") };
 });
 
-// Un dossier sans SKILL.md n'est pas une skill : il est ignore a l'installation,
-// donc absent chez l'utilisateur sans le moindre message.
+// Un dossier sans SKILL.md est ignore a l'installation, sans le moindre message.
 test("skills : chaque dossier porte son SKILL.md, ferme par ---", () => {
 	assert.ok(skills.length > 0, `aucune skill trouvee dans ${SKILLS}`);
 	assert.deepEqual(skills.filter((s) => !s.closed).map((s) => s.name), [], "SKILL.md absent, ou frontmatter non ferme");
@@ -64,8 +59,7 @@ test("skills : name present, au format, et egal a son dossier", () => {
 	assert.deepEqual(wrong.map((s) => `${s.name} (name: ${s.fields.get("name")})`), [], "name doit valoir le nom du dossier, en minuscules et tirets");
 });
 
-// La description est ce qui declenche l'invocation : sans elle, la skill existe
-// mais l'agent ne sait pas quand s'en servir.
+// La description est ce qui declenche l'invocation.
 test("skills : description presente, sous 1024 caracteres, avec son declencheur", () => {
 	const problems = skills.flatMap((s) => {
 		const d = s.fields.get("description") ?? "";
@@ -88,9 +82,8 @@ test("skills : corps non vide apres le frontmatter", () => {
 	assert.deepEqual(skills.filter((s) => s.body === "").map((s) => s.name), [], "une skill sans instructions n'apprend rien a l'agent");
 });
 
-// Le plugin Claude Code expose le dossier entier, pas une liste : il n'y a donc
-// aucune liste a maintenir en double. Reste a garantir que le chemin existe,
-// sinon le plugin s'installe vide, sans erreur.
+// Le plugin expose le dossier entier, pas une liste : rien a maintenir en double,
+// mais si le chemin n'existe pas il s'installe vide, sans erreur.
 test("skills : marketplace.json pointe sur un dossier de skills reel", () => {
 	const file = fileURLToPath(root(".claude-plugin/marketplace.json"));
 	const marketplace = JSON.parse(readFileSync(file, "utf8")) as { plugins: { name: string; skills: string[] }[] };
