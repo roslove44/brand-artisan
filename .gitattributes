@@ -1,0 +1,13 @@
+# Fins de ligne deterministes : LF dans le depot comme dans la copie de travail.
+#
+# Ce n'est pas de la cosmetique. Calame existe en double, a la racine et dans
+# create/template/, et test/calame.test.ts compare les deux copies au hachage.
+# Sans normalisation, core.autocrlf convertit selon la facon dont chaque copie a
+# ete materialisee (checkout git contre copie de fichier), et le test echoue sur
+# des octets au lieu d'echouer sur du contenu.
+* text=auto eol=lf
+
+# Assets binaires : aucune conversion, jamais.
+*.png binary
+*.ico binary
+*.ttf binary

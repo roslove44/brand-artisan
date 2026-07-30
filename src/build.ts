@@ -5,7 +5,7 @@ import { slug } from "./utils";
 
 // Export fichier : parcourt l'arborescence de templates/ et ecrit chaque PNG dans
 // out/, sous le dossier du projet, nomme d'apres le titre normalise (meme regle que
-// le telechargement du serveur) : out/comptaopen/couverture-sociale-comptaopen.png.
+// le telechargement du serveur) : out/calame/carte-carree-calame.png.
 async function walk(relPath: string): Promise<void> {
 	const { projects, images } = await list(relPath);
 	for (const img of images) {

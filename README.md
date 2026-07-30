@@ -155,10 +155,8 @@ Setup, repo commands, test safety net and conventions:
 
 ## License
 
-[MIT](https://github.com/roslove44/brand-artisan/blob/main/LICENSE), with two
-exceptions: the **fonts** in `fonts/` are under the SIL Open Font License 1.1
-([`fonts/NOTICE.md`](https://github.com/roslove44/brand-artisan/blob/main/fonts/NOTICE.md)),
-and the repository's **example brands** are covered by trademark law: they
-illustrate the method and are not reusable. Calame, the fictional brand in the
-generated skeleton, is the intended exception: it is there to be a starting
-point.
+[MIT](https://github.com/roslove44/brand-artisan/blob/main/LICENSE), with one
+exception: the **fonts** in `fonts/` are under the SIL Open Font License 1.1
+([`fonts/NOTICE.md`](https://github.com/roslove44/brand-artisan/blob/main/fonts/NOTICE.md)).
+Calame, the repository's demonstration brand, is covered by MIT like everything
+else: it is fictional, and it is there to be a starting point.

@@ -22,12 +22,9 @@ SOFTWARE.
 
 ---
 
-This license covers the BrandArtisan code (rendering engine, tools, skills).
+This license covers the BrandArtisan code (rendering engine, tools, skills) and
+the Calame demonstration brand under `brands/calame/`, which is fictional and
+meant to be reused as a starting point.
 
-It does not cover:
-
-- The fonts in `fonts/`, which are licensed under the SIL Open Font
-  License 1.1. See `fonts/NOTICE.md`.
-- The brands included in this repository as examples (logos, wordmarks, and the
-  brand guidelines under `brands/<project>/`). Trademark law applies: they are
-  here to illustrate the method, not to be reused.
+It does not cover the fonts in `fonts/`, which are licensed under the SIL Open
+Font License 1.1. See `fonts/NOTICE.md`.

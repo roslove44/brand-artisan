@@ -13,7 +13,7 @@ CLAUDE.md.
 ## 1. Déterminer le slug `<projet>`
 
 Le prendre dans les arguments. Sinon le demander. C'est un slug kebab-case
-(ex. `rostand-migan`, `mon-app`). Vérifier qu'il n'existe pas déjà :
+(ex. `calame`, `mon-app`). Vérifier qu'il n'existe pas déjà :
 `brands/<projet>/` ou `templates/<projet>/`. S'il existe -> stop, le signaler.
 
 ## 2. Recueillir la charte (ne rien inventer)
@@ -42,7 +42,7 @@ trous par `_(à définir)_` plutôt que de combler au hasard.
 
 ## 3. Écrire `brands/<projet>/brand.md`
 
-Calquer la **structure** de `brands/rostand-migan/brand.md` (c'est la référence) :
+Calquer la **structure** de `brands/calame/brand.md` (c'est la référence) :
 
 1. Titre `# Charte de marque : <Projet>` + intro courte.
 2. `## 1. Concept et signification` (avec sous-sections Typographie, Couleurs).
@@ -53,11 +53,11 @@ Calquer la **structure** de `brands/rostand-migan/brand.md` (c'est la référenc
 Les fichiers logo/favicon vivent à côté, dans `brands/<projet>/logo/` et
 `brands/<projet>/favicon/`. Ne pas créer de faux assets : si l'utilisateur a des
 fichiers, lui dire où les déposer. S'ils doivent être **générés par script**
-(comme ceux de rostand-migan), c'est le rôle de la skill `brand-assets`.
+(comme ceux de calame), c'est le rôle de la skill `brand-assets`.
 
 ## 3 bis. Écrire `brands/<projet>/project.md`
 
-Calquer la **structure** de `brands/rostand-migan/project.md` (c'est la référence) :
+Calquer la **structure** de `brands/calame/project.md` (c'est la référence) :
 
 1. `# Projet : <Projet>` + intro courte (rôle du fichier).
 2. `## 1. En une phrase` (le pitch).

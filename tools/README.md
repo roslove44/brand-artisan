@@ -37,14 +37,13 @@ police, une tuile d'icône, et toutes leurs déclinaisons.
 Toutes les commandes se lancent depuis n'importe quel dossier du projet.
 
 ```bash
-npx tsx tools/rostand-migan/build-logo.ts     # -> out/rostand-migan/brand/logo/
-npx tsx tools/rostand-migan/build-favicon.ts  # -> out/rostand-migan/brand/favicon/
+npx tsx tools/calame/build-logo.ts     # -> out/calame/brand/logo/
+npx tsx tools/calame/build-favicon.ts  # -> out/calame/brand/favicon/
 ```
 
 Une marque peut avoir des scripts en plus des deux standards, propres à son
-besoin : `tools/comptaopen/build-oauth.ts` produit par exemple les icônes 120 px
-exigées par Google OAuth. Chaque `brand.md` liste les siens dans sa section
-« Régénération ».
+besoin : un `build-oauth.ts` pour les icônes 120 px exigées par Google OAuth,
+par exemple. Chaque `brand.md` liste les siens dans sa section « Régénération ».
 
 ## Sortie et promotion
 
@@ -71,6 +70,6 @@ contenu présent dans le dépôt.
 
 ## Ajouter une marque
 
-Créer `tools/<projet>/` avec ses scripts (s'inspirer de `rostand-migan/`),
+Créer `tools/<projet>/` avec ses scripts (s'inspirer de `calame/`),
 réutiliser `src/brandkit.ts` pour la plomberie, et garder couleurs et géométrie
 locales.

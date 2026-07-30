@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { esc, capitalize, clean, last, slug, ext, pixelSize } from "../src/utils";
 
 test("slug : accents, casse et separateurs -> nom de fichier", () => {
-	assert.equal(slug("Couverture sociale ComptaOpen"), "couverture-sociale-comptaopen");
+	assert.equal(slug("Carte carrée Calame"), "carte-carree-calame");
 	assert.equal(slug("  Été 2024 !! "), "ete-2024");
 	assert.equal(slug("a/b_c"), "a-b-c");
 });
@@ -18,12 +18,12 @@ test("capitalize : premiere lettre en majuscule", () => {
 });
 
 test("clean : retire les slashes de bord, garde l'interne", () => {
-	assert.equal(clean("/comptaopen/cover/"), "comptaopen/cover");
+	assert.equal(clean("/calame/og/"), "calame/og");
 	assert.equal(clean("//a//"), "a");
 });
 
 test("last : dernier segment du chemin", () => {
-	assert.equal(last("comptaopen/cover"), "cover");
+	assert.equal(last("calame/og"), "og");
 	assert.equal(last(""), "");
 });
 

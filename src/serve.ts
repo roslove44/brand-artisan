@@ -49,13 +49,13 @@ async function imageEntry(rel: string, name: string): Promise<Entry> {
 
 // Serveur de dev : l'arborescence de templates/ est navigable, façon Finder.
 //   /                      -> fenêtre sur la racine (projets)
-//   /comptaopen            -> listing du projet (?view=icons|list|gallery)
-//   /comptaopen/cover      -> page d'aperçu (titre + alt)
-//   /comptaopen/cover?raw  -> PNG brut (utilisable comme src)
-//   /comptaopen/cover?thumb=280 -> vignette PNG (cache mémoire)
-//   ?w=1245&h=527          -> override de la taille sur l'aperçu
-//   /comptaopen/brand/…    -> sortie de la toolchain de marque (out/<projet>/brand/),
-//                             fichiers servis tels quels ; dossier masqué s'il n'existe pas
+//   /calame            -> listing du projet (?view=icons|list|gallery)
+//   /calame/og         -> page d'aperçu (titre + alt)
+//   /calame/og?raw     -> PNG brut (utilisable comme src)
+//   /calame/og?thumb=280 -> vignette PNG (cache mémoire)
+//   ?w=1245&h=527      -> override de la taille sur l'aperçu
+//   /calame/brand/…    -> sortie de la toolchain de marque (out/<projet>/brand/),
+//                         fichiers servis tels quels ; dossier masqué s'il n'existe pas
 const server = createServer(async (req, res) => {
 	try {
 		const url = new URL(req.url ?? "/", `http://localhost:${PORT}`);

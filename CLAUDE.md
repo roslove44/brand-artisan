@@ -46,9 +46,9 @@ Chaque projet de visuels vit dans `templates/<projet>/` et s'appuie sur deux ré
 
 **`project.md` est lu s'il existe.** Avant de rédiger du texte sur un visuel (titre, accroche, message), lire `brands/<projet>/project.md` pour caler le ton et ne pas inventer de chiffres ni de promesses. **S'il manque, demander le ton et les claims plutôt que de deviner** : ne pas fabriquer de copy au jugé.
 
-**Briefs ponctuels.** Un projet peut avoir des briefs thématiques à côté de la paire (ex. un `donation.md` pour les visuels liés au don) : les lire quand le visuel demandé s'y rapporte. Ils précisent un besoin, ils ne remplacent ni `brand.md` ni `project.md`.
+**Briefs ponctuels.** Un projet peut avoir des briefs thématiques à côté de la paire (un `lancement.md` pour une sortie de produit, par exemple) : les lire quand le visuel demandé s'y rapporte. Ils précisent un besoin, ils ne remplacent ni `brand.md` ni `project.md`.
 
-Exemple de référence : `rostand-migan` (marque personnelle), complet de la charte aux visuels en passant par ses scripts. Le dépôt contient aussi `comptaopen` (marque produit), même schéma à plus grande échelle. Chacun a sa paire `brand.md` / `project.md` dans `brands/<projet>/`.
+Exemple de référence : `calame`, seule marque du dépôt, complète de la charte aux visuels en passant par ses scripts de `tools/`. Elle est **fictive et faite pour être reprise** : c'est aussi le squelette que livre `create-brand-artisan`. Sa paire `brand.md` / `project.md` vit dans `brands/calame/`.
 
 ## Toolchain de marque
 

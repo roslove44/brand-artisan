@@ -84,7 +84,7 @@ conformes), produits par un script qui réutilise `brandkit.ts`, et promus dans
 
 ## Annexe : amorcer une nouvelle marque
 
-1. Créer `tools/<projet>/` ; s'inspirer de `tools/rostand-migan/`
+1. Créer `tools/<projet>/` ; s'inspirer de `tools/calame/`
    (`build-logo.ts`, `build-favicon.ts`).
 2. Y déposer la police source si besoin (ex. `_geist.ttf`).
 3. Importer le socle : `import { … } from "brand-artisan/brandkit"`. Couleurs et

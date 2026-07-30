@@ -155,10 +155,8 @@ Setup, commandes du dépôt, filet de tests et conventions :
 
 ## Licence
 
-[MIT](https://github.com/roslove44/brand-artisan/blob/main/LICENSE), avec deux
-exceptions : les **polices** de `fonts/` sont sous SIL Open Font License 1.1
-([`fonts/NOTICE.md`](https://github.com/roslove44/brand-artisan/blob/main/fonts/NOTICE.md)),
-et les **marques d'exemple du dépôt** relèvent du droit des marques : elles
-illustrent la méthode, elles ne sont pas réutilisables. Calame, la marque
-fictive du squelette généré, est l'exception voulue : elle est là pour servir
-de point de départ.
+[MIT](https://github.com/roslove44/brand-artisan/blob/main/LICENSE), avec une
+exception : les **polices** de `fonts/` sont sous SIL Open Font License 1.1
+([`fonts/NOTICE.md`](https://github.com/roslove44/brand-artisan/blob/main/fonts/NOTICE.md)).
+Calame, la marque de démonstration du dépôt, est couverte par MIT comme le
+reste : elle est fictive, et elle est là pour servir de point de départ.

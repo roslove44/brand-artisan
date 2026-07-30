@@ -50,5 +50,11 @@ depuis `main` : sous Claude Code, `/plugin marketplace add ./` puis
   leur seul filet, puisqu'elles se publient hors des paquets.
 - Commits en anglais, format [Conventional Commits](https://www.conventionalcommits.org/) :
   `feat(scope): …`, `fix(scope): …`.
-- La marque de référence du dépôt est `rostand-migan` (`brands/`, `templates/`,
-  `tools/`) : le parcours complet d'une marque, de la charte aux visuels.
+- La marque de référence du dépôt est `calame` (`brands/`, `templates/`,
+  `tools/`) : le parcours complet d'une marque, de la charte aux visuels. Elle
+  est **fictive**, donc reprenable, contrairement à une marque réelle.
+- **Calame existe en double**, à la racine et dans `create/template/`, parce
+  qu'un paquet npm ne peut pas référencer de fichiers hors de son dossier.
+  `test/calame.test.ts` compare les fichiers communs au hachage : toute
+  divergence échoue. Les visuels en plus (`banner`, `card`) restent à la racine,
+  le squelette généré gardant son unique OG.

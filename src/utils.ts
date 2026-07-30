@@ -10,7 +10,7 @@ export const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 // Retire les slashes de debut/fin d'un chemin relatif.
 export const clean = (relPath: string) => relPath.replace(/^\/+|\/+$/g, "");
 
-// Dernier segment d'un chemin : "comptaopen/cover" -> "cover".
+// Dernier segment d'un chemin : "calame/og" -> "og".
 export const last = (relPath: string) => relPath.split("/").pop() ?? "";
 
 // Extension en minuscules, sans le point : "logo.SVG" -> "svg".
@@ -33,7 +33,7 @@ export function pixelSize(buf: Buffer, kind: string): { width: number; height: n
 	return { width: 0, height: 0 };
 }
 
-// "Couverture sociale ComptaOpen" -> "couverture-sociale-comptaopen" (nom de fichier).
+// "Carte carrée Calame" -> "carte-carree-calame" (nom de fichier).
 export const slug = (s: string) =>
 	s
 		.normalize("NFD")
