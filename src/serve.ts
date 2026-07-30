@@ -7,17 +7,16 @@ import { listingPage, previewPage, VIEWS, type Entry, type View } from "./ui/pag
 
 const PORT = 4000;
 
-// Types servis depuis la sortie d'outil (ce que produit la toolchain de marque).
 const MIME: Record<string, string> = {
 	svg: "image/svg+xml",
 	png: "image/png",
 	ico: "image/x-icon",
 };
 
-// Vignettes en mémoire, clé = chemin + largeur + mtime du .tsx (invalidées à l'édition).
+// Clé = chemin + largeur + mtime du .tsx, donc invalidées à l'édition.
 const thumbs = new Map<string, Buffer>();
 
-// Rend une vignette : Satori à la taille native du template, puis downscale resvg (net).
+// Satori à la taille native du template, puis downscale resvg : la vignette reste nette.
 async function thumbnail(relPath: string, width: number): Promise<Buffer> {
 	const key = `${relPath}@${width}:${await modified(relPath)}`;
 	const hit = thumbs.get(key);
@@ -29,15 +28,14 @@ async function thumbnail(relPath: string, width: number): Promise<Buffer> {
 	return png;
 }
 
-// Métadonnées d'un fichier de la sortie d'outil : dimensions lues dans l'en-tête,
-// 0x0 si le format n'est pas mesurable (le fichier reste affichable).
+// 0x0 si le format n'est pas mesurable : le fichier reste affichable.
 async function fileEntry(rel: string, name: string): Promise<Entry> {
 	const kind = ext(name);
 	const { width, height } = pixelSize(await outRead(rel), kind);
 	return { kind: "image", name, rel, title: name, width, height, ext: kind };
 }
 
-// Métadonnées d'une image d'un listing ; un template cassé reste listé (broken).
+// Un template cassé reste listé, marqué broken.
 async function imageEntry(rel: string, name: string): Promise<Entry> {
 	try {
 		const tpl = await load(rel, true);
@@ -48,20 +46,19 @@ async function imageEntry(rel: string, name: string): Promise<Entry> {
 }
 
 // Serveur de dev : l'arborescence de templates/ est navigable, façon Finder.
-//   /                      -> fenêtre sur la racine (projets)
-//   /calame            -> listing du projet (?view=icons|list|gallery)
-//   /calame/og         -> page d'aperçu (titre + alt)
-//   /calame/og?raw     -> PNG brut (utilisable comme src)
-//   /calame/og?thumb=280 -> vignette PNG (cache mémoire)
-//   ?w=1245&h=527      -> override de la taille sur l'aperçu
-//   /calame/brand/…    -> sortie de la toolchain de marque (out/<projet>/brand/),
-//                         fichiers servis tels quels ; dossier masqué s'il n'existe pas
+//   /                     -> racine (projets)
+//   /calame               -> listing du projet (?view=icons|list|gallery)
+//   /calame/og            -> page d'aperçu
+//   /calame/og?raw        -> PNG brut, utilisable comme src
+//   /calame/og?thumb=280  -> vignette PNG
+//   ?w=1245&h=527         -> override de la taille sur l'aperçu
+//   /calame/brand/…       -> sortie de la toolchain (out/<projet>/brand/), servie
+//                            telle quelle ; dossier masqué s'il n'existe pas
 const server = createServer(async (req, res) => {
 	try {
 		const url = new URL(req.url ?? "/", `http://localhost:${PORT}`);
 		const relPath = clean(decodeURIComponent(url.pathname));
 		const kind = await resolve(relPath);
-		// Hors templates : le chemin vise peut-être la sortie de la toolchain de marque.
 		const outKind = kind === null ? await outResolve(relPath) : null;
 
 		if (kind === null && outKind === null) {
@@ -78,7 +75,6 @@ const server = createServer(async (req, res) => {
 		if (kind === "dir" || outKind === "dir") {
 			const { projects, images } = kind === "dir" ? await list(relPath) : { projects: [], images: [] };
 			const { dirs, files } = outKind === "dir" ? await outList(relPath) : { dirs: [], files: [] };
-			// Un projet montre aussi la sortie de sa toolchain, quand elle existe.
 			const isProject = kind === "dir" && relPath !== "" && !relPath.includes("/");
 			const tool = isProject && (await hasBrandOut(relPath)) ? [BRAND_OUT] : [];
 			const favorites = relPath === "" ? projects : (await list("")).projects;
@@ -92,7 +88,7 @@ const server = createServer(async (req, res) => {
 			return;
 		}
 
-		// Fichier de la sortie d'outil : servi tel quel, jamais repassé par Satori.
+		// Servi tel quel, jamais repassé par Satori.
 		if (outKind === "file") {
 			const name = last(relPath);
 			const kindExt = ext(name);
@@ -126,7 +122,6 @@ const server = createServer(async (req, res) => {
 			return;
 		}
 
-		// ?thumb=<largeur> -> vignette PNG pour les vues icônes/liste/galerie.
 		if (url.searchParams.has("thumb")) {
 			const width = Math.min(Math.max(Number(url.searchParams.get("thumb")) || 280, 16), 1600);
 			res.writeHead(200, { "content-type": "image/png", "cache-control": "no-store" });
@@ -139,7 +134,7 @@ const server = createServer(async (req, res) => {
 		const height = Number(url.searchParams.get("h")) || tpl.size.height;
 		const title = resolveTitle(tpl, last(relPath));
 
-		// ?raw -> PNG brut, nom de fichier = titre normalisé (pour "enregistrer sous").
+		// Nom de fichier = titre normalisé, pour "enregistrer sous".
 		if (url.searchParams.has("raw")) {
 			const png = await toPng(tpl.render(), { width, height, scale: tpl.size.scale });
 			res.writeHead(200, {
@@ -155,7 +150,6 @@ const server = createServer(async (req, res) => {
 		const imgSrc = `${url.pathname}?${url.searchParams.toString()}`;
 		const favorites = (await list("")).projects;
 
-		// Voisines dans le dossier courant (images seules) -> flèches précédent/suivant.
 		const parent = relPath.split("/").slice(0, -1).join("/");
 		const siblings = (await list(parent)).images;
 		const idx = siblings.indexOf(last(relPath));

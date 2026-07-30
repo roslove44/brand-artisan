@@ -3,9 +3,9 @@ import type { Template } from "./template";
 import { root } from "./root";
 import { clean } from "./utils";
 
-// Auto-decouverte par le filesystem : un dossier = un projet/groupe, un .tsx = une image.
-// Pas de registre a maintenir : on depose un fichier, il apparait.
-// templates/ vit a la racine du projet, hors de src/ : c'est du contenu, pas du moteur.
+// Auto-decouverte par le filesystem, sans registre a maintenir : un dossier = un
+// projet, un .tsx = une image. templates/ vit a la racine du projet, hors de
+// src/, parce que c'est du contenu et pas du moteur.
 const TEMPLATES = root("templates/");
 
 async function exists(url: URL): Promise<boolean> {
@@ -17,7 +17,6 @@ async function exists(url: URL): Promise<boolean> {
 	}
 }
 
-// "dir" si relPath est un dossier (projet), "image" si <relPath>.tsx existe, sinon null.
 export async function resolve(relPath: string): Promise<"dir" | "image" | null> {
 	const rel = clean(relPath);
 	if (rel === "") return "dir";
@@ -26,7 +25,6 @@ export async function resolve(relPath: string): Promise<"dir" | "image" | null> 
 	return null;
 }
 
-// Enfants d'un noeud : sous-dossiers (projets) et .tsx (images), tries.
 export async function list(relPath: string): Promise<{ projects: string[]; images: string[] }> {
 	const rel = clean(relPath);
 	const dir = rel === "" ? TEMPLATES : new URL(`${rel}/`, TEMPLATES);
@@ -40,28 +38,26 @@ export async function list(relPath: string): Promise<{ projects: string[]; image
 	return { projects: projects.sort(), images: images.sort() };
 }
 
-// Date de modification du .tsx d'une image (sert de clé de cache aux vignettes).
+// Sert de cle de cache aux vignettes.
 export async function modified(relPath: string): Promise<number> {
 	const s = await stat(new URL(`${clean(relPath)}.tsx`, TEMPLATES));
 	return s.mtimeMs;
 }
 
 // --- Sortie de la toolchain de marque ---------------------------------------
-// out/<projet>/brand/ contient des fichiers deja produits (SVG, PNG, .ico),
-// pas des templates : on les expose tels quels, comme un dossier "brand" du
-// projet, pour les relire avant promotion vers brands/. Dossier ephemere et
-// souvent absent : tout ici renvoie null plutot que de lever.
+// out/<projet>/brand/ contient des fichiers deja produits, pas des templates :
+// on les expose tels quels, pour les relire avant promotion vers brands/. Le
+// dossier est ephemere et souvent absent, d'ou le null partout plutot qu'une
+// exception.
 const OUT = root("out/");
 export const BRAND_OUT = "brand";
 
-// "<projet>/brand/<reste>" -> URL dans out/. null si le chemin ne vise pas brand.
 function outUrl(relPath: string): URL | null {
 	const [project, folder, ...rest] = clean(relPath).split("/");
 	if (!project || folder !== BRAND_OUT) return null;
 	return new URL([project, BRAND_OUT, ...rest].join("/"), OUT);
 }
 
-// "dir", "file", ou null si hors brand / inexistant.
 export async function outResolve(relPath: string): Promise<"dir" | "file" | null> {
 	const url = outUrl(relPath);
 	if (!url) return null;
@@ -72,10 +68,8 @@ export async function outResolve(relPath: string): Promise<"dir" | "file" | null
 	}
 }
 
-// Le projet a-t-il une sortie d'outil a montrer ?
 export const hasBrandOut = async (project: string) => (await outResolve(`${project}/${BRAND_OUT}`)) === "dir";
 
-// Enfants d'un dossier de sortie de marque : sous-dossiers et fichiers, tries.
 export async function outList(relPath: string): Promise<{ dirs: string[]; files: string[] }> {
 	const url = outUrl(relPath);
 	const entries = url ? await readdir(url, { withFileTypes: true }) : [];
@@ -85,10 +79,9 @@ export async function outList(relPath: string): Promise<{ dirs: string[]; files:
 	return { dirs: dirs.sort(), files: files.sort() };
 }
 
-// Octets bruts d'un fichier de la sortie de marque.
 export const outRead = (relPath: string) => readFile(outUrl(relPath)!);
 
-// Charge le default export de <relPath>.tsx. fresh = cache-bust (hot-reload en dev).
+/** Charge le default export de <relPath>.tsx. `fresh` cache-bust, pour le hot-reload en dev. */
 export async function load(relPath: string, fresh = false): Promise<Template> {
 	const url = new URL(`${clean(relPath)}.tsx`, TEMPLATES);
 	const spec = fresh ? `${url.href}?t=${Date.now()}` : url.href;

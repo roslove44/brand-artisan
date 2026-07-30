@@ -1,7 +1,6 @@
 /**
- * Commandes de `brand-artisan`. Appele par bin/brand-artisan.js, qui a deja
- * enregistre tsx : a partir d'ici, .ts et .tsx sont lisibles, y compris les
- * templates du projet charges a l'execution.
+ * Appele par bin/brand-artisan.js, qui a deja enregistre tsx : a partir d'ici,
+ * .ts et .tsx sont lisibles, templates du projet compris.
  *
  * dev et build sont des modules a effet : les importer suffit a les lancer.
  */

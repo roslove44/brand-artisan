@@ -1,12 +1,6 @@
 /**
  * Mesure des couleurs d'une image, pour deriver une charte depuis les exemples
  * de l'utilisateur (skill import-reference) plutot que de les deviner a l'oeil.
- *
- * Remplace l'usage de Pillow : meme methode, compter les pixels par couleur et
- * trier par effectif decroissant. Le premier bloc est le fond, les suivants les
- * encres et accents.
- *
- * En ligne de commande : brand-artisan colors <image> [nombre de couleurs]
  */
 import { readFileSync } from "node:fs";
 import { basename, extname } from "node:path";
@@ -18,8 +12,6 @@ export type Pixels = { data: Buffer; width: number; height: number };
 
 /** Decode PNG, JPEG ou SVG (rasterise par resvg) en pixels RGBA. */
 export function decode(file: string): Pixels {
-	// Le format se juge avant la lecture : un .webp doit dire "format non gere",
-	// pas echouer plus loin dans un decodeur qui ne le concerne pas.
 	const kind = extname(file).toLowerCase();
 	if (![".png", ".jpg", ".jpeg", ".svg"].includes(kind)) {
 		throw new Error(`Format non gere : "${basename(file)}". Attendu : .png, .jpg, .jpeg ou .svg.`);
@@ -68,15 +60,9 @@ export function palette({ data }: Pixels, top = 12): { unique: number; total: nu
 export type Box = { x: number; y: number; width: number; height: number };
 
 /**
- * Boite englobante de ce qui est peint, c'est-a-dire des pixels non totalement
- * transparents. Sert a mesurer le cadrage d'un element dans son canevas (un
- * logo dans un PNG transparent, par exemple) au lieu de l'estimer a l'oeil.
- *
- * `null` si rien n'est peint. Sur une image a fond opaque, la boite est l'image
- * entiere, ce qui est la reponse correcte.
- *
- * Existe pour que les skills n'aient pas a faire ecrire un parcours de pixels
- * ad hoc a l'agent : une fonction testee vaut mieux que du code improvise.
+ * Boite englobante des pixels non totalement transparents, pour mesurer le
+ * cadrage d'un element dans son canevas. `null` si rien n'est peint ; sur une
+ * image a fond opaque, la boite est l'image entiere, ce qui est correct.
  */
 export function boundingBox({ data, width, height }: Pixels): Box | null {
 	let minX = width;

@@ -7,13 +7,12 @@ import type { ReactNode } from "react";
 import { root } from "./root";
 
 // Satori n'accede a aucune police systeme : on charge celles deposees dans
-// fonts/. Convention de nom : <Famille>-<graisse>.ttf, la famille en
-// PascalCase donnant le nom cite par les templates ("GeistMono-600.ttf" ->
-// famille "Geist Mono", graisse 600). Deposer un fichier suffit a l'enregistrer.
+// fonts/, nommees <Famille>-<graisse>.ttf, la famille en PascalCase donnant le
+// nom cite par les templates ("GeistMono-600.ttf" -> "Geist Mono", 600).
 const FONTS = root("fonts/");
 
-// Sortie ancree sur la racine du projet : le build marche depuis n'importe quel
-// sous-dossier, et vise le projet de l'utilisateur, pas l'interieur du moteur.
+// Ancre sur la racine du projet : le build vise le projet de l'utilisateur, pas
+// l'interieur du moteur, et marche depuis n'importe quel sous-dossier.
 const OUT = root("out/");
 const FONT_FILE = /^(.+)-(\d{3})\.(?:ttf|otf)$/;
 
@@ -33,21 +32,19 @@ async function loadFonts(): Promise<Font[]> {
 	);
 }
 
-// Chargees au premier rendu, pas a l'import : importer le moteur ne doit pas
-// exiger un dossier fonts/ (un script de tools/ n'en a pas besoin). Memoise, la
-// lecture disque n'a lieu qu'une fois.
+// Au premier rendu et non a l'import : importer le moteur ne doit pas exiger un
+// dossier fonts/, un script de tools/ n'en ayant pas besoin. Memoise.
 let loading: Promise<Font[]> | undefined;
 const fonts = () => (loading ??= loadFonts());
 
 type RenderSize = { width: number; height: number; scale?: number };
 
-// JSX -> SVG (satori) -> PNG (resvg). scale = surechantillonnage (1 = taille exacte, 2 = retina).
+/** JSX -> SVG (satori) -> PNG (resvg). `scale` surechantillonne (2 = retina). */
 export async function toPng(node: ReactNode, { width, height, scale = 1 }: RenderSize): Promise<Buffer> {
 	const svg = await satori(node, { width, height, fonts: await fonts() });
 	return new Resvg(svg, { fitTo: { mode: "width", value: Math.round(width * scale) } }).render().asPng();
 }
 
-// Variante qui ecrit le PNG sur disque (export final).
 export async function renderToFile(node: ReactNode, { out, ...size }: RenderSize & { out: string }): Promise<string> {
 	const png = await toPng(node, size);
 	const file = fileURLToPath(new URL(`${out}.png`, OUT));

@@ -1,33 +1,22 @@
 /**
- * brandkit : socle partage de la toolchain de marque.
- *
- * Trois briques portent toute la plomberie :
- *   fontkit  instanciation d'une variable, contours, chasse
- *   resvg    rasterisation, deja utilise par le moteur de rendu
- *   makeIco  ecriture du conteneur .ico, ci-dessous
- *
- * La geometrie et les couleurs propres a une marque vivent dans ses scripts
- * (tools/<projet>/), pas ici.
+ * brandkit : socle partage de la toolchain de marque. La geometrie et les
+ * couleurs propres a une marque vivent dans ses scripts (tools/<projet>/).
  */
 import { openSync, type BBOX, type Font } from "fontkit";
 import { Resvg } from "@resvg/resvg-js";
 
-// Un glyphe pret a composer : son trace SVG, sa chasse, son encombrement.
 export type Ink = { d: string; advance: number; bbox: BBOX };
 
 /**
  * Charge une police instanciee a `axes` (ex. { wght: 700 }) et renvoie un
- * accesseur de glyphe par caractere.
+ * accesseur de glyphe par caractere. Une police statique est prise telle quelle,
+ * `axes` etant alors sans objet.
  *
- * Une police **statique** est prise telle quelle, `axes` etant alors sans objet :
- * toutes les marques n'ont pas une variable sous la main.
- *
- * Deux details qui font la difference entre "a peu pres pareil" et "identique" :
- *  - `path.bbox` et non `glyph.bbox` : le premier calcule les bornes reelles du
- *    trace, le second renvoie celles declarees dans la table glyf, arrondies a
- *    l'entier. Sur Sora, le "C" fait 751.5 de haut, declare 752.
- *  - chasse arrondie : instancier une variable produit une police statique, dont
- *    la table hmtx ne stocke que des entiers.
+ * `path.bbox` et non `glyph.bbox` : le premier calcule les bornes reelles du
+ * trace, le second celles declarees dans la table glyf, arrondies a l'entier.
+ * Sur Sora, le "C" fait 751.5 de haut, declare 752. La chasse, elle, est bien
+ * entiere : instancier une variable produit une statique, dont la table hmtx ne
+ * stocke que des entiers.
  */
 export function loadInstanced(fontPath: string, axes: Record<string, number>): (ch: string) => Ink {
 	const file = openSync(fontPath) as Font;
@@ -45,15 +34,11 @@ const options = (fit: Fit, background?: string) => ({
 	...(background ? { background } : {}),
 });
 
-/**
- * Rend un SVG a la taille voulue. resvg met le vecteur a l'echelle avant de
- * rasteriser : le trace reste net a toutes les tailles, sans passer par la
- * reduction d'un rendu plus grand.
- */
+/** Rend un SVG a la taille voulue : resvg met le vecteur a l'echelle avant de rasteriser. */
 export const renderSvg = (svg: string, fit: Fit, background?: string): Buffer =>
 	new Resvg(svg, options(fit, background)).render().asPng();
 
-/** Meme rendu, mais en pixels RGBA bruts : sert aux controles de couleur. */
+/** Meme rendu, en pixels RGBA bruts. */
 export function renderPixels(svg: string, fit: Fit): { data: Buffer; width: number; at: (x: number, y: number) => number[] } {
 	const img = new Resvg(svg, options(fit)).render();
 	const data = img.pixels;
@@ -61,11 +46,7 @@ export function renderPixels(svg: string, fit: Fit): { data: Buffer; width: numb
 	return { data, width, at: (x, y) => [...data.subarray((y * width + x) * 4, (y * width + x) * 4 + 4)] };
 }
 
-/**
- * Ecrit un .ico multi-resolution. Le format n'est qu'un en-tete de 6 octets, un
- * repertoire de 16 octets par image, puis les images collees bout a bout. On y
- * met des PNG, acceptes depuis Windows Vista et par tous les navigateurs.
- */
+/** Ecrit un .ico multi-resolution, dont les images sont des PNG. */
 export function makeIco(images: { size: number; data: Buffer }[]): Buffer {
 	const header = Buffer.alloc(6);
 	header.writeUInt16LE(1, 2); // type 1 = icone

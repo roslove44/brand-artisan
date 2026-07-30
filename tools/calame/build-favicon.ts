@@ -5,7 +5,6 @@
  * de la base vers la pointe et penche dans le sens de l'ecriture.
  * Sortie : out/calame/brand/favicon/, a promouvoir vers
  * brands/calame/favicon/ apres revue.
- * Lancer : npx tsx tools/calame/build-favicon.ts
  */
 import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";

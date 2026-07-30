@@ -9,14 +9,13 @@ const PROJECT_NAME = "BrandArtisan";
 export const VIEWS = ["icons", "list", "gallery"] as const;
 export type View = (typeof VIEWS)[number];
 
-// Un enfant d'un dossier : sous-projet, ou image (broken = template qui ne charge pas).
-// ext renseigne = fichier deja sur disque (sortie d'outil), servi tel quel plutot
-// que rendu par Satori : sa vignette est le fichier lui-meme.
+// Un enfant d'un dossier. broken = template qui ne charge pas. `ext` renseigne =
+// fichier deja sur disque (sortie d'outil), servi tel quel : sa vignette est lui-meme.
 export type Entry =
 	| { kind: "dir"; name: string; rel: string }
 	| { kind: "image"; name: string; rel: string; title: string; width: number; height: number; broken?: boolean; ext?: string };
 
-// Lien vers un nœud ; la vue courante est conservée pour les dossiers ("icons" = défaut, sans query).
+// La vue courante est conservée pour les dossiers ("icons" = défaut, sans query).
 const dirHref = (rel: string, view: View) => `/${esc(rel)}${view === "icons" ? "" : `?view=${view}`}`;
 const imgHref = (rel: string) => `/${esc(rel)}`;
 // Vignette : rendu a la largeur voulue pour un template, fichier brut sinon.
@@ -73,7 +72,6 @@ const SCRIPT = `
 	}
 `;
 
-// Sidebar : racine + projets de premier niveau, section active selon le chemin.
 function sidebar(relPath: string, favorites: string[], view: View): string {
 	const first = relPath.split("/")[0];
 	const item = (href: string, icon: string, name: string, active: boolean) =>
@@ -146,7 +144,6 @@ function windowShell(opts: {
 </html>`;
 }
 
-// Sélecteur segmenté icônes / liste / galerie, sur le chemin courant.
 function viewSwitcher(relPath: string, view: View): string {
 	const labels: Record<View, string> = { icons: "Icônes", list: "Liste", gallery: "Galerie" };
 	return `<nav class="segmented">${VIEWS.map(
@@ -154,7 +151,7 @@ function viewSwitcher(relPath: string, view: View): string {
 	).join("")}</nav>`;
 }
 
-// Icône d'un enfant : dossier bleu, vignette rendue, ou fallback si template cassé.
+// Dossier bleu, vignette rendue, ou fallback si le template est cassé.
 function entryIcon(e: Entry, folderSize: number, thumbWidth: number): string {
 	if (e.kind === "dir") return folderIcon(folderSize);
 	if (e.broken) return imageMini(Math.round(folderSize * 0.55));
@@ -214,7 +211,6 @@ function galleryView(entries: Entry[], view: View): string {
 		</div>`;
 }
 
-// Page de listing d'un dossier, dans la vue demandée.
 export function listingPage(opts: { relPath: string; view: View; entries: Entry[]; favorites: string[] }): string {
 	const { relPath, view, entries, favorites } = opts;
 	const heading = relPath ? capitalize(last(relPath)) : PROJECT_NAME;
@@ -237,10 +233,8 @@ export function listingPage(opts: { relPath: string; view: View; entries: Entry[
 	});
 }
 
-// Navigation entre les images du dossier courant, sur la page d'aperçu.
 export type PreviewNav = { prev: string | null; next: string | null; index: number; count: number };
 
-// Page d'aperçu d'une image : grand rendu, flèches précédent/suivant, téléchargement du PNG.
 export function previewPage(opts: {
 	relPath: string;
 	title: string;
