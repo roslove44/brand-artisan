@@ -2,7 +2,17 @@
   "name": "brand-artisan",
   "version": "0.1.0-rc.4",
   "type": "module",
-  "description": "Turns JSX into brand images (Open Graph, covers, banners) with Satori + resvg: next/og's engine, outside Next.",
+  "description": "Turn JSX into brand images (Open Graph, social posts, banners). next/og's engine outside Next: no browser, no Figma, no server.",
+  "keywords": [
+    "og-image",
+    "open-graph",
+    "social-images",
+    "satori",
+    "resvg",
+    "jsx",
+    "react",
+    "branding"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
