@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { esc, capitalize, clean, last, slug, ext, pixelSize } from "../src/utils";
+import { esc, byName, capitalize, clean, last, slug, ext, pixelSize } from "../src/utils";
 
 test("slug : accents, casse et separateurs -> nom de fichier", () => {
 	assert.equal(slug("Carte carrée Calame"), "carte-carree-calame");
@@ -31,6 +31,15 @@ test("ext : extension en minuscules, sans le point", () => {
 	assert.equal(ext("logo.SVG"), "svg");
 	assert.equal(ext("favicon.ico"), "ico");
 	assert.equal(ext("icon-16.png"), "png");
+});
+
+test("byName : tri naturel, card-10 apres card-2", () => {
+	const cards = ["card-10", "card-2", "card-1", "card-11"];
+	assert.deepEqual([...cards].sort(byName), ["card-1", "card-2", "card-10", "card-11"]);
+	// Le tri lexical, lui, les inverse : c'est l'ordre des pages d'un PDF qui se
+	// jouait la.
+	assert.deepEqual([...cards].sort(), ["card-1", "card-10", "card-11", "card-2"]);
+	assert.deepEqual(["og", "banner", "card"].sort(byName), ["banner", "card", "og"]);
 });
 
 test("pixelSize : dimensions lues dans l'en-tete du fichier", () => {

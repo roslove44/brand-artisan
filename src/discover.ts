@@ -1,7 +1,7 @@
 import { readdir, readFile, stat } from "node:fs/promises";
 import type { Template } from "./template";
 import { root } from "./root";
-import { clean } from "./utils";
+import { byName, clean } from "./utils";
 
 // Auto-decouverte par le filesystem, sans registre a maintenir : un dossier = un
 // projet, un .tsx = une image. templates/ vit a la racine du projet, hors de
@@ -35,7 +35,7 @@ export async function list(relPath: string): Promise<{ projects: string[]; image
 		if (e.isDirectory()) projects.push(e.name);
 		else if (e.name.endsWith(".tsx")) images.push(e.name.slice(0, -4));
 	}
-	return { projects: projects.sort(), images: images.sort() };
+	return { projects: projects.sort(byName), images: images.sort(byName) };
 }
 
 // Sert de cle de cache aux vignettes.

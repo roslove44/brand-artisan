@@ -145,9 +145,9 @@ templates/<project>/<name>/
   **Do not** create a frame component as a `.tsx` in this folder: it would be
   discovered as a fake slide and land in the PDF. The little bit of frame JSX
   gets repeated in each slide.
-- **Naming and order**: the sort is **lexical**, and it sets the **page order of
-  the PDF**. `card-10` comes before `card-2`: from 10 slides on, **pad** them,
-  `card-01` … `card-10`.
+- **Naming and order**: file order sets the **page order of the PDF**, and the
+  sort is natural, so `card-2` comes before `card-10`. Number the slides plainly,
+  no padding needed.
 - Colors from `theme.ts`, assets through `brand("<project>/...")`, fonts
   discovered in `fonts/`; a missing font -> the "missing font" appendix in
   `new-template`, never silently.
@@ -210,11 +210,12 @@ export default { size: SIZE, render } satisfies Template;
   npm run pdf -- <project>/<name>     # -> out/<project>/<name>.pdf
   ```
 
-  One slide = one page, in lexical order, each page at the slide's exact size.
-  The command re-renders the slides itself, so it stays right even if `build`
-  was not run.
-- Check the pages: the **expected count**, the **same ratio everywhere** (4:5 or
-  1:1), an opaque background, ≤ 100 MB (trivial with flat rendering).
+  One slide = one page, each page at the slide's exact size. The command
+  re-renders the slides itself, so it stays right even if `build` was not run,
+  and it **refuses to assemble** if one slide has a different ratio from the
+  first, since that page would come out letterboxed in the feed.
+- Check the pages: the **expected count**, the **order**, an opaque background,
+  ≤ 100 MB (trivial with flat rendering).
 - Check the **visual coherence** (palette, type, logo, through-line) and that
   **each slide is legible on its own**, body text included, at phone size.
 - Preview the slides: `npm run dev` then `/<project>/<name>`. The folder's page

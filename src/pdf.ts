@@ -9,14 +9,33 @@ import { clean } from "./utils";
 
 const OUT = root("out/");
 
+type Slide = { name: string; width: number; height: number };
+
+const ratio = (s: Slide) => Math.round((s.width / s.height) * 1000);
+
+/**
+ * LinkedIn prend le ratio du document sur sa premiere page : une carte au ratio
+ * different y sortirait letterboxee. L'erreur ne se voit qu'a l'upload, donc on
+ * refuse d'assembler plutot que de livrer un PDF bancal. La taille, elle, peut
+ * varier (une carte en scale 2 garde son ratio).
+ */
+export function checkRatios(slides: Slide[]): void {
+	const [first] = slides;
+	const odd = slides.find((s) => ratio(s) !== ratio(first));
+	if (odd) {
+		throw new Error(
+			`Ratios melanges : ${odd.name} est en ${odd.width}x${odd.height}, ${first.name} en ${first.width}x${first.height}. Toutes les pages doivent partager le meme ratio.`,
+		);
+	}
+}
+
 /**
  * Assemble les .tsx d'un dossier en un PDF, une carte par page. C'est le seul
  * carrousel organique du fil LinkedIn : un post document, ou LinkedIn pagine le
  * PDF en cartes qui defilent. Une serie de PNG postee telle quelle donne une
  * mosaique, pas un carrousel.
  *
- * L'ordre des pages est celui de `list`, donc lexical : au-dela de 9 cartes,
- * numeroter card-01 pour que card-10 ne passe pas avant card-2.
+ * L'ordre des pages est celui de `list`, donc naturel : card-2 avant card-10.
  */
 export async function toPdf(relPath: string): Promise<string> {
 	const rel = clean(relPath);
@@ -25,12 +44,15 @@ export async function toPdf(relPath: string): Promise<string> {
 	const { images } = await list(rel);
 	if (images.length === 0) throw new Error(`templates/${rel}/ ne contient aucun .tsx : rien a assembler.`);
 
+	// Tout charger avant de rendre : le controle de ratio doit echouer tout de
+	// suite, pas apres huit rendus.
+	const cards = await Promise.all(images.map(async (name) => ({ name, tpl: await load(`${rel}/${name}`) })));
+	checkRatios(cards.map(({ name, tpl }) => ({ name, ...tpl.size })));
+
 	const doc = await PDFDocument.create();
-	for (const name of images) {
-		const tpl = await load(`${rel}/${name}`);
+	for (const { tpl } of cards) {
 		const png = await doc.embedPng(await toPng(tpl.render(), tpl.size));
-		// Page a la taille exacte de l'image : LinkedIn deduit le ratio du
-		// document de sa premiere page, donc pas de recadrage a lui imposer.
+		// Page a la taille exacte de l'image : aucun recadrage a lui imposer.
 		doc.addPage([png.width, png.height]).drawImage(png, { x: 0, y: 0, width: png.width, height: png.height });
 	}
 

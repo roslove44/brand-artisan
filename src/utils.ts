@@ -11,6 +11,11 @@ export const last = (relPath: string) => relPath.split("/").pop() ?? "";
 
 export const ext = (name: string) => name.slice(name.lastIndexOf(".") + 1).toLowerCase();
 
+// Tri naturel : "card-10" apres "card-2", la ou un tri lexical les inverse. Le
+// PDF d'un carrousel prend ses pages dans cet ordre, une inversion y passerait
+// inapercue. Collator anglais explicite, pour que Linux et Windows trient pareil.
+export const byName = new Intl.Collator("en", { numeric: true }).compare;
+
 // Lues dans l'en-tete : chunk IHDR pour un PNG, viewBox (ou width/height) pour un
 // SVG, repertoire d'icones pour un .ico. 0x0 si le format est inconnu.
 export function pixelSize(buf: Buffer, kind: string): { width: number; height: number } {
