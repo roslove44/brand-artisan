@@ -126,6 +126,7 @@ multi-tailles, `.ico`. Détails :
 ```text
 brand-artisan dev                       serveur de rendu sur http://localhost:4000
 brand-artisan build                     exporte templates/ dans out/
+brand-artisan pdf <dossier>             assemble un dossier de slides en PDF (post document LinkedIn)
 brand-artisan colors <image> [nombre]   palette d'une image, mesurée plutôt que devinée
 ```
 

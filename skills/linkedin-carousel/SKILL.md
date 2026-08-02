@@ -1,24 +1,18 @@
 ---
 name: linkedin-carousel
-description: Creates the cards of a LinkedIn carousel ad (Campaign Manager) at LinkedIn's dimensions, as a series of coherent 1:1 visuals. Use when the user wants a "LinkedIn carousel", a "LinkedIn carousel ad" or "several cards that swipe" for a LinkedIn project. Produces N .tsx templates (one card = one PNG, 1:1 ratio) in a dedicated subfolder, sharing a common theme, aligned with brand.md. Requires a project with its brand.md in place.
+description: Creates the slides of a LinkedIn carousel, both kinds. Use when the user wants a "LinkedIn carousel", a "LinkedIn document post", a "LinkedIn PDF carousel", a "LinkedIn carousel ad" or "several slides that swipe" for a LinkedIn project. Two paths, and the choice is asked rather than assumed. Either an organic document post (slides assembled into a PDF, what LinkedIn actually paginates as a swipeable carousel in the feed), or a carousel ad in Campaign Manager (1:1 PNG cards). Produces N .tsx templates in a dedicated subfolder sharing a common theme, plus the PDF for the organic path. Requires a project with its brand.md in place.
 ---
 
-# linkedin-carousel: cards for a LinkedIn carousel ad
+# linkedin-carousel: slides for a LinkedIn carousel
 
-Goal: produce the **PNG assets of the N cards** of a LinkedIn **carousel ad**
-(Campaign Manager / Sponsored Content), in **1:1** format, coherent with each
-other and aligned with the guidelines. A carousel is not N independent images: it
-is a **series** that tells something. Coherence across cards is the heart of the
+Goal: produce the **N slides** of a LinkedIn carousel, coherent with each other
+and aligned with the guidelines. A carousel is not N independent images: it is a
+**series** that tells something. Coherence across slides is the heart of the
 deliverable.
 
 This is a specialization of `new-template`. Same conventions: the `Template`
 contract, assets through `brand()`, fonts discovered in `fonts/`,
-`export default ... satisfies Template`. Same model as `facebook-carousel`.
-
-> **Carousel ad ≠ organic carousel.** What you produce here are the **1:1 image
-> cards** of a *carousel ad* (advertising, Campaign Manager). The **organic**
-> "carousel" in the LinkedIn feed is a **multi-page document (PDF)**, not a series
-> of images: **out of scope** for this engine (which outputs PNG).
+`export default ... satisfies Template`.
 
 ## 0. Prerequisites (blocking)
 
@@ -29,54 +23,99 @@ The chain **project -> template folder -> guidelines** must exist:
 - Missing guidelines or project -> **STOP**: ask for `/new-project <project>`
   first. No visual without guidelines (CLAUDE.md rule).
 
-## 1. Frame it (ask, don't guess)
+## 1. Which carousel? (blocking, ask first)
 
-- **Name of the carousel**: a kebab-case slug, default `linkedin-carousel`. It is
-  the **subfolder** `templates/<project>/<name>/`. Check that it does not exist.
-- **Narrative mechanic** (see §3): a story, one card per product, a top N, a
-  tutorial, before/after. It dictates the design.
-- **Number of cards**: 2 to 10, **sweet spot 3-5**.
-- **Content of each card**: a short message + its role (hook, development, CTA).
-- Read `brands/<project>/brand.md`: palette, type, logo variants, **don'ts**. If
-  the project already holds a `.tsx`, read it as a reference.
-- Read `brands/<project>/project.md` if it exists: set the **tone** and the
-  **claims** of the cards (don't invent figures or promises). If absent -> ask for
-  the tone and the message rather than guessing.
+**"LinkedIn carousel" covers two unrelated formats.** Settle it before anything
+else: it decides the ratio, the number of slides, the amount of text and the
+deliverable. Don't pick in silence (CLAUDE.md principle #1).
 
-## 2. LinkedIn constraints (to respect)
+| | **A. Document post** (organic) | **B. Carousel ad** (Campaign Manager) |
+|---|---|---|
+| Where | The regular feed, from a profile or a page | Sponsored Content, paid |
+| What you upload | **one PDF**, LinkedIn paginates it | **N separate images** |
+| Deliverable | `out/<project>/<name>.pdf` | `out/<project>/<name>/card-*.png` |
+| Default ratio | **4:5, 1080×1350** | **1:1, 1080×1080** (only ratio allowed) |
+
+**A is what people usually mean.** "I want a LinkedIn carousel" for a post, a
+tip series, a mini-guide -> path A. Path B only if the user talks about ads,
+budget, Campaign Manager or sponsoring.
+
+> **Posting the PNGs is not path A.** Several images attached to a LinkedIn post
+> come out as a **mosaic** of thumbnails, not as slides you swipe. The swipeable
+> carousel in the feed **is** the document viewer, and it only accepts a
+> document. Hence the PDF: the engine renders the slides, then assembles them.
+
+## 2. Constraints (to respect)
+
+### Path A, document post
+
+| Point | Value | Status |
+|---|---|---|
+| File | **PDF** (also PPT, PPTX, DOC, DOCX) | Official LinkedIn |
+| Weight | ≤ 100 MB | Official LinkedIn |
+| Pages | ≤ 300 | Official LinkedIn |
+| Number of slides | **3 to 10** | Usage |
+| Ratio | **4:5 (1080×1350)**, or 1:1 (1080×1080) | Usage |
+
+- **PDF over the Office formats**: it is the one LinkedIn converts most
+  reliably, and the one the engine produces.
+- **4:5 by default**: portrait takes the most vertical space in the feed, which
+  buys dwell time. 1:1 is legitimate, just smaller on mobile.
+- **Same size for every slide**: LinkedIn takes the ratio of the whole document
+  from its first page, so a stray page gets letterboxed.
+- **A document post is read on a phone**: the 1080 px width lands around 400 px
+  wide. Body text under ~32 px in the template becomes unreadable there. Keep
+  the headline large and the body short.
+- The post's **text** goes in the LinkedIn post, **not** in the slides.
+
+### Path B, carousel ad
 
 | Point | Value | Status |
 |---|---|---|
 | Number of cards | 2 to 10 (sweet spot 3-5) | Official LinkedIn |
 | Ratio | **1:1 only** | Official LinkedIn |
-| Size / card | **1080x1080** (max 4320x4320) | Official LinkedIn |
+| Size / card | **1080×1080** (max 4320×4320) | Official LinkedIn |
 | Format | JPG or PNG (non-animated GIF) | Official LinkedIn |
 | Weight / card | ≤ 10 MB | Official LinkedIn |
 | Headline / card | ≤ 45 characters | Official LinkedIn |
 
 - **1:1 is mandatory**: no 4:5 or 9:16 in a LinkedIn carousel ad (this differs
   from Facebook). Every card at the same format.
-- The **intro text** and the headlines/links are set in Campaign Manager, **not in
-  the image**: one idea per card.
+- The **intro text** and the headlines/links are set in Campaign Manager, **not
+  in the image**: one idea per card.
 
-## 3. The spirit: arrange it so it lands
+## 3. Frame it (ask, don't guess)
+
+- **Name of the carousel**: a kebab-case slug, default `linkedin-carousel`. It
+  is the **subfolder** `templates/<project>/<name>/`. Check it does not exist.
+- **Narrative mechanic** (see §4): a story, one slide per product, a top N, a
+  tutorial, before/after. It dictates the design.
+- **Number of slides**, per the table above.
+- **Content of each slide**: a short message + its role (hook, development, CTA).
+- Read `brands/<project>/brand.md`: palette, type, logo variants, **don'ts**. If
+  the project already holds a `.tsx`, read it as a reference.
+- Read `brands/<project>/project.md` if it exists: set the **tone** and the
+  **claims** (don't invent figures or promises). If absent -> ask for the tone
+  and the message rather than guessing.
+
+## 4. The spirit: arrange it so it lands
 
 ### Narrative mechanics (pick ONE)
 - **Sequential story**: hook -> problem -> solution -> proof -> CTA.
-- **One card = one product / one offer**: each card legible on its own, constant
-  background and position.
-- **Top N / tips**: card 1 = the title, cards 2..N = one item each, the last = the
-  CTA. Number the cards.
-- **Step-by-step tutorial**: one step per card, each visual self-supporting.
-- **Before / after**: strong contrast between the first and the last card.
+- **One slide = one product / one offer**: each slide legible on its own,
+  constant background and position.
+- **Top N / tips**: slide 1 = the title, slides 2..N = one item each, the last =
+  the CTA. Number the slides.
+- **Step-by-step tutorial**: one step per slide, each visual self-supporting.
+- **Before / after**: strong contrast between the first and the last slide.
 
-### Card 1 = the hook
+### Slide 1 = the hook
 It is the only one fully visible before the swipe: **a single message**, strong
 contrast, one element that creates curiosity. Don't explain everything here.
 
-### Coherence across cards (the heart of it)
+### Coherence across slides (the heart of it)
 Identical palette and type; **the logo in a fixed, discreet position**; constant
-placements; a **visual through-line** (a color or a progress marker); each card
+placements; a **visual through-line** (a color or a progress marker); each slide
 legible on its own.
 
 ### LinkedIn tone
@@ -84,18 +123,19 @@ A **professional** audience: a register of added value (an insight, a data point
 a business benefit, proof), a measured CTA. Avoid the "aggressive promo" tone.
 
 ### Rising CTA
-Soft at the start, **conversion on the last card**. Each card has its own link in
-Campaign Manager.
+Soft at the start, **conversion on the last slide**. On path A the last slide
+carries the whole call to action, since a document post has no per-slide link;
+on path B each card has its own link in Campaign Manager.
 
-## 4. Write the cards
+## 5. Write the slides
 
-Structure: **one subfolder per carousel**, **one `.tsx` per card**, plus a shared
-`theme.ts`.
+Structure: **one subfolder per carousel**, **one `.tsx` per slide**, plus a
+shared `theme.ts`.
 
 ```
 templates/<project>/<name>/
   theme.ts        <- shared palette + layout (pure TS, NO JSX)
-  card-1.tsx      <- one card = one PNG (1080x1080)
+  card-1.tsx      <- one slide = one PNG, and one PDF page on path A
   card-2.tsx
   card-3.tsx
 ```
@@ -103,10 +143,11 @@ templates/<project>/<name>/
 - **`theme.ts` factors out the coherence** (palette, `SIZE`, margins). **Pure TS
   with no JSX**: discovery only loads `.tsx` files, so `theme.ts` is ignored.
   **Do not** create a frame component as a `.tsx` in this folder: it would be
-  discovered as a fake card and break the build. The little bit of frame JSX gets
-  repeated in each card.
-- **Naming and order**: the sort is **lexical**, so `card-10` comes before
-  `card-2`. From 10 cards on, **pad** them: `card-01` … `card-10`.
+  discovered as a fake slide and land in the PDF. The little bit of frame JSX
+  gets repeated in each slide.
+- **Naming and order**: the sort is **lexical**, and it sets the **page order of
+  the PDF**. `card-10` comes before `card-2`: from 10 slides on, **pad** them,
+  `card-01` … `card-10`.
 - Colors from `theme.ts`, assets through `brand("<project>/...")`, fonts
   discovered in `fonts/`; a missing font -> the "missing font" appendix in
   `new-template`, never silently.
@@ -116,15 +157,15 @@ templates/<project>/<name>/
 ```ts
 import type { CSSProperties } from "react";
 
-export const SIZE = { width: 1080, height: 1080 }; // LinkedIn carousel ad, 1:1
-export const TOTAL = 4; // number of cards (index + progress)
+export const SIZE = { width: 1080, height: 1350 }; // document post, 4:5 (ad: 1080x1080)
+export const TOTAL = 5; // number of slides (index + progress)
 
 // <Project> guideline palette (from brands/<project>/brand.md).
 export const INK = "#......";
 export const ACCENT = "#......";
 export const PAPER = "#......";
 
-// Frame shared by every card: same background, same safe area.
+// Frame shared by every slide: same background, same safe area.
 export const frame: CSSProperties = {
 	width: "100%",
 	height: "100%",
@@ -146,9 +187,9 @@ import { SIZE, frame, PAPER, ACCENT } from "./theme";
 function render(): ReactNode {
 	return (
 		<div style={frame}>
-			{/* logo in a fixed position (same corner on every card) */}
+			{/* logo in a fixed position (same corner on every slide) */}
 			{/* the hook: a single message, strong contrast */}
-			{/* progress marker (e.g. 1/4) */}
+			{/* progress marker (e.g. 1/5) */}
 		</div>
 	);
 }
@@ -159,16 +200,29 @@ export default { size: SIZE, render } satisfies Template;
 (With no `title`, the PNG comes out under the file's name:
 `out/<project>/<name>/card-1.png`.)
 
-## 5. Verify
+## 6. Assemble and verify
 
 - `npm run typecheck` -> green.
 - `npm run build` -> writes `out/<project>/<name>/card-*.png`.
-- Check **each** PNG: **1080×1080** (1:1 throughout), opaque background, ≤ 10 MB
-  (trivial with flat rendering).
-- Check the **visual coherence** (palette, type, logo, through-line) and that
-  **each card is legible on its own**.
-- Preview: `npm run dev` then `/<project>/<name>`.
+- **Path A only**, assemble the document:
 
-**Success criterion**: N cards (2-10) at 1:1 1080×1080, opaque, visually coherent,
-card 1 catchy, the last card carrying the CTA, professional in tone, and using
-only colors and type from `brand.md`.
+  ```bash
+  npm run pdf -- <project>/<name>     # -> out/<project>/<name>.pdf
+  ```
+
+  One slide = one page, in lexical order, each page at the slide's exact size.
+  The command re-renders the slides itself, so it stays right even if `build`
+  was not run.
+- Check the pages: the **expected count**, the **same ratio everywhere** (4:5 or
+  1:1), an opaque background, ≤ 100 MB (trivial with flat rendering).
+- Check the **visual coherence** (palette, type, logo, through-line) and that
+  **each slide is legible on its own**, body text included, at phone size.
+- Preview the slides: `npm run dev` then `/<project>/<name>`.
+- **Tell the user what to upload**: on path A, the **PDF**, through *Add a
+  document* on the post (uploading the PNGs gives a mosaic, not a carousel); on
+  path B, the **N PNGs**, as the cards of the ad in Campaign Manager.
+
+**Success criterion**: on path A, a PDF of 3-10 pages at a constant ratio,
+paginated in the intended order, slide 1 catchy and the last slide carrying the
+CTA. On path B, 2-10 cards at 1:1 1080×1080, opaque, visually coherent. In both
+cases a professional tone, and only colors and type from `brand.md`.

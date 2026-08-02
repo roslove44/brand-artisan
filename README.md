@@ -125,6 +125,7 @@ produce: an SVG logotype traced from the font's glyphs, multi-size favicons,
 ```text
 brand-artisan dev                       render server at http://localhost:4000
 brand-artisan build                     exports templates/ to out/
+brand-artisan pdf <folder>              assembles a folder of slides into a PDF (LinkedIn document post)
 brand-artisan colors <image> [count]    an image's palette, measured rather than guessed
 ```
 

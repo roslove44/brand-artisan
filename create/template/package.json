@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "brand-artisan dev",
     "build": "brand-artisan build",
+    "pdf": "brand-artisan pdf",
     "typecheck": "tsc"
   },
   "dependencies": {

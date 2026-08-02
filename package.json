@@ -36,6 +36,7 @@
   "scripts": {
     "dev": "tsx watch src/serve.ts",
     "build": "tsx src/build.ts",
+    "pdf": "node bin/brand-artisan.js pdf",
     "typecheck": "tsc",
     "test": "node --import tsx --test test/**/*.test.ts",
     "test:consumer": "tsx test/consumer-check.ts",
@@ -48,6 +49,7 @@
     "@types/pngjs": "^6.0.5",
     "fontkit": "^2.0.4",
     "jpeg-js": "^0.4.4",
+    "pdf-lib": "^1.17.1",
     "pngjs": "^7.0.0",
     "satori": "^0.12.1",
     "tsx": "^4.19.2"

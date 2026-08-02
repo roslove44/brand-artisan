@@ -13,6 +13,7 @@ npm install
 ```bash
 npm run dev             # serveur de rendu sur les templates du dépôt
 npm run build           # rend toute l'arborescence de templates/ dans out/
+npm run pdf -- <dir>    # assemble un dossier de slides en PDF (post document LinkedIn)
 npm run check           # typecheck + tests, ce que lance la CI
 npm run test:consumer   # empaquette, installe dans un projet vierge et y rend un visuel
 npm run test:generator  # génère un projet depuis les tarballs et le rend de bout en bout

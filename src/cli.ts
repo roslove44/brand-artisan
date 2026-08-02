@@ -10,6 +10,7 @@ const USAGE = `brand-artisan <commande>
 
   dev                       serveur de rendu sur http://localhost:4000
   build                     rend toute l'arborescence de templates/ dans out/
+  pdf <dossier>             assemble les cartes d'un dossier en un PDF (post document LinkedIn)
   colors <image> [nombre]   palette d'une image (.png, .jpg, .svg), triee par effectif
 
 Les skills s'installent a part, selon l'agent : npx skills add roslove44/brand-artisan -s "*" -y
@@ -24,6 +25,16 @@ switch (command) {
 	case "build":
 		await import("./build");
 		break;
+	case "pdf": {
+		const [dir] = rest;
+		if (!dir) {
+			console.error("Usage : brand-artisan pdf <projet>/<dossier-de-cartes>");
+			process.exit(1);
+		}
+		const { toPdf } = await import("./pdf");
+		console.log(`✓ ${await toPdf(dir)}`);
+		break;
+	}
 	case "colors": {
 		const [file, top] = rest;
 		if (!file) {

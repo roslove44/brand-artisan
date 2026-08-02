@@ -6,6 +6,7 @@ images (Open Graph, posts, banners) composed in JSX and rendered to PNG.
 ```bash
 npm run build   # renders everything in templates/ into out/
 npm run dev     # preview server on http://localhost:4000
+npm run pdf -- <project>/<folder>   # a folder of slides into one PDF (LinkedIn document post)
 ```
 
 ## What is in here
