@@ -203,7 +203,9 @@ export const STYLE = `
 	/* ---- Vue galerie ---- */
 	.gallery { display: flex; flex-direction: column; height: 100%; }
 	.stage { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; padding: 22px 22px 8px; }
-	.slide { display: flex; align-items: center; justify-content: center; margin: 0; max-width: 100%; max-height: 100%; }
+	/* Hauteur ferme, pas seulement plafonnee : le max-height de l'image se
+	   resout contre elle, sinon un visuel en portrait deborde de la scene. */
+	.slide { display: flex; align-items: center; justify-content: center; margin: 0; max-width: 100%; height: 100%; }
 	.slide[hidden] { display: none; }
 	.slide img {
 		max-width: 100%;
