@@ -81,6 +81,18 @@ export async function outList(relPath: string): Promise<{ dirs: string[]; files:
 
 export const outRead = (relPath: string) => readFile(outUrl(relPath)!);
 
+// Le PDF assemble par `brand-artisan pdf` se range a cote du dossier de cartes,
+// dans out/<projet>/<nom>.pdf. Sa date sert a dire s'il a pris du retard sur les
+// cartes : c'est un artefact de build, pas une source.
+export async function pdfOut(relPath: string): Promise<{ data: Buffer; mtimeMs: number } | null> {
+	const url = new URL(`${clean(relPath)}.pdf`, OUT);
+	try {
+		return { data: await readFile(url), mtimeMs: (await stat(url)).mtimeMs };
+	} catch {
+		return null;
+	}
+}
+
 /** Charge le default export de <relPath>.tsx. `fresh` cache-bust, pour le hot-reload en dev. */
 export async function load(relPath: string, fresh = false): Promise<Template> {
 	const url = new URL(`${clean(relPath)}.tsx`, TEMPLATES);

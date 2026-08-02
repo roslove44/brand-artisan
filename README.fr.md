@@ -58,6 +58,7 @@ registre à éditer. En dev, chaque visuel a son URL, comme des routes Next :
 http://localhost:4000/                   → liste les projets
 http://localhost:4000/calame/og          → page d'aperçu (re-rendue à chaque refresh)
 http://localhost:4000/calame/og?raw      → le PNG brut
+http://localhost:4000/calame/deck?pdf    → le PDF assemblé d'un dossier, s'il existe
 ```
 
 `npm run build` exporte le tout dans `out/<projet>/`, prêt à uploader.

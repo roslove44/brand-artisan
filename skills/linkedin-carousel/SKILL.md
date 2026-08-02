@@ -217,7 +217,9 @@ export default { size: SIZE, render } satisfies Template;
   1:1), an opaque background, ≤ 100 MB (trivial with flat rendering).
 - Check the **visual coherence** (palette, type, logo, through-line) and that
   **each slide is legible on its own**, body text included, at phone size.
-- Preview the slides: `npm run dev` then `/<project>/<name>`.
+- Preview the slides: `npm run dev` then `/<project>/<name>`. The folder's page
+  carries a **PDF** button as soon as the document exists, and labels it *à
+  regénérer* when a slide is more recent than it.
 
 ## 7. Hand it over (the files are not the delivery)
 

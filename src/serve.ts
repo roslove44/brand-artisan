@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import { toPng } from "./render";
-import { resolve, list, load, modified, outResolve, outList, outRead, hasBrandOut, BRAND_OUT } from "./discover";
+import { resolve, list, load, modified, outResolve, outList, outRead, hasBrandOut, pdfOut, BRAND_OUT } from "./discover";
 import { resolveTitle } from "./template";
 import { capitalize, last, slug, clean, ext, pixelSize } from "./utils";
 import { listingPage, previewPage, VIEWS, type Entry, type View } from "./ui/pages";
@@ -54,6 +54,7 @@ async function imageEntry(rel: string, name: string): Promise<Entry> {
 //   ?w=1245&h=527         -> override de la taille sur l'aperçu
 //   /calame/brand/…       -> sortie de la toolchain (out/<projet>/brand/), servie
 //                            telle quelle ; dossier masqué s'il n'existe pas
+//   /calame/carrousel?pdf -> le PDF assemblé du dossier, proposé dès qu'il existe
 const server = createServer(async (req, res) => {
 	try {
 		const url = new URL(req.url ?? "/", `http://localhost:${PORT}`);
@@ -75,6 +76,20 @@ const server = createServer(async (req, res) => {
 		if (kind === "dir" || outKind === "dir") {
 			const { projects, images } = kind === "dir" ? await list(relPath) : { projects: [], images: [] };
 			const { dirs, files } = outKind === "dir" ? await outList(relPath) : { dirs: [], files: [] };
+
+			// Un dossier de cartes a pour livrable son PDF, pas ses PNG : dès qu'il
+			// existe, le dossier le propose, et le signale périmé s'il est plus vieux
+			// qu'une de ses cartes.
+			const pdf = kind === "dir" ? await pdfOut(relPath) : null;
+			if (pdf && url.searchParams.has("pdf")) {
+				res.writeHead(200, {
+					"content-type": "application/pdf",
+					"content-disposition": `inline; filename="${last(relPath)}.pdf"`,
+					"cache-control": "no-store",
+				});
+				res.end(pdf.data);
+				return;
+			}
 			const isProject = kind === "dir" && relPath !== "" && !relPath.includes("/");
 			const tool = isProject && (await hasBrandOut(relPath)) ? [BRAND_OUT] : [];
 			const favorites = relPath === "" ? projects : (await list("")).projects;
@@ -83,8 +98,9 @@ const server = createServer(async (req, res) => {
 				...(await Promise.all(images.map((i) => imageEntry(join(i), i)))),
 				...(await Promise.all(files.map((f) => fileEntry(join(f), f)))),
 			];
+			const stale = pdf !== null && Math.max(...(await Promise.all(images.map((i) => modified(join(i)))))) > pdf.mtimeMs;
 			res.writeHead(200, { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" });
-			res.end(listingPage({ relPath, view, entries, favorites }));
+			res.end(listingPage({ relPath, view, entries, favorites, pdf: pdf ? { href: `/${relPath}?pdf`, stale } : undefined }));
 			return;
 		}
 

@@ -212,8 +212,15 @@ function galleryView(entries: Entry[], view: View): string {
 		</div>`;
 }
 
-export function listingPage(opts: { relPath: string; view: View; entries: Entry[]; favorites: string[] }): string {
-	const { relPath, view, entries, favorites } = opts;
+// `pdf` = le PDF assemblé du dossier, quand il existe sur disque.
+export function listingPage(opts: {
+	relPath: string;
+	view: View;
+	entries: Entry[];
+	favorites: string[];
+	pdf?: { href: string; stale: boolean };
+}): string {
+	const { relPath, view, entries, favorites, pdf } = opts;
 	const heading = relPath ? capitalize(last(relPath)) : PROJECT_NAME;
 	const renderers: Record<View, (e: Entry[], v: View) => string> = {
 		icons: iconsView,
@@ -221,13 +228,18 @@ export function listingPage(opts: { relPath: string; view: View; entries: Entry[
 		gallery: galleryView,
 	};
 	const content = entries.length ? renderers[view](entries, view) : `<p class="empty">Ce dossier est vide.</p>`;
+	const pdfLink = pdf
+		? `<a class="tool-link" href="${esc(pdf.href)}" title="${
+				pdf.stale ? "Plus ancien qu'une des cartes : relancer npm run pdf" : "Le PDF assemblé de ce dossier"
+			}">${downloadIcon}<span>PDF${pdf.stale ? " à regénérer" : ""}</span></a>`
+		: "";
 	return windowShell({
 		pageTitle: relPath ? `${heading} | ${PROJECT_NAME}` : PROJECT_NAME,
 		heading,
 		relPath,
 		view,
 		favorites,
-		toolbarRight: viewSwitcher(relPath, view),
+		toolbarRight: `${pdfLink}${viewSwitcher(relPath, view)}`,
 		content,
 		leafIsImage: false,
 		status: `${entries.length} élément${entries.length === 1 ? "" : "s"}`,
