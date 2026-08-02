@@ -94,8 +94,9 @@ Cross-platform coherence (`campaign`'s own job):
   weight, opaque background).
 - **Coherence of the kit**: read the whole set side by side; message aligned, tone
   adapted with no break in the brand, claims conforming to `project.md`.
-- **Recap**: list the PNGs produced **per platform**, and restate the master
-  message you settled on.
+- **Recap**: list the files produced **per platform**, and restate the master
+  message you settled on. A LinkedIn document post is delivered as **its PDF**,
+  not as its slides (see `linkedin-carousel`).
 
 **Success criterion**: a multi-platform kit where every visual respects its
 platform's specs (delegated), carried by **one coherent master message** varied

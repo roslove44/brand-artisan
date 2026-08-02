@@ -218,11 +218,32 @@ export default { size: SIZE, render } satisfies Template;
 - Check the **visual coherence** (palette, type, logo, through-line) and that
   **each slide is legible on its own**, body text included, at phone size.
 - Preview the slides: `npm run dev` then `/<project>/<name>`.
-- **Tell the user what to upload**: on path A, the **PDF**, through *Add a
-  document* on the post (uploading the PNGs gives a mosaic, not a carousel); on
-  path B, the **N PNGs**, as the cards of the ad in Campaign Manager.
+
+## 7. Hand it over (the files are not the delivery)
+
+Rendering the slides is not finishing the job. Left to themselves, users upload
+the PNGs, because that is what a folder of images invites, and LinkedIn answers
+with a mosaic of thumbnails. **Never sign off on path A with "the cards are
+ready in `out/`".** Close with a short handover, in your own words, carrying
+three things:
+
+- **The file to upload.** Path A, `out/<project>/<name>.pdf`, and it alone,
+  through *Add a document* in the post editor. Path B, the N PNGs, one per card,
+  in Campaign Manager.
+- **Why, in one line.** LinkedIn paginates a document into slides you swipe; a
+  batch of images is laid out as a mosaic. Say it once, plainly. This is the
+  part that gets missed, so it belongs in the handover and not in a footnote.
+- **What the PNGs are still for**, on path A. They stay in
+  `out/<project>/<name>/` and get reused on their own (an illustration, a post
+  image). They just are not the LinkedIn deliverable.
+
+**The PDF goes stale.** Editing one slide, adding one, renaming one, all leave
+the PDF behind. Re-run `npm run pdf -- <project>/<name>` and hand over the new
+one, without re-explaining the whole recipe. Same thing for a carousel folder
+that predates the PDF path, `build` alone never produced one.
 
 **Success criterion**: on path A, a PDF of 3-10 pages at a constant ratio,
 paginated in the intended order, slide 1 catchy and the last slide carrying the
-CTA. On path B, 2-10 cards at 1:1 1080×1080, opaque, visually coherent. In both
-cases a professional tone, and only colors and type from `brand.md`.
+CTA, **handed over as the thing to upload**. On path B, 2-10 cards at 1:1
+1080×1080, opaque, visually coherent. In both cases a professional tone, and
+only colors and type from `brand.md`.
