@@ -1,35 +1,35 @@
-# Polices fournies avec ce projet
+# Fonts shipped with this project
 
-Satori n'accède à aucune police système : les fichiers doivent être présents dans
-le projet. Ceux-ci sont **redistribués sous SIL Open Font License 1.1**, dont le
-texte accompagne les fichiers comme l'OFL l'exige.
+Satori does not access any system font: the files must be present in the
+project. These are **redistributed under the SIL Open Font License 1.1**,
+whose text travels with the files as the OFL requires.
 
-| Fichier | Famille | Auteurs | Licence | Source |
+| File | Family | Authors | License | Source |
 |---|---|---|---|---|
 | `Geist-400.ttf`, `Geist-600.ttf` | Geist | The Geist Project Authors (Andrés Briganti, Mateo Zaragoza, Basement.studio, Vercel) | OFL 1.1, [`OFL-Geist.txt`](OFL-Geist.txt) | [vercel/geist-font](https://github.com/vercel/geist-font) |
 | `Sora-700.ttf` | Sora | The Sora Project Authors | OFL 1.1, [`OFL-Sora.txt`](OFL-Sora.txt) | [google/fonts](https://github.com/google/fonts/tree/main/ofl/sora) |
 
-Les fichiers Geist sont des **statiques instanciés** depuis la police variable
-d'origine ; l'OFL couvre ces versions modifiées, à condition de ne pas réutiliser
-le nom réservé de la police pour une version modifiée distribuée sous ce nom.
+The Geist files are **statics instanced** from the original variable font; the
+OFL covers these modified versions, provided the font's reserved name is not
+reused for a modified version distributed under that name.
 
-## Ajouter une police
+## Adding a font
 
-Déposer le fichier ici suffit : le moteur scanne ce dossier au démarrage, il n'y
-a aucune déclaration à écrire dans le code. Quatre conditions :
+Dropping the file here is all it takes: the engine scans this folder at
+startup, there is no declaration to write in the code. Four conditions:
 
-1. **Licence compatible avec la redistribution** (OFL, Apache 2.0, domaine
-   public). Une police achetée sous licence propriétaire ne se commite pas dans
-   un dépôt public : la garder hors dépôt.
-2. **Format `.ttf` ou `.otf`.** Satori ne lit pas le `woff2`.
-3. **Nom du fichier : `<Famille>-<graisse>.ttf`.** C'est lui qui fait foi, un
-   fichier hors convention fait échouer le rendu au démarrage avec un message
-   explicite. La famille s'écrit en PascalCase et les mots sont séparés à la
-   lecture : `GeistMono-600.ttf` donne la famille `Geist Mono` en graisse 600,
-   c'est-à-dire le nom exact à citer dans le `fontFamily` d'un template. Un nom
-   qui contient déjà une espace est repris tel quel (`DM Sans-400.ttf`).
-4. **Déposer le texte de licence ici** (`OFL-<Police>.txt` ou équivalent) et
-   ajouter une ligne au tableau ci-dessus.
+1. **A license compatible with redistribution** (OFL, Apache 2.0, public
+   domain). A font bought under a proprietary license does not get committed
+   to a public repository: keep it out of the repo.
+2. **`.ttf` or `.otf` format.** Satori does not read `woff2`.
+3. **File name: `<Family>-<weight>.ttf`.** It is the source of truth; a file
+   outside the convention fails the render at startup with an explicit
+   message. The family is written in PascalCase and the words are split on
+   read: `GeistMono-600.ttf` gives the family `Geist Mono` at weight 600,
+   which is the exact name to use in a template's `fontFamily`. A name that
+   already contains a space is kept as is (`DM Sans-400.ttf`).
+4. **Drop the license text here** (`OFL-<Font>.txt` or equivalent) and add a
+   row to the table above.
 
-Seuls les `.ttf` et `.otf` sont lus : les fichiers de licence de ce dossier sont
-ignorés par le scan.
+Only `.ttf` and `.otf` files are read: the license files in this folder are
+ignored by the scan.

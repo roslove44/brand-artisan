@@ -55,10 +55,10 @@ A `.tsx` file under `templates/<project>/` = one image. It default-exports a
 In dev, every visual gets its own URL, like Next routes:
 
 ```text
-http://localhost:4000/                   → lists the projects
-http://localhost:4000/calame/og          → preview page (re-rendered on each refresh)
-http://localhost:4000/calame/og?raw      → the raw PNG
-http://localhost:4000/calame/deck?pdf    → a folder's assembled PDF, once built
+http://localhost:4000/                               → lists the projects
+http://localhost:4000/calame/og                      → preview page (re-rendered on each refresh)
+http://localhost:4000/calame/og?raw                  → the raw PNG
+http://localhost:4000/calame/linkedin-carousel?pdf   → a folder's assembled PDF, once built
 ```
 
 `npm run build` exports everything to `out/<project>/`, ready to upload.
