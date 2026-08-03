@@ -99,8 +99,8 @@ templates/<project>/<name>/
   with no JSX**: discovery only loads `.tsx` files, so `theme.ts` is ignored.
   **Do not** create a frame component as a `.tsx` in this folder: it would be
   discovered as a fake card and break the build.
-- **Naming and order**: the sort is **lexical**. With 6 cards at most, `card-1` …
-  `card-6` stays correctly ordered (no padding needed).
+- **Naming and order**: the sort is **natural**, so `card-2` would come before
+  `card-10`. With 6 cards at most, `card-1` … `card-6`, no padding needed.
 - Colors from `theme.ts`, assets through `brand("<project>/...")`, fonts
   discovered in `fonts/`; a missing font -> the "missing font" appendix in
   `new-template`, never silently.

@@ -124,9 +124,8 @@ templates/<project>/<name>/
   `.tsx` in this folder: it would be discovered as a fake card and break the
   build. The coherence travels through the constants; the little bit of frame JSX
   gets repeated in each card (they differ anyway).
-- **Naming and order**: discovery sorts the files in **lexical** order, so
-  `card-10` would come before `card-2`. As soon as you reach 10 cards, **pad to
-  two digits**: `card-01` … `card-10`.
+- **Naming and order**: the sort is **natural**, so `card-2` comes before
+  `card-10`. Number the cards plainly, no padding needed.
 - Colors as constants (from `theme.ts`), assets through
   `brand("<project>/...")`, fonts discovered in `fonts/`; a missing font -> the
   "missing font" appendix in `new-template`, never silently.
