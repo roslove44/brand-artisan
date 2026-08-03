@@ -113,7 +113,15 @@ recomposer un logo au jugé.
 
 Une toolchain à part (`tools/<projet>/`) génère les assets que le rendu ne sait
 pas produire : logotype en SVG tracé depuis les glyphes de la police, favicons
-multi-tailles, `.ico`. Détails :
+multi-tailles, `.ico`. `npm run build` ne les couvre pas : chaque script se lance
+seul, et écrit dans `out/<projet>/brand/`.
+
+```bash
+npx tsx tools/calame/build-logo.ts     # → out/calame/brand/logo/
+npx tsx tools/calame/build-favicon.ts  # → out/calame/brand/favicon/
+```
+
+Détails :
 [`tools/README.md`](https://github.com/roslove44/brand-artisan/blob/main/tools/README.md).
 
 ## Avec un agent IA

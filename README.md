@@ -111,7 +111,15 @@ recomposing a logo by eye.
 
 A separate toolchain (`tools/<project>/`) generates the assets rendering cannot
 produce: an SVG logotype traced from the font's glyphs, multi-size favicons,
-`.ico`. Details:
+`.ico`. `npm run build` does not cover them: each script runs on its own, and
+writes to `out/<project>/brand/`.
+
+```bash
+npx tsx tools/calame/build-logo.ts     # → out/calame/brand/logo/
+npx tsx tools/calame/build-favicon.ts  # → out/calame/brand/favicon/
+```
+
+Details:
 [`tools/README.md`](https://github.com/roslove44/brand-artisan/blob/main/tools/README.md).
 
 ## With an AI agent

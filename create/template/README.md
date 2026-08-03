@@ -9,6 +9,15 @@ npm run dev     # preview server on http://localhost:4000
 npm run pdf -- <project>/<folder>   # a folder of slides into one PDF (LinkedIn document post)
 ```
 
+Brand assets are not part of `npm run build`: each script in `tools/` runs on
+its own, and writes to `out/<project>/brand/`, from where an approved file is
+copied into `brands/<project>/`.
+
+```bash
+npx tsx tools/calame/build-logo.ts     # → out/calame/brand/logo/
+npx tsx tools/calame/build-favicon.ts  # → out/calame/brand/favicon/
+```
+
 ## What is in here
 
 | Path | Role |
