@@ -54,8 +54,8 @@ writeFileSync(
 // Validation sur le favicon 32px : le trait traverse le centre, les coins hors
 // trait restent sur la tuile accent.
 const px = renderPixels(svgs["icon.svg"], { width: 32 });
-console.log("coin(3,3)     :", px.at(3, 3), "(tuile accent)");
-console.log("centre(16,16) :", px.at(16, 16), "(trait, papier attendu)");
-console.log("bas droite(26,26):", px.at(26, 26), "(tuile accent, hors trait)");
+console.log("corner(3,3)      :", px.at(3, 3), "(accent tile)");
+console.log("center(16,16)    :", px.at(16, 16), "(stroke, paper expected)");
+console.log("bottom right(26,26):", px.at(26, 26), "(accent tile, off the stroke)");
 console.log("out:", OUT);
 console.log("files:", readdirSync(OUT).sort().join(", "));

@@ -18,6 +18,6 @@ test("checkRatios : un ratio commun passe, quelle que soit la taille", () => {
 test("checkRatios : une page au ratio different arrete l'assemblage", () => {
 	assert.throws(
 		() => checkRatios([slide("card-1", 1080, 1350), slide("card-2", 1080, 1080)]),
-		/card-2 est en 1080x1080, card-1 en 1080x1350/,
+		/card-2 is 1080x1080, card-1 is 1080x1350/,
 	);
 });

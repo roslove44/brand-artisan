@@ -64,7 +64,7 @@ const server = createServer(async (req, res) => {
 
 		if (kind === null && outKind === null) {
 			res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
-			res.end(`Introuvable : "/${relPath}".`);
+			res.end(`Not found: "/${relPath}".`);
 			return;
 		}
 
@@ -185,4 +185,4 @@ const server = createServer(async (req, res) => {
 	}
 });
 
-server.listen(PORT, () => console.log(`▶ Rendu sur http://localhost:${PORT}`));
+server.listen(PORT, () => console.log(`▶ Rendering at http://localhost:${PORT}`));

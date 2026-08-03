@@ -6,14 +6,14 @@
  */
 import { report } from "./colors";
 
-const USAGE = `brand-artisan <commande>
+const USAGE = `brand-artisan <command>
 
-  dev                       serveur de rendu sur http://localhost:4000
-  build                     rend toute l'arborescence de templates/ dans out/
-  pdf <dossier>             assemble les cartes d'un dossier en un PDF (post document LinkedIn)
-  colors <image> [nombre]   palette d'une image (.png, .jpg, .svg), triee par effectif
+  dev                       render server at http://localhost:4000
+  build                     renders the whole templates/ tree into out/
+  pdf <folder>              assembles a folder of slides into a PDF (LinkedIn document post)
+  colors <image> [count]    an image's palette (.png, .jpg, .svg), sorted by pixel count
 
-Les skills s'installent a part, selon l'agent : npx skills add roslove44/brand-artisan -s "*" -y
+The skills install separately, per agent: npx skills add roslove44/brand-artisan -s "*" -y
 `;
 
 const [command, ...rest] = process.argv.slice(2);
@@ -28,7 +28,7 @@ switch (command) {
 	case "pdf": {
 		const [dir] = rest;
 		if (!dir) {
-			console.error("Usage : brand-artisan pdf <projet>/<dossier-de-cartes>");
+			console.error("Usage: brand-artisan pdf <project>/<folder-of-slides>");
 			process.exit(1);
 		}
 		const { toPdf } = await import("./pdf");
@@ -38,13 +38,13 @@ switch (command) {
 	case "colors": {
 		const [file, top] = rest;
 		if (!file) {
-			console.error("Usage : brand-artisan colors <image.png|jpg|svg> [nombre de couleurs]");
+			console.error("Usage: brand-artisan colors <image.png|jpg|svg> [number of colors]");
 			process.exit(1);
 		}
 		report(file, Number(top) || undefined);
 		break;
 	}
 	default:
-		console.error(command ? `Commande inconnue : "${command}".\n\n${USAGE}` : USAGE);
+		console.error(command ? `Unknown command: "${command}".\n\n${USAGE}` : USAGE);
 		process.exit(1);
 }

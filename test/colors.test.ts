@@ -52,7 +52,7 @@ test("decode : un SVG passe par resvg", () => {
 });
 
 test("decode : format inconnu -> message explicite", () => {
-	assert.throws(() => decode(join(dir, "photo.webp")), /Format non gere.*photo\.webp/s);
+	assert.throws(() => decode(join(dir, "photo.webp")), /Unsupported format.*photo\.webp/s);
 });
 
 // PNG transparent de 10x10 avec un bloc opaque de 3 de large sur 2 de haut en (2,3).

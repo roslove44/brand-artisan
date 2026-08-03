@@ -14,7 +14,7 @@ export type Pixels = { data: Buffer; width: number; height: number };
 export function decode(file: string): Pixels {
 	const kind = extname(file).toLowerCase();
 	if (![".png", ".jpg", ".jpeg", ".svg"].includes(kind)) {
-		throw new Error(`Format non gere : "${basename(file)}". Attendu : .png, .jpg, .jpeg ou .svg.`);
+		throw new Error(`Unsupported format: "${basename(file)}". Expected .png, .jpg, .jpeg or .svg.`);
 	}
 	const bytes = readFileSync(file);
 	if (kind === ".png") {
@@ -85,6 +85,6 @@ export function boundingBox({ data, width, height }: Pixels): Box | null {
 export function report(file: string, top = 12): void {
 	const px = decode(file);
 	const { unique, colors } = palette(px, top);
-	console.log(`${basename(file)} : ${px.width}x${px.height}, ${unique} couleurs distinctes`);
+	console.log(`${basename(file)}: ${px.width}x${px.height}, ${unique} distinct colors`);
 	for (const c of colors) console.log(`  ${c.hex.padEnd(10)} ${(c.share * 100).toFixed(2).padStart(6)} %  (${c.count} px)`);
 }

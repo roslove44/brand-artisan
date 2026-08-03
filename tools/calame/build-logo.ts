@@ -81,6 +81,6 @@ raster("logo.svg", "logo-white.png", { paper: true });
 raster("logo-dark.svg", "logo-dark.png"); // transparent, couleurs claires (fond sombre)
 
 console.log(`viewBox ${VBW.toFixed(0)}x${VBH.toFixed(0)}  aspect ${(VBW / VBH).toFixed(2)}`);
-console.log(`mark : ${H.toFixed(0)} unites de haut, ecart ${(H * GAP).toFixed(0)}`);
+console.log(`mark: ${H.toFixed(0)} units tall, gap ${(H * GAP).toFixed(0)}`);
 console.log("out:", OUT);
 console.log("files:", readdirSync(OUT).sort().join(", "));

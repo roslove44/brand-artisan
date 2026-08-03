@@ -24,7 +24,7 @@ export function checkRatios(slides: Slide[]): void {
 	const odd = slides.find((s) => ratio(s) !== ratio(first));
 	if (odd) {
 		throw new Error(
-			`Ratios melanges : ${odd.name} est en ${odd.width}x${odd.height}, ${first.name} en ${first.width}x${first.height}. Toutes les pages doivent partager le meme ratio.`,
+			`Mixed ratios: ${odd.name} is ${odd.width}x${odd.height}, ${first.name} is ${first.width}x${first.height}. Every page must share the same ratio.`,
 		);
 	}
 }
@@ -39,10 +39,10 @@ export function checkRatios(slides: Slide[]): void {
  */
 export async function toPdf(relPath: string): Promise<string> {
 	const rel = clean(relPath);
-	if ((await resolve(rel)) !== "dir") throw new Error(`Aucun dossier templates/${rel}/ : le PDF s'assemble depuis un dossier de cartes.`);
+	if ((await resolve(rel)) !== "dir") throw new Error(`No templates/${rel}/ folder: the PDF is assembled from a folder of slides.`);
 
 	const { images } = await list(rel);
-	if (images.length === 0) throw new Error(`templates/${rel}/ ne contient aucun .tsx : rien a assembler.`);
+	if (images.length === 0) throw new Error(`templates/${rel}/ holds no .tsx: nothing to assemble.`);
 
 	// Tout charger avant de rendre : le controle de ratio doit echouer tout de
 	// suite, pas apres huit rendus.

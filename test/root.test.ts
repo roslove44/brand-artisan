@@ -30,5 +30,5 @@ test("findRoot : s'arrete au package.json le plus proche, pas au plus haut", () 
 
 test("findRoot : sans package.json en remontant, erreur explicite", () => {
 	// Racine du systeme de fichiers ("/" ou "C:\\") : aucun projet au-dessus.
-	assert.throws(() => findRoot(parse(process.cwd()).root), /Aucun package\.json/);
+	assert.throws(() => findRoot(parse(process.cwd()).root), /No package\.json/);
 });

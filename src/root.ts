@@ -11,7 +11,7 @@ import { pathToFileURL } from "node:url";
 export function findRoot(from: string): string {
 	for (let dir = from; ; dir = dirname(dir)) {
 		if (existsSync(join(dir, "package.json"))) return dir;
-		if (dirname(dir) === dir) throw new Error(`Aucun package.json en remontant depuis "${from}" : lancer la commande depuis un projet.`);
+		if (dirname(dir) === dir) throw new Error(`No package.json found walking up from "${from}": run the command from inside a project.`);
 	}
 }
 

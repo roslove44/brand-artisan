@@ -79,9 +79,9 @@ function sidebar(relPath: string, favorites: string[], view: View): string {
 	return `
 		<aside class="sidebar">
 			<div class="lights"><i class="r"></i><i class="y"></i><i class="g"></i></div>
-			<div class="side-section">Favoris</div>
-			${item(dirHref("", view), rootMini(16), "Tous les visuels", relPath === "")}
-			<div class="side-section">Projets</div>
+			<div class="side-section">Favorites</div>
+			${item(dirHref("", view), rootMini(16), "All visuals", relPath === "")}
+			<div class="side-section">Projects</div>
 			${favorites.map((p) => item(dirHref(p, view), folderMini(16), p, p === first)).join("\n")}
 		</aside>`;
 }
@@ -117,7 +117,7 @@ function windowShell(opts: {
 	status: string;
 }): string {
 	return `<!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -130,8 +130,8 @@ function windowShell(opts: {
 		${sidebar(opts.relPath, opts.favorites, opts.view)}
 		<section class="pane">
 			<header class="toolbar">
-				<button class="nav-btn" onclick="history.back()" title="Précédent">${chevron("left")}</button>
-				<button class="nav-btn" onclick="history.forward()" title="Suivant">${chevron("right")}</button>
+				<button class="nav-btn" onclick="history.back()" title="Back">${chevron("left")}</button>
+				<button class="nav-btn" onclick="history.forward()" title="Forward">${chevron("right")}</button>
 				<h1>${esc(opts.heading)}</h1>
 				<div class="spacer"></div>
 				${opts.toolbarRight}
@@ -146,7 +146,7 @@ function windowShell(opts: {
 }
 
 function viewSwitcher(relPath: string, view: View): string {
-	const labels: Record<View, string> = { icons: "Icônes", list: "Liste", gallery: "Galerie" };
+	const labels: Record<View, string> = { icons: "Icons", list: "List", gallery: "Gallery" };
 	return `<nav class="segmented">${VIEWS.map(
 		(v) => `<a class="${v === view ? "active" : ""}" href="${dirHref(relPath, v)}" title="${labels[v]}">${viewIcons[v]}</a>`,
 	).join("")}</nav>`;
@@ -177,7 +177,7 @@ function listView(entries: Entry[], view: View): string {
 	const rows = entries.map((e) => {
 		const href = e.kind === "dir" ? dirHref(e.rel, view) : imgHref(e.rel);
 		const icon = e.kind === "dir" ? `<span class="mini-fld">${folderMini(16)}</span>` : entryIcon(e, 30, 64);
-		const type = e.kind === "dir" ? "Dossier" : `Image ${(e.ext ?? "png").toUpperCase()}`;
+		const type = e.kind === "dir" ? "Folder" : `${(e.ext ?? "png").toUpperCase()} image`;
 		return `
 			<tr data-href="${href}">
 				<td><span class="name-cell">${icon}<a href="${href}">${esc(e.name)}</a></span></td>
@@ -187,7 +187,7 @@ function listView(entries: Entry[], view: View): string {
 	});
 	return `
 		<table class="list">
-			<thead><tr><th>Nom</th><th>Dimensions</th><th>Type</th></tr></thead>
+			<thead><tr><th>Name</th><th>Dimensions</th><th>Type</th></tr></thead>
 			<tbody>${rows.join("")}</tbody>
 		</table>`;
 }
@@ -198,7 +198,7 @@ function galleryView(entries: Entry[], view: View): string {
 	);
 	const items = entries.map((e) => {
 		const href = e.kind === "dir" ? dirHref(e.rel, view) : imgHref(e.rel);
-		const meta = e.kind === "dir" ? "Dossier · double-clic pour ouvrir" : `${dims(e) || "--"} · double-clic pour ouvrir`;
+		const meta = e.kind === "dir" ? "Folder · double-click to open" : `${dims(e) || "--"} · double-click to open`;
 		return `
 			<button class="gitem" type="button" data-href="${href}" data-label="${esc(e.name)}" data-meta="${esc(meta)}">
 				${entryIcon(e, 40, 120)}
@@ -227,11 +227,11 @@ export function listingPage(opts: {
 		list: listView,
 		gallery: galleryView,
 	};
-	const content = entries.length ? renderers[view](entries, view) : `<p class="empty">Ce dossier est vide.</p>`;
+	const content = entries.length ? renderers[view](entries, view) : `<p class="empty">This folder is empty.</p>`;
 	const pdfLink = pdf
 		? `<a class="tool-link" href="${esc(pdf.href)}" title="${
-				pdf.stale ? "Plus ancien qu'une des cartes : relancer npm run pdf" : "Le PDF assemblé de ce dossier"
-			}">${downloadIcon}<span>PDF${pdf.stale ? " à regénérer" : ""}</span></a>`
+				pdf.stale ? "Older than one of the slides: rerun npm run pdf" : "The folder's assembled PDF"
+			}">${downloadIcon}<span>PDF${pdf.stale ? " out of date" : ""}</span></a>`
 		: "";
 	return windowShell({
 		pageTitle: relPath ? `${heading} | ${PROJECT_NAME}` : PROJECT_NAME,
@@ -242,7 +242,7 @@ export function listingPage(opts: {
 		toolbarRight: `${pdfLink}${viewSwitcher(relPath, view)}`,
 		content,
 		leafIsImage: false,
-		status: `${entries.length} élément${entries.length === 1 ? "" : "s"}`,
+		status: `${entries.length} item${entries.length === 1 ? "" : "s"}`,
 	});
 }
 
@@ -260,8 +260,8 @@ export function previewPage(opts: {
 }): string {
 	const { relPath, title, width, height, imgSrc, favorites, nav } = opts;
 	const arrow = (dir: "left" | "right", href: string | null) =>
-		href ? `<a class="pv-nav ${dir}" href="${esc(href)}" title="${dir === "left" ? "Image précédente" : "Image suivante"}">${chevron(dir)}</a>` : "";
-	const position = nav.index >= 0 && nav.count > 1 ? `${nav.index + 1} sur ${nav.count} · ` : "";
+		href ? `<a class="pv-nav ${dir}" href="${esc(href)}" title="${dir === "left" ? "Previous image" : "Next image"}">${chevron(dir)}</a>` : "";
+	const position = nav.index >= 0 && nav.count > 1 ? `${nav.index + 1} of ${nav.count} · ` : "";
 	// Largeur de fit : taille naturelle, plafonnée par le viewport du stage (marges
 	// comprises) en largeur comme en hauteur, ratio préservé via le ratio connu.
 	// Dimensions inconnues (fichier au format non mesuré) -> on se contente du cadre.

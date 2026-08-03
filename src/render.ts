@@ -21,7 +21,7 @@ async function loadFonts(): Promise<Font[]> {
 	return Promise.all(
 		files.map(async (file) => {
 			const match = file.match(FONT_FILE);
-			if (!match) throw new Error(`Police "${file}" hors convention <Famille>-<graisse>.ttf (voir fonts/NOTICE.md).`);
+			if (!match) throw new Error(`Font "${file}" does not follow the <Family>-<weight>.ttf convention (see fonts/NOTICE.md).`);
 			return {
 				name: match[1].replace(/([a-z0-9])([A-Z])/g, "$1 $2"),
 				weight: Number(match[2]) as Font["weight"],
