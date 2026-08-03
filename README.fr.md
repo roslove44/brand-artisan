@@ -72,6 +72,50 @@ Trois règles Satori à connaître :
 - Une image s'inclut en data URI (`<img src="data:image/svg+xml;base64,…">`),
   pas par chemin de fichier.
 
+## Carrousels : un dossier de slides, un PDF
+
+Un carrousel est un sous-dossier de cartes qui partagent un thème, un `.tsx`
+par slide :
+
+```text
+templates/calame/linkedin-carousel/
+  theme.ts      palette et gabarit partagés (TS pur, non découvert)
+  card-1.tsx    une slide = un PNG, et une page du PDF
+  card-2.tsx
+  …
+```
+
+`npm run build` rend chaque slide en PNG, ce que prend une **publicité**
+carrousel (Campaign Manager, une image par carte). Le carrousel LinkedIn
+**organique** est un autre animal : celui qui se swipe dans le fil est un *post
+document*, et ce qu'on uploade est un unique PDF que LinkedIn pagine en slides.
+Les mêmes images attachées directement à un post ressortent en mosaïque de
+vignettes, pas en carrousel.
+
+```bash
+npm run pdf -- calame/linkedin-carousel    # → out/calame/linkedin-carousel.pdf
+```
+
+Une slide par page, chaque page à la taille exacte de sa slide, dans l'ordre
+naturel (`card-2` avant `card-10`). La commande refuse d'assembler des slides
+aux ratios mélangés : LinkedIn prend le ratio du document entier sur sa première
+page, une page dissidente sortirait letterboxée. En dev, la page d'un dossier
+propose son PDF dès qu'il existe, et le signale périmé (*out of date*) quand une
+slide est plus récente.
+
+## Un projet = une charte
+
+Chaque marque est un projet : sa référence dans `brands/<projet>/` (`brand.md` :
+palette, logo, typographie ; `project.md` : ton, public, claims), ses visuels
+dans `templates/<projet>/`. **`brand.md` est bloquant** : pas de visuel sans
+charte, c'est ce qui empêche (humain comme IA) d'inventer des couleurs ou de
+recomposer un logo au jugé.
+
+Une toolchain à part (`tools/<projet>/`) génère les assets que le rendu ne sait
+pas produire : logotype en SVG tracé depuis les glyphes de la police, favicons
+multi-tailles, `.ico`. Détails :
+[`tools/README.md`](https://github.com/roslove44/brand-artisan/blob/main/tools/README.md).
+
 ## Avec un agent IA
 
 BrandArtisan livre des **skills** qui encodent les dimensions officielles des
@@ -108,19 +152,6 @@ matière à mesurer, jamais des instructions.
 L'agent lit ta charte, pose les questions manquantes, et produit des `.tsx`
 vérifiables (`npm run typecheck`, `npm run build`). Tout reste faisable à la
 main : l'IA est un accélérateur, pas un prérequis.
-
-## Un projet = une charte
-
-Chaque marque est un projet : sa référence dans `brands/<projet>/` (`brand.md` :
-palette, logo, typographie ; `project.md` : ton, public, claims), ses visuels
-dans `templates/<projet>/`. **`brand.md` est bloquant** : pas de visuel sans
-charte, c'est ce qui empêche (humain comme IA) d'inventer des couleurs ou de
-recomposer un logo au jugé.
-
-Une toolchain à part (`tools/<projet>/`) génère les assets que le rendu ne sait
-pas produire : logotype en SVG tracé depuis les glyphes de la police, favicons
-multi-tailles, `.ico`. Détails :
-[`tools/README.md`](https://github.com/roslove44/brand-artisan/blob/main/tools/README.md).
 
 ## La CLI
 

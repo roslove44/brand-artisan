@@ -72,6 +72,48 @@ Three Satori rules to know:
 - Images are embedded as data URIs (`<img src="data:image/svg+xml;base64,…">`),
   not by file path.
 
+## Carousels: a folder of slides, one PDF
+
+A carousel is a subfolder of cards sharing a theme, one `.tsx` per slide:
+
+```text
+templates/calame/linkedin-carousel/
+  theme.ts      shared palette and layout (pure TS, not discovered)
+  card-1.tsx    one slide = one PNG, and one page of the PDF
+  card-2.tsx
+  …
+```
+
+`npm run build` renders each slide to its own PNG, which is what a carousel
+**ad** takes (Campaign Manager, one image per card). An **organic** LinkedIn
+carousel is another animal: the swipeable carousel of the feed is a *document
+post*, and what you upload is a single PDF that LinkedIn paginates into slides.
+The same images attached directly to a post come out as a mosaic of thumbnails,
+not a carousel.
+
+```bash
+npm run pdf -- calame/linkedin-carousel    # → out/calame/linkedin-carousel.pdf
+```
+
+One slide per page, each page at its slide's exact size, in natural order
+(`card-2` before `card-10`). The command refuses to assemble slides of mixed
+ratios: LinkedIn takes the whole document's ratio from its first page, so a
+stray page would come out letterboxed. In dev, a folder's page offers its PDF
+as soon as it exists, and flags it *out of date* when a slide is more recent.
+
+## One project = one set of guidelines
+
+Each brand is a project: its reference in `brands/<project>/` (`brand.md`:
+palette, logo, typography; `project.md`: tone, audience, claims), its visuals
+in `templates/<project>/`. **`brand.md` is blocking**: no visual without
+guidelines; this is what keeps humans and AI alike from inventing colors or
+recomposing a logo by eye.
+
+A separate toolchain (`tools/<project>/`) generates the assets rendering cannot
+produce: an SVG logotype traced from the font's glyphs, multi-size favicons,
+`.ico`. Details:
+[`tools/README.md`](https://github.com/roslove44/brand-artisan/blob/main/tools/README.md).
+
 ## With an AI agent
 
 BrandArtisan ships **skills** that encode each platform's official dimensions,
@@ -107,19 +149,6 @@ as instructions.
 The agent reads your guidelines, asks the missing questions, and produces
 verifiable `.tsx` files (`npm run typecheck`, `npm run build`). Everything can
 still be done by hand: AI is an accelerator, not a requirement.
-
-## One project = one set of guidelines
-
-Each brand is a project: its reference in `brands/<project>/` (`brand.md`:
-palette, logo, typography; `project.md`: tone, audience, claims), its visuals
-in `templates/<project>/`. **`brand.md` is blocking**: no visual without
-guidelines; this is what keeps humans and AI alike from inventing colors or
-recomposing a logo by eye.
-
-A separate toolchain (`tools/<project>/`) generates the assets rendering cannot
-produce: an SVG logotype traced from the font's glyphs, multi-size favicons,
-`.ico`. Details:
-[`tools/README.md`](https://github.com/roslove44/brand-artisan/blob/main/tools/README.md).
 
 ## The CLI
 
