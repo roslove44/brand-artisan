@@ -1,6 +1,6 @@
 {
   "name": "brand-artisan",
-  "version": "0.1.0-rc.4",
+  "version": "0.1.0-rc.5",
   "type": "module",
   "description": "Turn JSX into brand images (Open Graph, social posts, banners). next/og's engine outside Next: no browser, no Figma, no server.",
   "keywords": [
