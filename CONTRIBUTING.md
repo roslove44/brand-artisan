@@ -1,6 +1,6 @@
-# Contribuer
+# Contributing
 
-Prérequis : **Node.js ≥ 22**.
+Prerequisite: **Node.js ≥ 22**.
 
 ```bash
 git clone https://github.com/roslove44/brand-artisan.git
@@ -8,94 +8,94 @@ cd brand-artisan
 npm install
 ```
 
-## Commandes
+## Commands
 
 ```bash
-npm run dev             # serveur de rendu sur les templates du dépôt
-npm run build           # rend toute l'arborescence de templates/ dans out/
-npm run pdf -- <dir>    # assemble un dossier de slides en PDF (post document LinkedIn)
-npm run check           # typecheck + tests, ce que lance la CI
-npm run test:consumer   # empaquette, installe dans un projet vierge et y rend un visuel
-npm run test:generator  # génère un projet depuis les tarballs et le rend de bout en bout
+npm run dev             # render server over the repo's templates
+npm run build           # renders the whole templates/ tree into out/
+npm run pdf -- <dir>    # assembles a folder of slides into a PDF (LinkedIn document post)
+npm run check           # typecheck + tests, what the CI runs
+npm run test:consumer   # packs, installs into a blank project and renders a visual there
+npm run test:generator  # generates a project from the tarballs and renders it end to end
 ```
 
-Les deux derniers sont le filet de publication : ils exercent le moteur depuis
-`node_modules` et le squelette depuis le tarball, là où vivent les erreurs de
-packaging qu'aucun test unitaire ne voit. La CI lance l'ensemble sur Linux et
-Windows, Node 22 et 24, et rend réellement tous les templates du dépôt :
-un visuel cassé échoue à l'exécution, pas au typecheck.
+The last two are the publication safety net: they exercise the engine from
+`node_modules` and the skeleton from the tarball, where the packaging errors no
+unit test ever sees actually live. The CI runs the whole suite on Linux and
+Windows, Node 22 and 24, and really renders every template in the repo: a
+broken visual fails at run time, not at typecheck.
 
-## Les deux paquets
+## The two packages
 
-Le dépôt publie deux paquets npm, toujours à la même version :
+The repo publishes two npm packages, always at the same version:
 
-- **`brand-artisan`** (racine) : le moteur et sa CLI.
-- **`create-brand-artisan`** (`create/`) : le générateur et son squelette,
-  marque de démonstration Calame comprise.
+- **`brand-artisan`** (root): the engine and its CLI.
+- **`create-brand-artisan`** (`create/`): the generator and its skeleton,
+  Calame demo brand included.
 
-Bumper les deux `package.json` ensemble ; `test:generator` refuse de démarrer
-s'ils divergent.
+Bump both `package.json` together; `test:generator` refuses to start if they
+diverge.
 
-Les skills (`skills/`) ne voyagent dans aucun des deux paquets : chaque agent IA
-range les siennes ailleurs, et `npx skills` connaît leurs dossiers mieux que
-nous. Pour travailler dessus, les charger depuis ta copie de travail plutôt que
-depuis `main` : sous Claude Code, `/plugin marketplace add ./` puis
+The skills (`skills/`) travel in neither package: each AI agent stores its own
+copies elsewhere, and `npx skills` knows their folders better than we do. To
+work on them, load them from your working copy rather than from `main`: under
+Claude Code, `/plugin marketplace add ./` then
 `/plugin install brand-artisan@brand-artisan`.
 
-## Publier
+## Publishing
 
-La publication est automatique. Bumper les deux `package.json`, committer, puis
-pousser un tag :
+Publication is automatic. Bump both `package.json`, commit, then push a tag:
 
 ```bash
 git tag v0.1.0 && git push origin v0.1.0
 ```
 
-`.github/workflows/release.yml` fait le reste : il refuse si le tag ne pointe pas
-un commit de `main` ou ne porte pas la version des deux paquets, rejoue la suite
-complète, puis publie le moteur avant le générateur.
+`.github/workflows/release.yml` does the rest: it refuses if the tag does not
+point at a commit on `main` or does not carry the version of both packages,
+replays the full suite, then publishes the engine before the generator.
 
-**Le déclencheur est le tag, pas la release GitHub**, et c'est délibéré : sur
-`on: release`, la page serait le déclencheur, donc publique avant qu'un seul test
-ait tourné, et un échec de publication laisserait une release qui annonce une
-version absente de npm. Ici la page est créée en dernier, elle n'existe donc que
-si npm a reçu les paquets, et un échec ne laisse qu'un tag à supprimer.
+**The trigger is the tag, not the GitHub release**, and that is deliberate: on
+`on: release`, the page would be the trigger, hence public before a single test
+has run, and a failed publication would leave a release announcing a version
+absent from npm. Here the page is created last, so it only exists once npm has
+received the packages, and a failure leaves nothing but a tag to delete.
 
-**Le dist-tag se déduit de la version**, il ne se choisit pas : une version qui
-porte un suffixe de préversion (`0.1.0-rc.2`) part sur `next`, une version stable
-sur `latest`. npm posant `latest` d'office sur toute version publiée sans `--tag`,
-c'est ce calcul qui empêche une préversion de devenir la version par défaut.
+**The dist-tag is derived from the version**, it is not chosen: a version
+carrying a prerelease suffix (`0.1.0-rc.2`) goes to `next`, a stable version to
+`latest`. Since npm slaps `latest` on any version published without `--tag`,
+this computation is what keeps a prerelease from becoming the default version.
 
-**Aucun token npm n'existe dans ce dépôt.** L'authentification passe par
-[trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC) : GitHub
-prouve l'identité du workflow, npm délivre un jeton valable le temps de la
-publication, et l'**attestation de provenance est signée d'office** (le drapeau
-`--provenance` est donc inutile). La configuration a été posée une fois par paquet :
+**No npm token exists in this repo.** Authentication goes through
+[trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC): GitHub
+proves the workflow's identity, npm issues a token valid for the duration of
+the publication, and the **provenance attestation is signed by default** (the
+`--provenance` flag is therefore unnecessary). The configuration was set up
+once per package:
 
 ```bash
 npm trust github brand-artisan        --repo roslove44/brand-artisan --file release.yml --allow-publish
 npm trust github create-brand-artisan --repo roslove44/brand-artisan --file release.yml --allow-publish
 ```
 
-Deux conséquences à ne pas découvrir un jour de release : **renommer
-`release.yml` casse la publication**, le nom du fichier faisant partie du contrat
-de confiance ; et le job doit tourner en **Node 24**, Node 22 embarquant un npm
-antérieur au 11.5.1 qu'exige le trusted publishing.
+Two consequences not to discover on release day: **renaming `release.yml`
+breaks publication**, the file name being part of the trust contract; and the
+job must run on **Node 24**, since Node 22 ships an npm older than the 11.5.1
+that trusted publishing requires.
 
 ## Conventions
 
-- Les règles de travail du dépôt (charte par projet, contrat de template,
-  exigence graphique) vivent dans [`CLAUDE.md`](CLAUDE.md). Faire évoluer le
-  moteur implique de mettre à jour les skills (`skills/`) en miroir,
-  dans le même changement. `npm test` les valide (`test/skills.test.ts`) : c'est
-  leur seul filet, puisqu'elles se publient hors des paquets.
-- Commits en anglais, format [Conventional Commits](https://www.conventionalcommits.org/) :
-  `feat(scope): …`, `fix(scope): …`.
-- La marque de référence du dépôt est `calame` (`brands/`, `templates/`,
-  `tools/`) : le parcours complet d'une marque, de la charte aux visuels. Elle
-  est **fictive**, donc reprenable, contrairement à une marque réelle.
-- **Calame existe en double**, à la racine et dans `create/template/`, parce
-  qu'un paquet npm ne peut pas référencer de fichiers hors de son dossier.
-  `test/calame.test.ts` compare les fichiers communs au hachage : toute
-  divergence échoue. Les visuels en plus (`banner`, `card`) restent à la racine,
-  le squelette généré gardant son unique OG.
+- The repo's working rules (per-project guidelines, template contract, visual
+  standards) live in [`CLAUDE.md`](CLAUDE.md). Evolving the engine implies
+  updating the skills (`skills/`) in mirror, within the same change. `npm test`
+  validates them (`test/skills.test.ts`): it is their only safety net, since
+  they are published outside the packages.
+- Commits in English, [Conventional Commits](https://www.conventionalcommits.org/)
+  format: `feat(scope): …`, `fix(scope): …`.
+- The repo's reference brand is `calame` (`brands/`, `templates/`, `tools/`):
+  the full journey of a brand, from guidelines to visuals. It is **fictional**,
+  hence reusable, unlike a real brand.
+- **Calame exists twice**, at the root and in `create/template/`, because an
+  npm package cannot reference files outside its own folder. `test/calame.test.ts`
+  compares the shared files by hash: any divergence fails. The extra visuals
+  (`banner`, `card`) stay at the root, the generated skeleton keeping its single
+  OG image.
