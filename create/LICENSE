@@ -19,11 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-This license covers the create-brand-artisan code and the project skeleton it
-generates, including the Calame demonstration brand.
-
-It does not cover the fonts in `template/fonts/`, which are licensed under the
-SIL Open Font License 1.1. See `template/fonts/NOTICE.md`.
