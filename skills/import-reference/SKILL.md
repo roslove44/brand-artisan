@@ -27,6 +27,10 @@ Ambiguous -> ask, don't choose in silence (CLAUDE.md principle #1).
 
 - Ask for the **files** (local paths): PNG, JPG or SVG. For a website, ask for
   screenshots rather than scraping.
+- **As few as the job needs.** Flow B transposes one composition: ask for **the
+  single best reference**, not a moodboard. Flow A needs the handful that
+  actually carry the identity (the logo, one or two visuals), not the whole
+  folder.
 - If they need to stay readable inside the repo (as the basis of a set of
   guidelines), offer to drop them in `brands/<project>/reference/`. For a plain
   composition reference (flow B), any local path will do, with nothing to
@@ -58,9 +62,13 @@ Same discipline as `brand-assets` §2: **measure before asserting**.
   hand-write a pixel walk: the function is there and it is tested.
 - **SVG: read the source.** The exact hex values are in the markup, no
   measurement needed.
-- **Composition and hierarchy: by eye.** Look at the image (Read) for the
-  framing, the focal point, the scale contrasts, the breathing room. That is the
-  only use for looking at the image; colors get measured.
+- **Composition and hierarchy: by eye, once.** Look at the image (Read) **a
+  single time**, and write the reading down straight away: framing, focal point,
+  scale contrasts, breathing room, proportion of empty space. Everything
+  downstream works from that note, never from a second look. An image stays in
+  context for the rest of the session, so a re-read buys nothing the note does
+  not already hold. That is the only use for looking at the image; colors get
+  measured.
 - **Typography: cannot be identified reliably.** Ask the user for the typeface
   (or the file). Failing that, offer 2-3 plausible candidates and get them
   **confirmed**; never assert one from the image.
@@ -106,9 +114,11 @@ interview. Same output, same rules.
 - **Flow A**: `brand.md` follows the reference structure; every color comes from
   a measurement or from the user, never from a supposition; the gaps are marked
   `_(to be defined)_`; the user validated the palette.
-- **Flow B**: `npm run typecheck` green, `npm run build` outputs the PNG; a
-  side-by-side comparison with the example: same compositional skeleton, styling
-  100 % from the guidelines (no color or type from the example).
+- **Flow B**: `npm run typecheck` green, `npm run build` outputs the PNG; the
+  side-by-side comparison with the example happens **once, on the finished
+  visual**: same compositional skeleton, styling 100 % from the guidelines (no
+  color or type from the example). Intermediate passes are checked against the
+  §2 note, not by reopening the example.
 
 **Success criterion**: the user's example produced either a measured and
 validated set of guidelines, or a template whose composition comes from the
