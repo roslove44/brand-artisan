@@ -101,6 +101,21 @@ ratios: LinkedIn takes the whole document's ratio from its first page, so a
 stray page would come out letterboxed. In dev, a folder's page offers its PDF
 as soon as it exists, and flags it *out of date* when a slide is more recent.
 
+## Device frames
+
+The repository carries **72 device frames** (phones, tablets, laptops, TVs, a
+few industry terminals), each with the exact coordinates of its screen, to sit a
+mockup inside a visual. They do not ship with the engine: copy
+[`assets/devices/`](https://github.com/roslove44/brand-artisan/tree/main/assets/devices)
+into your project, and `frame(slug, width)` scales a frame and its screen area
+together, with nothing left to compute.
+
+Read
+[`assets/devices/NOTICE.md`](https://github.com/roslove44/brand-artisan/blob/main/assets/devices/NOTICE.md)
+first: it covers how to lay a visual into the screen, the `scale: 2` rule that
+keeps the edges clean, and the rights, since most of these devices carry
+registered trademarks.
+
 ## One project = one set of guidelines
 
 Each brand is a project: its reference in `brands/<project>/` (`brand.md`:

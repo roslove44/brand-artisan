@@ -103,6 +103,22 @@ page, une page dissidente sortirait letterboxée. En dev, la page d'un dossier
 propose son PDF dès qu'il existe, et le signale périmé (*out of date*) quand une
 slide est plus récente.
 
+## Châssis d'appareils
+
+Le dépôt embarque **72 châssis d'appareils** (téléphones, tablettes, portables,
+TV, quelques terminaux métier), chacun avec les coordonnées exactes de son
+écran, pour poser une maquette dans un visuel. Ils ne voyagent pas avec le
+moteur : copier
+[`assets/devices/`](https://github.com/roslove44/brand-artisan/tree/main/assets/devices)
+dans le projet, et `frame(slug, width)` met le châssis et sa zone d'écran à
+l'échelle ensemble, sans aucun calcul à faire.
+
+Lire d'abord
+[`assets/devices/NOTICE.fr.md`](https://github.com/roslove44/brand-artisan/blob/main/assets/devices/NOTICE.fr.md) :
+la notice couvre la pose du visuel dans l'écran, la règle du `scale: 2` qui garde
+les bords propres, et les droits, puisque la plupart de ces appareils portent des
+marques déposées.
+
 ## Un projet = une charte
 
 Chaque marque est un projet : sa référence dans `brands/<projet>/` (`brand.md` :
