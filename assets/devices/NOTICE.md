@@ -1,40 +1,39 @@
-# Châssis d'appareils
+# Device frames
 
-Gabarits de terminaux (téléphones, tablettes, portables, TV, quelques terminaux
-métier) pour poser une maquette dans un visuel, avec les coordonnées exactes de
-leur écran.
+Device shells (phones, tablets, laptops, TVs, a few industry terminals) for
+placing a mockup inside a visual, with the exact coordinates of their screen.
 
-## Droits
+## Rights
 
-> Les appareils représentés portent des marques déposées (Apple, Samsung, Google).
-> Leur réutilisation dans un support diffusé n'est couverte par aucune licence
-> accordée à ce projet. Le modèle `non-branded-android-smartphone` est le seul
-> sans marque visible.
+> The devices shown carry registered trademarks (Apple, Samsung, Google).
+> Reusing them in published material is not covered by any license granted to
+> this project. The `non-branded-android-smartphone` model is the only one with
+> no visible brand.
 
-## Choisir un modèle
+## Choosing a model
 
-72 modèles, un dossier et une entrée de `catalog.ts` chacun ; le slug est le nom
-du dossier. Chaque entrée porte un `category` (`smartphone`, `tablet`, `others`)
-et un `brand`, de quoi parcourir le catalogue sans le lire :
+72 models, each with a folder and a `catalog.ts` entry; the slug is the folder
+name. Every entry carries a `category` (`smartphone`, `tablet`, `others`) and a
+`brand`, enough to walk the catalog without reading it:
 
 ```ts
 import { devices } from "../../assets/devices/frame";
 
-const tablettes = Object.entries(devices).filter(([, d]) => d.category === "tablet");
+const tablets = Object.entries(devices).filter(([, d]) => d.category === "tablet");
 ```
 
-## Poser un châssis
+## Placing a frame
 
-**L'ordre compte.** La dalle du châssis est noire et opaque : le châssis
-**d'abord**, le visuel **par-dessus**. Un visuel posé dessous ne se verrait pas.
-L'encoche se retrouve alors recouverte, comme sur une vraie capture.
+**Order matters.** The frame's panel is black and opaque: the frame **first**,
+the visual **on top**. A visual placed underneath would not show through. The
+notch then ends up covered, just as on a real screenshot.
 
 ```tsx
 import { frame } from "../../assets/devices/frame";
 
 const f = await frame("apple-iphone-15-pro-2023", 300);
 
-// Dans le render :
+// In the render:
 <div style={{ display: "flex", position: "relative", width: f.width, height: f.height }}>
   <img src={f.src} width={f.width} height={f.height} alt=""
        style={{ position: "absolute", left: 0, top: 0 }} />
@@ -45,65 +44,63 @@ const f = await frame("apple-iphone-15-pro-2023", 300);
       width: f.screen.width, height: f.screen.height,
       borderRadius: f.screen.radius,
       display: "flex",
-      // ici le visuel : aplat, dégradé, ou une <img> de capture
+      // the visual goes here: flat color, gradient, or an <img> screenshot
     }}
   />
 </div>
 ```
 
-`frame(slug, width)` met tout à l'échelle de la largeur demandée, coordonnées
-d'écran comprises : aucun calcul à faire.
+`frame(slug, width)` scales everything to the requested width, screen
+coordinates included: nothing left to compute.
 
-### Rendre le template en `scale: 2`
+### Render the template at `scale: 2`
 
-Ces PNG sont **indexés en palette** et leur transparence ne compte que **4 à 16
-niveaux d'alpha** selon le modèle, là où un bord lissé en demande 256. Posés
-petits, ils subissent une forte réduction (un téléphone de 864 px rendu à 200,
-c'est 4,3x) et resvg sous-échantillonne : le contour part en marches d'escalier
-et en moucheture grise, très visible sur les bords courbes d'un téléphone.
+These PNGs are **palette-indexed** and their transparency only holds **4 to 16
+alpha levels** depending on the model, where a smooth edge needs 256. Placed
+small, they go through heavy downscaling (an 864 px phone rendered at 200 is
+4.3x) and resvg subsamples: the outline breaks into stair steps and grey
+speckle, very visible on the curved edges of a phone.
 
-Le remède tient en un champ :
+The remedy is one field:
 
 ```ts
 const SIZE = { width: 1080, height: 1350, scale: 2 };
 ```
 
-Le moteur rend alors en 2160 px et la réduction n'est plus que de 2,2x. Le bord
-redevient propre. À réserver aux visuels qui contiennent un châssis : un
-template purement vectoriel n'a pas ce problème et n'a rien à y gagner.
+The engine then renders at 2160 px and the reduction is down to 2.2x. The edge
+is clean again. Reserve this for visuals that contain a frame: a purely vector
+template does not have the problem and has nothing to gain from it.
 
-## Ajouter un modèle
+## Adding a model
 
-Le catalogue et le contenu du dossier se répondent exactement, et cet accord est
-la règle à tenir : un `device.png` sans son entrée n'a pas de coordonnées
-d'écran. Deux gestes, dans cet ordre.
+The catalog and the folder contents mirror each other exactly, and holding that
+agreement is the rule: a `device.png` without its entry has no screen
+coordinates. Two steps, in this order.
 
-1. **Le châssis.** Déposer son `device.png` dans `assets/devices/<slug>/`,
-   détouré sur l'extérieur, écran vide.
-2. **Les mesures.** Ajouter son entrée dans `catalog.ts`, relevée sur la dalle
-   sombre visible du châssis.
+1. **The frame.** Drop its `device.png` into `assets/devices/<slug>/`, cut out
+   along the outside, screen empty.
+2. **The measurements.** Add its entry to `catalog.ts`, read off the dark panel
+   visible on the frame.
 
-| Champ | Sens |
+| Field | Meaning |
 | --- | --- |
-| `image` | dimensions de `device.png` |
-| `viewport` | taille logique de la fenêtre, en px CSS |
-| `screen` | zone d'écran **en pixels de l'image** : `x`, `y`, `width`, `height` |
-| `screen.radius` | rayon des coins, en pixels de l'image, ou `null` |
+| `image` | dimensions of `device.png` |
+| `viewport` | logical window size, in CSS px |
+| `screen` | screen area **in image pixels**: `x`, `y`, `width`, `height` |
+| `screen.radius` | corner radius, in image pixels, or `null` |
 
-**`viewport` et `screen` ne sont pas dans la même unité.** Le premier est la
-taille logique de la page, le second des pixels de l'image, et les châssis sont
-rendus en 2x : `screen` vaut donc le double de `viewport` sur tout le catalogue.
-C'est `screen` qui sert à poser un visuel ; `viewport` ne fait que documenter la
-définition simulée. `radius` vaut `0` sur les écrans droits (portables, iMac),
-et `null` si aucun rayon unique ne se dégage : `frame` retombe alors sur 0, à
-arrondir à vue.
+**`viewport` and `screen` are not in the same unit.** The first is the logical
+page size, the second image pixels, and the frames are rendered at 2x: `screen`
+is therefore twice `viewport` across the whole catalog. `screen` is what places
+a visual; `viewport` only documents the simulated resolution. `radius` is `0` on
+square screens (laptops, iMac), and `null` when no single radius stands out:
+`frame` then falls back to 0, to be rounded by eye.
 
-**Vérifier plutôt que croire.** Ces nombres ont l'air crédibles même quand ils
-sont faux, et rien dans le code ne les contredira. Le contrôle tient en un
-rendu : poser un aplat de couleur vive à `f.screen` par-dessus le châssis, comme
-dans l'exemple ci-dessus, puis ajuster jusqu'à ce que la couleur remplisse la
-dalle sans déborder sur la lunette et que ses coins épousent l'arrondi. C'est
-aussi comme ça qu'on trouve `radius` : on l'augmente jusqu'à ce que les angles
-coïncident. Ce contrôle a déjà écarté un appareil à double dalle, qu'un seul
-rectangle ne pouvait pas représenter ; tout modèle au `radius` indéterminé
-mérite le même examen.
+**Check rather than trust.** These numbers look plausible even when they are
+wrong, and nothing in the code will contradict them. The check is one render:
+place a bright flat color at `f.screen` over the frame, as in the example above,
+then adjust until the color fills the panel without spilling onto the bezel and
+its corners follow the rounding. That is also how `radius` is found: raise it
+until the corners coincide. This check has already ruled out a dual-panel device
+that a single rectangle could not represent; any model with an undetermined
+`radius` deserves the same scrutiny.
