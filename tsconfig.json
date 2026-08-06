@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src", "templates", "tools", "test", "create"]
+  "include": ["src", "assets", "templates", "tools", "test", "create"]
 }
