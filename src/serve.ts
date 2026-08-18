@@ -1,11 +1,16 @@
 import { createServer } from "node:http";
+import { register } from "node:module";
 import { toPng } from "./render";
-import { resolve, list, load, modified, outResolve, outList, outRead, hasBrandOut, pdfOut, BRAND_OUT } from "./discover";
+import { resolve, list, load, modified, outResolve, outList, outRead, hasBrandOut, pdfOut, BRAND_OUT, TEMPLATES, treeModified } from "./discover";
 import { resolveTitle } from "./template";
 import { capitalize, last, slug, clean, ext, pixelSize } from "./utils";
 import { listingPage, previewPage, notFoundPage, VIEWS, type Entry, type View } from "./ui/pages";
 
 const PORT = 4000;
+
+// Le rechargement a chaud d'un template doit valoir pour ce qu'il importe :
+// voir hot.js. Propre au serveur de dev, d'ou l'enregistrement ici et pas dans cli.ts.
+register(new URL("./hot.js", import.meta.url), { data: TEMPLATES.href });
 
 const MIME: Record<string, string> = {
 	svg: "image/svg+xml",
@@ -18,7 +23,7 @@ const thumbs = new Map<string, Buffer>();
 
 // Satori à la taille native du template, puis downscale resvg : la vignette reste nette.
 async function thumbnail(relPath: string, width: number): Promise<Buffer> {
-	const key = `${relPath}@${width}:${await modified(relPath)}`;
+	const key = `${relPath}@${width}:${await treeModified()}`;
 	const hit = thumbs.get(key);
 	if (hit) return hit;
 	const tpl = await load(relPath, true);

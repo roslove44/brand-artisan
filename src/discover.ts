@@ -1,4 +1,5 @@
 import { readdir, readFile, stat } from "node:fs/promises";
+import { join } from "node:path";
 import type { Template } from "./template";
 import { root } from "./root";
 import { byName, clean } from "./utils";
@@ -6,7 +7,7 @@ import { byName, clean } from "./utils";
 // Auto-decouverte par le filesystem, sans registre a maintenir : un dossier = un
 // projet, un .tsx = une image. templates/ vit a la racine du projet, hors de
 // src/, parce que c'est du contenu et pas du moteur.
-const TEMPLATES = root("templates/");
+export const TEMPLATES = root("templates/");
 
 async function exists(url: URL): Promise<boolean> {
 	try {
@@ -38,10 +39,21 @@ export async function list(relPath: string): Promise<{ projects: string[]; image
 	return { projects: projects.sort(byName), images: images.sort(byName) };
 }
 
-// Sert de cle de cache aux vignettes.
+// Date d'un template, pour dire si son PDF a pris du retard sur lui.
 export async function modified(relPath: string): Promise<number> {
 	const s = await stat(new URL(`${clean(relPath)}.tsx`, TEMPLATES));
 	return s.mtimeMs;
+}
+
+// Date du fichier le plus recent sous templates/, cle de cache des vignettes : un
+// template depend de ce qu'il importe (constantes, tokens partages entre projets)
+// autant que de son propre .tsx, et hot.js couvre ce meme perimetre.
+export async function treeModified(): Promise<number> {
+	const entries = await readdir(TEMPLATES, { recursive: true, withFileTypes: true });
+	const times = await Promise.all(
+		entries.filter((e) => e.isFile()).map((e) => stat(join(e.parentPath, e.name)).then((s) => s.mtimeMs)),
+	);
+	return Math.max(0, ...times);
 }
 
 // --- Sortie de la toolchain de marque ---------------------------------------
@@ -93,7 +105,8 @@ export async function pdfOut(relPath: string): Promise<{ data: Buffer; mtimeMs: 
 	}
 }
 
-/** Charge le default export de <relPath>.tsx. `fresh` cache-bust, pour le hot-reload en dev. */
+/** Charge le default export de <relPath>.tsx. `fresh` cache-bust, pour le hot-reload en dev ;
+ * hot.js etend ce rafraichissement a ce que le template importe. */
 export async function load(relPath: string, fresh = false): Promise<Template> {
 	const url = new URL(`${clean(relPath)}.tsx`, TEMPLATES);
 	const spec = fresh ? `${url.href}?t=${Date.now()}` : url.href;
