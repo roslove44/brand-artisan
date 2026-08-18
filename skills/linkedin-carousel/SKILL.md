@@ -36,9 +36,14 @@ deliverable. Don't pick in silence (CLAUDE.md principle #1).
 | Deliverable | `out/<project>/<name>.pdf` | `out/<project>/<name>/card-*.png` |
 | Default ratio | **4:5, 1080×1350** | **1:1, 1080×1080** (only ratio allowed) |
 
-**A is what people usually mean.** "I want a LinkedIn carousel" for a post, a
-tip series, a mini-guide -> path A. Path B only if the user talks about ads,
-budget, Campaign Manager or sponsoring.
+**Ask, with A pre-selected.** "I want a LinkedIn carousel" for a post, a tip
+series, a mini-guide is path A nine times out of ten: put the question so that it
+settles in one word ("Document post, the organic one? Or a Campaign Manager
+carousel ad?"), never so that it reads as a quiz.
+
+**Unless the request already settled it.** "carousel ad", "for Campaign Manager",
+"sponsored", a budget -> path B. "document post", "PDF carousel" -> path A.
+Nothing left to ask then: state the path being taken and move on.
 
 > **Posting the PNGs is not path A.** Several images attached to a LinkedIn post
 > come out as a **mosaic** of thumbnails, not as slides you swipe. The swipeable
