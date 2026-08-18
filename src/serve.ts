@@ -3,7 +3,7 @@ import { toPng } from "./render";
 import { resolve, list, load, modified, outResolve, outList, outRead, hasBrandOut, pdfOut, BRAND_OUT } from "./discover";
 import { resolveTitle } from "./template";
 import { capitalize, last, slug, clean, ext, pixelSize } from "./utils";
-import { listingPage, previewPage, VIEWS, type Entry, type View } from "./ui/pages";
+import { listingPage, previewPage, notFoundPage, VIEWS, type Entry, type View } from "./ui/pages";
 
 const PORT = 4000;
 
@@ -45,6 +45,18 @@ async function imageEntry(rel: string, name: string): Promise<Entry> {
 	}
 }
 
+// Dossier existant le plus proche du chemin demandé : la page 404 y renvoie
+// plutôt qu'à la racine. "" (la racine) si aucun parent n'existe.
+async function nearestDir(relPath: string): Promise<string> {
+	const segs = relPath.split("/").filter(Boolean).slice(0, -1);
+	while (segs.length) {
+		const candidate = segs.join("/");
+		if ((await resolve(candidate)) === "dir" || (await outResolve(candidate)) === "dir") return candidate;
+		segs.pop();
+	}
+	return "";
+}
+
 // Serveur de dev : l'arborescence de templates/ est navigable, façon Finder.
 //   /                     -> racine (projets)
 //   /calame               -> listing du projet (?view=icons|list|gallery)
@@ -63,8 +75,8 @@ const server = createServer(async (req, res) => {
 		const outKind = kind === null ? await outResolve(relPath) : null;
 
 		if (kind === null && outKind === null) {
-			res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
-			res.end(`Not found: "/${relPath}".`);
+			res.writeHead(404, { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" });
+			res.end(notFoundPage({ relPath, nearest: await nearestDir(relPath), favorites: (await list("")).projects }));
 			return;
 		}
 

@@ -2,7 +2,7 @@
 // (sidebar, toolbar, vues icônes/liste/galerie, barre de chemin).
 import { esc, capitalize, last } from "../utils";
 import { STYLE } from "./style";
-import { folderIcon, folderMini, rootMini, imageMini, chevron, viewIcons, downloadIcon, brandMark } from "./icons";
+import { folderIcon, folderMini, rootMini, imageMini, chevron, viewIcons, downloadIcon, brandMark, missingIcon } from "./icons";
 
 const PROJECT_NAME = "BrandArtisan";
 
@@ -287,5 +287,30 @@ export function previewPage(opts: {
 			</div>`,
 		leafIsImage: true,
 		status: `${position}${title}${size ? ` · ${size}` : ""}`,
+	});
+}
+
+// Chemin qui ne correspond à rien : même fenêtre, ancrée au dossier existant le
+// plus proche (sidebar et barre de chemin restent utiles), avec le retour en un clic.
+export function notFoundPage(opts: { relPath: string; nearest: string; favorites: string[] }): string {
+	const { relPath, nearest, favorites } = opts;
+	const backIcon = nearest ? folderMini(15) : rootMini(15);
+	const backName = nearest ? capitalize(last(nearest)) : "All visuals";
+	return windowShell({
+		pageTitle: `Not found | ${PROJECT_NAME}`,
+		heading: "Not found",
+		relPath: nearest,
+		view: "icons",
+		favorites,
+		toolbarRight: "",
+		content: `
+			<div class="notfound">
+				${missingIcon(76)}
+				<h2>Nothing here</h2>
+				<p>No visual at <code>/${esc(relPath)}</code>. Its file may have been renamed, or it does not exist yet in the <code>templates/</code> folder.</p>
+				<a class="tool-link" href="${dirHref(nearest, "icons")}">${backIcon}<span>Back to ${esc(backName)}</span></a>
+			</div>`,
+		leafIsImage: false,
+		status: "Not found",
 	});
 }

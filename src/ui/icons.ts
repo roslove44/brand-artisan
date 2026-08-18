@@ -78,3 +78,15 @@ export const downloadIcon = `
 // Marque BrandArtisan, favicon des pages du serveur : encodée en data URI dans
 // le <head>, donc sur une ligne et sans attribut superflu.
 export const brandMark = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="22" fill="#b45309"/><path d="M18 18 H58 V33 H33 V58 H18 Z M82 82 H42 V67 H67 V42 H82 Z" fill="#faf9f7"/></svg>`;
+
+// Dossier introuvable : la même silhouette que folderIcon, mais vide et en
+// pointillés (currentColor, pas le bleu des dossiers réels), et un point
+// d'interrogation à la place du contenu.
+export const missingIcon = (size: number) => `
+<svg width="${size}" height="${size}" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+	<path d="M5 23v-9c0-2.8 2.2-5 5-5h12.6c1.3 0 2.6.5 3.5 1.5l3.6 3.5H54c2.8 0 5 2.2 5 5v4"
+		stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+	<rect x="6.5" y="23" width="51" height="31" rx="5" stroke="currentColor" stroke-width="3" stroke-dasharray="7 6"/>
+	<path d="M27.6 34.6a4.9 4.9 0 1 1 5.4 5.7v2.6" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+	<circle cx="33" cy="48" r="2.1" fill="currentColor"/>
+</svg>`;

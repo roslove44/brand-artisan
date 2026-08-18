@@ -273,6 +273,30 @@ export const STYLE = `
 		box-shadow: 0 0 0 1px var(--thumb-edge), 0 18px 50px rgba(0, 0, 0, 0.32);
 	}
 
+	/* ---- Chemin introuvable ---- */
+	.notfound {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+		height: 100%;
+		padding: 40px;
+		text-align: center;
+	}
+	.notfound svg { color: var(--text-2); opacity: 0.5; }
+	.notfound h2 { margin: 8px 0 0; font-size: 16px; font-weight: 600; }
+	.notfound p { margin: 0; max-width: 44ch; color: var(--text-2); }
+	.notfound code {
+		padding: 2px 6px;
+		border-radius: 5px;
+		background: var(--seg-bg);
+		color: var(--text);
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 12px;
+	}
+	.notfound .tool-link { margin-top: 6px; }
+
 	/* ---- Barre de chemin ---- */
 	.pathbar {
 		display: flex;
