@@ -9,10 +9,15 @@
 
 > 🇬🇧 English version: [README.md](https://github.com/roslove44/brand-artisan#readme)
 
-**Tu sais écrire un composant React ? Alors tu sais déjà produire tes visuels.**
-BrandArtisan transforme du JSX en PNG : images Open Graph pour ton site, posts
-et bannières LinkedIn, Facebook, X, carrousels. Pas de Figma, pas de navigateur,
-pas de serveur : tes visuels sont du code, versionnés avec le reste.
+**Change ton accroche une fois, et tous les visuels qui la portent sont refaits.**
+Ton image Open Graph, tes posts LinkedIn et X, tes bannières et carrousels : une
+poignée de fichiers qui s'éloignent un peu plus de ta charte à chaque retouche,
+et chaque correction est un aller-retour par Figma. BrandArtisan en fait du code.
+Palette, logotype et typo vivent au même endroit, `npm run build` réexporte
+chaque PNG, et l'ensemble est versionné avec le reste du projet. Pas de Figma,
+pas de navigateur, pas de serveur.
+
+Tu sais écrire un composant React ? Alors tu sais déjà écrire un visuel :
 
 ```tsx
 import type { Template } from "brand-artisan";

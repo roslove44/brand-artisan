@@ -2,7 +2,7 @@
   "name": "brand-artisan",
   "version": "0.1.1",
   "type": "module",
-  "description": "Turn JSX into brand images (Open Graph, social posts, banners). next/og's engine outside Next: no browser, no Figma, no server.",
+  "description": "Brand visuals as code: change the palette once, rebuild every PNG with one command. Open Graph, social posts, banners, carousels. next/og's engine outside Next.",
   "keywords": [
     "og-image",
     "open-graph",
