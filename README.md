@@ -5,6 +5,7 @@
 [![npm](https://img.shields.io/npm/v/brand-artisan)](https://www.npmjs.com/package/brand-artisan)
 [![CI](https://github.com/roslove44/brand-artisan/actions/workflows/ci.yml/badge.svg)](https://github.com/roslove44/brand-artisan/actions/workflows/ci.yml)
 [![license MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/roslove44/brand-artisan/blob/main/LICENSE)
+[![website](https://img.shields.io/badge/website-roslove44.github.io%2Fbrand--artisan-f59e0b)](https://roslove44.github.io/brand-artisan/)
 
 > 🇫🇷 Version française : [README.fr.md](https://github.com/roslove44/brand-artisan/blob/main/README.fr.md)
 
