@@ -18,6 +18,7 @@
     "type": "git",
     "url": "git+https://github.com/roslove44/brand-artisan.git"
   },
+  "homepage": "https://roslove44.github.io/brand-artisan/",
   "engines": {
     "node": ">=22"
   },

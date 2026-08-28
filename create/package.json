@@ -9,6 +9,7 @@
     "url": "git+https://github.com/roslove44/brand-artisan.git",
     "directory": "create"
   },
+  "homepage": "https://roslove44.github.io/brand-artisan/",
   "engines": {
     "node": ">=22"
   },
